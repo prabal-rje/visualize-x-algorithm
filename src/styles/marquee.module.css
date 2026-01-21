@@ -5,15 +5,22 @@
   border-bottom: 1px solid var(--phosphor-green);
 }
 
-.content {
+.trackGroup {
+  display: inline-flex;
+  align-items: center;
+  width: max-content;
+  animation: marquee-scroll 28s linear infinite;
+  font-family: 'VT323', monospace;
+  font-size: 14px;
+  color: var(--phosphor-green);
+}
+
+.track {
   display: inline-flex;
   align-items: center;
   gap: 16px;
   white-space: nowrap;
-  animation: marquee-scroll 30s linear infinite;
-  font-family: 'VT323', monospace;
-  font-size: 14px;
-  color: var(--phosphor-green);
+  padding-right: 32px;
 }
 
 .link {
@@ -32,9 +39,9 @@
 
 @keyframes marquee-scroll {
   0% {
-    transform: translateX(100%);
+    transform: translateX(0);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-50%);
   }
 }

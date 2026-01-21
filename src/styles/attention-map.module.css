@@ -7,10 +7,19 @@
 }
 
 .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 12px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: rgba(51, 255, 51, 0.7);
+}
+
+.helper {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: rgba(51, 255, 51, 0.5);
 }
 
 .rows {
@@ -23,6 +32,21 @@
   grid-template-columns: 1fr 1fr auto;
   align-items: center;
   gap: 8px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  cursor: pointer;
+}
+
+.row:focus-visible {
+  outline: 1px solid rgba(51, 255, 51, 0.6);
+  outline-offset: 2px;
+}
+
+.row[data-active='true'] {
+  border-color: rgba(51, 255, 51, 0.4);
+  background: rgba(0, 20, 0, 0.6);
 }
 
 .label {
@@ -41,7 +65,11 @@
   height: 100%;
   background: linear-gradient(90deg, rgba(51, 255, 51, 0.2), rgba(51, 255, 51, 0.9));
   box-shadow: 0 0 8px rgba(51, 255, 51, 0.6);
-  transition: width 1s ease;
+  transition: width 0.8s ease, box-shadow 0.2s ease;
+}
+
+.row[data-active='true'] .barFill {
+  box-shadow: 0 0 12px rgba(51, 255, 51, 0.9);
 }
 
 .weight {

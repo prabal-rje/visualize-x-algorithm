@@ -267,46 +267,60 @@ export const CHAPTERS: Chapter[] = [
     subChapters: [
       {
         id: 'ch4-a',
-        labelSimple: 'Phoenix',
-        labelTechnical: 'Phoenix Scorer',
+        labelSimple: 'Tokens',
+        labelTechnical: 'Context Tokens',
         functions: [
           {
             id: 'ch4-a-1',
             name: 'PhoenixRanker.forward()',
             file: 'phoenix/recsys_model.py',
-            summary: 'Predicting engagement probabilities',
+            summary: 'Encoding engagement context tokens',
             githubUrl: `${GITHUB_BASE}/phoenix/recsys_model.py`
-          },
-          {
-            id: 'ch4-a-2',
-            name: 'PhoenixScorer::score()',
-            file: 'home-mixer/scorers/phoenix_scorer.rs',
-            summary: 'Computing Phoenix model scores',
-            githubUrl: `${GITHUB_BASE}/home-mixer/scorers/phoenix_scorer.rs`
           }
         ]
       },
       {
         id: 'ch4-b',
-        labelSimple: 'Combine',
-        labelTechnical: 'Weighted Scoring',
+        labelSimple: 'Attention',
+        labelTechnical: 'Attention Weights',
         functions: [
           {
             id: 'ch4-b-1',
-            name: 'WeightedScorer::score()',
-            file: 'home-mixer/scorers/weighted_scorer.rs',
-            summary: 'Combining scores with weights',
-            githubUrl: `${GITHUB_BASE}/home-mixer/scorers/weighted_scorer.rs`
+            name: 'PhoenixRanker.attention()',
+            file: 'phoenix/recsys_model.py',
+            summary: 'Computing token attention weights',
+            githubUrl: `${GITHUB_BASE}/phoenix/recsys_model.py`
           }
         ]
       },
       {
         id: 'ch4-c',
-        labelSimple: 'Diversity',
-        labelTechnical: 'Author Diversity',
+        labelSimple: 'Odds',
+        labelTechnical: 'Engagement Odds',
         functions: [
           {
             id: 'ch4-c-1',
+            name: 'PhoenixScorer::score()',
+            file: 'home-mixer/scorers/phoenix_scorer.rs',
+            summary: 'Estimating engagement probabilities',
+            githubUrl: `${GITHUB_BASE}/home-mixer/scorers/phoenix_scorer.rs`
+          }
+        ]
+      },
+      {
+        id: 'ch4-d',
+        labelSimple: 'Combine',
+        labelTechnical: 'Weighted Score',
+        functions: [
+          {
+            id: 'ch4-d-1',
+            name: 'WeightedScorer::score()',
+            file: 'home-mixer/scorers/weighted_scorer.rs',
+            summary: 'Combining scores with weights',
+            githubUrl: `${GITHUB_BASE}/home-mixer/scorers/weighted_scorer.rs`
+          },
+          {
+            id: 'ch4-d-2',
             name: 'AuthorDiversityScorer::score()',
             file: 'home-mixer/scorers/diversity.rs',
             summary: 'Penalizing repeated authors',

@@ -48,11 +48,7 @@ Instructions:
  
 
 #### Phase 5: Chapter 4 Split + Scoring Visuals
-- [ ] Add P(...) estimation flow using embedding model data.
-- [ ] Enhance attention weights interactivity + explanation.
-- [ ] Split Chapter 4 into granular sub-steps + height control.
-- [ ] Update chapter data + tests.
-- [ ] Playwright screenshot + commit.
+ 
 
 #### Phase 6: Chapter 5 Split + Delivery Feedback
 - [ ] Add input tweet performance summary (below/med/above avg).
@@ -93,6 +89,11 @@ Instructions:
 ### 11. Design Spec Testing Checklist
 
 ## Completed
+- [x] Add P(...) estimation flow using embedding model data.
+- [x] Enhance attention weights interactivity + explanation.
+- [x] Split Chapter 4 into granular sub-steps + height control.
+- [x] Update chapter data + tests.
+- [x] Playwright screenshot + commit.
 - [x] Split Chapter 3 into 4 sub-steps with explanations.
 - [x] Add interactive filtering callouts per step (tweet highlights + gate focus).
 - [x] Set Chapter 3 height to half of Ch1/Ch2.

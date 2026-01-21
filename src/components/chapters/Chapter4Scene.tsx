@@ -5,15 +5,53 @@ import { isInitialized } from '../../ml/embeddings';
 import { useConfigStore } from '../../stores/config';
 import AttentionMap from '../visualization/AttentionMap';
 import EngagementScoreboard from '../visualization/EngagementScoreboard';
+import ProbabilityRack from '../visualization/ProbabilityRack';
 import ScoringContextTokens from '../visualization/ScoringContextTokens';
 import TypewriterText from '../visualization/TypewriterText';
 
 const STEP_NARRATION = [
-  'Phoenix sees your engagement history as tokens, then predicts how you will react...',
-  'Weighted scores combine actions into a single ranking signal...'
+  'Phoenix turns your recent actions into context tokens for the ranker...',
+  'Attention weights reveal which memories drive the score...',
+  'Embedding similarity estimates P(action | tweet, audience)...',
+  'Weighted sums merge those odds into a single ranking score...'
 ];
 
-const STEP_LABELS = ['4A: Phoenix Scorer', '4B: Weighted Score'];
+const STEP_LABELS = [
+  '4A: Context Tokens',
+  '4B: Attention Weights',
+  '4C: Probability Estimates',
+  '4D: Weighted Score'
+];
+
+const STEP_CALLOUTS = [
+  {
+    title: 'Tokenized engagement history',
+    detail: 'Phoenix encodes your recent actions into discrete context tokens.',
+    formula: 'context → attention'
+  },
+  {
+    title: 'Attention heat',
+    detail: 'Higher weights mean stronger influence on the prediction.',
+    formula: 'alpha_i * token_i'
+  },
+  {
+    title: 'Estimate P(action)',
+    detail: 'Embedding similarity maps to action probabilities.',
+    formula: 'P(action | embedding)'
+  },
+  {
+    title: 'Weighted score',
+    detail: 'Probabilities combine with action weights for the final score.',
+    formula: 'sum(p * w)'
+  }
+];
+
+const FUNCTION_LABELS = [
+  'PhoenixRanker.forward()',
+  'PhoenixRanker::attention()',
+  'PhoenixScorer::score()',
+  'WeightedScorer::score()'
+];
 
 const CONTEXT_TOKENS = [
   { id: 'c1', action: 'liked', text: 'AI tool demo', weight: 0.34 },
@@ -85,6 +123,18 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
     ];
   }, [probs]);
 
+  const probabilityItems = useMemo(
+    () => [
+      { id: 'like', label: 'Like', probability: probs.like },
+      { id: 'repost', label: 'Repost', probability: probs.repost },
+      { id: 'reply', label: 'Reply', probability: probs.reply },
+      { id: 'bookmark', label: 'Bookmark', probability: probs.bookmark },
+      { id: 'click', label: 'Click', probability: probs.click },
+      { id: 'follow', label: 'Follow', probability: probs.like * 0.2 }
+    ],
+    [probs]
+  );
+
   const baseScore = calculateWeightedScore(probs);
   const diversityPenalty = Math.min(0.12, baseScore * 0.12);
   const finalScore = Math.max(0, baseScore - diversityPenalty);
@@ -105,6 +155,8 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
       weight: token.weight
     }));
   }, []);
+
+  const callout = STEP_CALLOUTS[currentStep] || STEP_CALLOUTS[0];
 
   return (
     <div
@@ -130,23 +182,41 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
 
       <div className={styles.content}>
         <div className={styles.stepLabel}>{STEP_LABELS[currentStep] || STEP_LABELS[0]}</div>
-        <div className={styles.scoringGrid}>
-          <ScoringContextTokens tokens={CONTEXT_TOKENS} isActive={isActive} />
-          <AttentionMap items={attentionItems} isActive={isActive} />
+        <div className={styles.callout}>
+          <div className={styles.calloutHeader}>
+            <span className={styles.calloutTitle}>{callout.title}</span>
+            <span className={styles.calloutFormula}>{callout.formula}</span>
+          </div>
+          <div className={styles.calloutText}>{callout.detail}</div>
         </div>
-        <EngagementScoreboard
-          actions={actions}
-          finalScore={finalScore}
-          diversityPenalty={diversityPenalty}
-          rankings={rankings}
-          isActive={isActive}
-        />
+
+        {currentStep === 0 && (
+          <ScoringContextTokens tokens={CONTEXT_TOKENS} isActive={isActive} />
+        )}
+
+        {currentStep === 1 && (
+          <AttentionMap items={attentionItems} isActive={isActive} />
+        )}
+
+        {currentStep === 2 && (
+          <ProbabilityRack items={probabilityItems} isActive={isActive} />
+        )}
+
+        {currentStep === 3 && (
+          <EngagementScoreboard
+            actions={actions}
+            finalScore={finalScore}
+            diversityPenalty={diversityPenalty}
+            rankings={rankings}
+            isActive={isActive}
+          />
+        )}
       </div>
 
       <div className={styles.functionRef}>
         <span className={styles.funcLabel}>FUNCTION:</span>
         <code className={styles.funcName}>
-          {currentStep === 0 ? 'PhoenixScorer::score()' : 'WeightedScorer::score()'}
+          {FUNCTION_LABELS[currentStep] || FUNCTION_LABELS[0]}
         </code>
       </div>
     </div>

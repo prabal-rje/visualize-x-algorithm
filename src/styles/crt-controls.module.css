@@ -118,20 +118,10 @@
   z-index: 1;
 }
 
-.powerButton {
-  border: 1px solid var(--phosphor-amber);
-  background: transparent;
-  color: var(--phosphor-amber);
-  padding: 2px 8px;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
 .audioButton {
-  border: 1px solid var(--phosphor-green);
-  background: rgba(0, 20, 0, 0.6);
-  color: var(--phosphor-green);
+  border: 1px solid var(--phosphor-amber);
+  background: rgba(24, 12, 0, 0.65);
+  color: var(--phosphor-amber);
   padding: 2px 8px;
   cursor: pointer;
   text-transform: uppercase;
@@ -139,25 +129,13 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  box-shadow: 0 0 10px rgba(255, 176, 0, 0.3);
 }
 
-.audioIcon {
-  width: 10px;
-  height: 10px;
-  border: 1px solid currentColor;
-  position: relative;
-}
-
-.audioIcon::after {
-  content: '';
-  position: absolute;
-  right: -6px;
-  top: 1px;
-  width: 4px;
-  height: 6px;
-  border-right: 1px solid currentColor;
-  border-top: 1px solid currentColor;
-  border-bottom: 1px solid currentColor;
+.audioButton[data-muted='true'] {
+  border-color: rgba(255, 176, 0, 0.55);
+  color: rgba(255, 176, 0, 0.7);
+  box-shadow: 0 0 6px rgba(255, 176, 0, 0.2);
 }
 
 .section {

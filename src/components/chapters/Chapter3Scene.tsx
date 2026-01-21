@@ -124,10 +124,6 @@ export default function Chapter3Scene({ currentStep, isActive }: Chapter3ScenePr
       <div className={styles.header}>
         <span className={styles.chapterNumber}>CHAPTER 3</span>
         <h2 className={styles.title}>THE FILTERING</h2>
-        <div className={styles.file}>
-          <span className={styles.fileLabel}>FILE:</span>
-          <span className={styles.filePath}>home-mixer/filters</span>
-        </div>
       </div>
 
       <div className={styles.narration}>

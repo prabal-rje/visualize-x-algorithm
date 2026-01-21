@@ -73,19 +73,11 @@ export default function CRTControls({ config, onChange }: CRTControlsProps) {
           <button
             className={styles.audioButton}
             data-testid="audio-toggle"
+            data-muted={audioMuted}
             onClick={handleAudioToggle}
             type="button"
           >
-            <span className={styles.audioIcon} aria-hidden="true" />
             {audioMuted ? 'MUTED' : 'LIVE'}
-          </button>
-          <button
-            className={styles.powerButton}
-            data-testid="crt-toggle-power"
-            onClick={() => onChange({ ...config, power: !config.power })}
-            type="button"
-          >
-            {config.power ? 'ON' : 'OFF'}
           </button>
         </div>
 

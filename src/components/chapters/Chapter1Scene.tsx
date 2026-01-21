@@ -50,10 +50,6 @@ export default function Chapter1Scene({
       <div className={styles.header}>
         <span className={styles.chapterNumber}>CHAPTER 1</span>
         <h2 className={styles.title}>THE REQUEST</h2>
-        <div className={styles.file}>
-          <span className={styles.fileLabel}>FILE:</span>
-          <span className={styles.filePath}>home-mixer/server.rs</span>
-        </div>
       </div>
 
       {/* Narration */}

@@ -27,8 +27,27 @@ Instructions:
 
 ##### Phase 2.5: Square-ish dimensions
  
-- [ ] Move progress bar, the chapter buttons, the file name, and the start over /back/pause/next buttons at the top  above the simulation arena ...
-- [ ] Simulation arena should largely fit a regular computers screen without vertical scroll ... across loadout and chapter visualizations/simulations...
+ 
+
+##### Phase 2.75: Changes to "The Gathering"
+
+- [ ] Remove words 'Mean Pool' but maintain the spherical signifier of it
+- [ ] Show glowing golden shadow of words flowing 'into' this nebulous signifier and then the 128-D vector to the right bubbling w/ random colors of the 
+same palette as the vector embedding below - but somewhat dimmer ... GOAL IS TO SHOW THAT THIS IS HOW THE "TWEET EMBEDDING" IS CALCULATED
+- [ ] Replace "User Embedding" with "Tweet Embedding" 
+- [ ] Ensure that in fact the entire tweet is being tokenized?
+- [ ] Use _ instead of ^ to indicate 'space' between words ... but 6 is OK for 'start' of sentence
+
+
+##### Phase 2.875: Changes to "The Scoring"
+
+- [ ] Replace "Liked", "Replied", "Reposted" w/ Icons rather than just 'words' ... ensure visual placement, size, etc. are accurate
+
+##### Phase 2.9: Fix Loading BIOS Screen
+
+- [ ] Currently, loading BIOS screen appears on the side-region - when it should be replacing the entire simulation arena ...
+      ONLY WHEN THE LOADING BIOS HAS DISAPPEARED SHOULD THE REGULAR SIMULATION ARENA EVEN BE ALLOWED TO RENDER
+- [ ] Make sure BIOS Loader is in the middle of the screen ... no upper navigation bar, no simulation arena - just marquee and the BIOS Loader ...
 
 #### Phase 3: Embedding + Hover Fix
 - [ ] Add token-level (sub-token) embedding animation flowing into mean pool.
@@ -90,6 +109,10 @@ Instructions:
 ### 11. Design Spec Testing Checklist
 
 ## Completed
+- [x] Move progress bar, the chapter buttons, the file name, and the start over /back/pause/next buttons at the top above the simulation arena.
+- [x] Simulation arena should largely fit a regular computers screen without vertical scroll across loadout and chapter visualizations/simulations.
+- [x] Remove the empty sidebar on the right side that's taking up space.
+- [x] From CRT CTRL remove the ON button, and instead turn the MUTE button orange-glow and remove checkbox from it - make it toggle MUTED/LIVE only.
 - [x] Fix chapter canvas to a stable proportion across chapters (desktop + mobile).
 - [x] Add test marker for fixed proportion.
 - [x] Playwright screenshot + commit.

@@ -8,7 +8,7 @@ import EmbeddingHeatmap from '../visualization/EmbeddingHeatmap';
 import VectorSpace from '../visualization/VectorSpace';
 import CandidateStreams from '../visualization/CandidateStreams';
 import TypewriterText from '../visualization/TypewriterText';
-import TokenizationFlow from '../visualization/TokenizationFlow';
+import TokenizationFlow, { tokenizeSubTokens } from '../visualization/TokenizationFlow';
 import { useViewport } from '../../hooks/useViewport';
 
 type Chapter2SceneProps = {
@@ -48,11 +48,6 @@ const STEP_LABELS = [
   '2C: Merging Sources'
 ];
 
-const FILE_PATHS = [
-  'phoenix/recsys_retrieval_model.py',
-  'phoenix/recsys_retrieval_model.py',
-  'home-mixer/candidate_pipeline/mod.rs'
-];
 
 // Map similarity to 2D position with better spread
 function similarityToPosition(
@@ -110,6 +105,11 @@ export default function Chapter2Scene({
     text: string;
   }>>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const maxTokens = 12;
+  const tokenCount = Math.min(
+    tokenizeSubTokens(tweetText || 'Hello world').length,
+    maxTokens
+  );
 
   // Generate tweet pool once on mount (embeddings pre-computed)
   useEffect(() => {
@@ -188,10 +188,6 @@ export default function Chapter2Scene({
       <div className={styles.header}>
         <span className={styles.chapterNumber}>CHAPTER 2</span>
         <h2 className={styles.title}>THE GATHERING</h2>
-        <div className={styles.file}>
-          <span className={styles.fileLabel}>FILE:</span>
-          <span className={styles.filePath}>{FILE_PATHS[currentStep] || FILE_PATHS[0]}</span>
-        </div>
       </div>
 
       {/* Narration */}
@@ -214,11 +210,16 @@ export default function Chapter2Scene({
               <div className={styles.loading}>Computing embedding...</div>
             ) : (
               <>
-                <TokenizationFlow tweet={tweetText} isActive={isActive} />
+                <TokenizationFlow
+                  tweet={tweetText}
+                  isActive={isActive}
+                  maxTokens={maxTokens}
+                />
                 <EmbeddingHeatmap
                   embedding={userEmbedding}
                   label="USER EMBEDDING"
                   isActive={isActive}
+                  tokenCount={tokenCount}
                 />
               </>
             )}

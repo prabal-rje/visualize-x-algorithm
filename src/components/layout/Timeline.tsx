@@ -257,7 +257,10 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       {/* Current Function Info */}
       {currentFunction && (
         <div className={styles.functionInfo}>
-          <code className={styles.functionName}>{currentFunction.name}</code>
+          <div className={styles.functionHeader}>
+            <code className={styles.functionName}>{currentFunction.name}</code>
+            <span className={styles.functionFile}>{currentFunction.file}</span>
+          </div>
           <span className={styles.functionSummary}>{currentFunction.summary}</span>
         </div>
       )}

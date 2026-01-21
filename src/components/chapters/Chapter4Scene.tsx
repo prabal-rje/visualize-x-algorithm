@@ -115,10 +115,6 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
       <div className={styles.header}>
         <span className={styles.chapterNumber}>CHAPTER 4</span>
         <h2 className={styles.title}>THE SCORING</h2>
-        <div className={styles.file}>
-          <span className={styles.fileLabel}>FILE:</span>
-          <span className={styles.filePath}>phoenix/recsys_model.py</span>
-        </div>
       </div>
 
       <div className={styles.narration}>

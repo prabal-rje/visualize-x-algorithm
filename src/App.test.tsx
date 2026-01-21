@@ -48,11 +48,28 @@ describe('App', () => {
     expect(screen.getByTestId('app-shell')).toBeInTheDocument();
   });
 
+  it('renders timeline above the chapter canvas', () => {
+    useMLStore.getState().setReady();
+    render(<App />);
+    const timeline = screen.getByTestId('timeline');
+    const chapterCanvas = screen.getByTestId('chapter-canvas');
+    const position = timeline.compareDocumentPosition(chapterCanvas);
+    expect(position & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
   it('marks chapter canvas as fixed proportion', () => {
     render(<App />);
     expect(screen.getByTestId('chapter-canvas')).toHaveAttribute(
       'data-proportion',
       'fixed'
+    );
+  });
+
+  it('marks chapter canvas as viewport-fit', () => {
+    render(<App />);
+    expect(screen.getByTestId('chapter-canvas')).toHaveAttribute(
+      'data-viewport-fit',
+      'true'
     );
   });
 
@@ -62,6 +79,12 @@ describe('App', () => {
     expect(screen.getByTestId('chapter-0-scene')).toBeInTheDocument();
     expect(screen.getByTestId('config-panel')).toBeInTheDocument();
     expect(screen.queryByTestId('mission-report')).not.toBeInTheDocument();
+  });
+
+  it('hides the side panel when simulation is idle', () => {
+    useMLStore.getState().setReady(); // Skip BIOS loading
+    render(<App />);
+    expect(screen.queryByTestId('function-panel')).not.toBeInTheDocument();
   });
 
   it('shows MissionReport when simulation started with rpgStats', () => {

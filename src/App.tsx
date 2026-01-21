@@ -106,6 +106,9 @@ function App() {
     return null;
   };
 
+  const mainContent = renderMainContent();
+  const showSidePanel = simulationStarted || Boolean(mainContent);
+
   const renderChapterScene = () => {
     // Don't render chapters until model is ready
     if (mlStatus !== 'ready') return null;
@@ -167,11 +170,19 @@ function App() {
       >
         <ScreenFlicker />
         <Marquee />
-        <main className={styles.main}>
+        <section className={styles.timelineBar}>
+          <Timeline
+            position={simulationState.position}
+            status={simulationState.status}
+            dispatch={dispatch}
+          />
+        </section>
+        <main className={styles.main} data-side-panel={showSidePanel}>
           <section
             className={styles.chapterCanvas}
             data-testid="chapter-canvas"
             data-proportion="fixed"
+            data-viewport-fit="true"
           >
             {mlStatus === 'ready'
               ? renderChapterScene()
@@ -180,28 +191,25 @@ function App() {
                 </div>
             }
           </section>
-          <section className={styles.sidePanel}>
-            <FunctionPanel
-              info={
-                simulationStarted && currentFunction
-                  ? {
-                      name: currentFunction.name,
-                      file: currentFunction.file,
-                      summary: currentFunction.summary,
-                      githubUrl: currentFunction.githubUrl,
-                    }
-                  : undefined
-              }
-            />
-            {renderMainContent()}
-          </section>
+          {showSidePanel && (
+            <section className={styles.sidePanel}>
+              <FunctionPanel
+                info={
+                  simulationStarted && currentFunction
+                    ? {
+                        name: currentFunction.name,
+                        file: currentFunction.file,
+                        summary: currentFunction.summary,
+                        githubUrl: currentFunction.githubUrl,
+                      }
+                    : undefined
+                }
+              />
+              {mainContent}
+            </section>
+          )}
         </main>
         <CRTControls config={crtConfig} onChange={setCrtConfig} />
-        <Timeline
-          position={simulationState.position}
-          status={simulationState.status}
-          dispatch={dispatch}
-        />
       </div>
     </CRTOverlay>
   );

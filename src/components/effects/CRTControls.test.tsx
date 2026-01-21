@@ -1,10 +1,15 @@
 import type { FormEvent } from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DEFAULT_CRT_CONFIG } from './crtConfig';
 import CRTControls, { createNumberUpdater } from './CRTControls';
+import { useAudioStore } from '../../stores/audio';
 
 describe('CRTControls', () => {
+  beforeEach(() => {
+    useAudioStore.setState({ enabled: true, muted: true });
+  });
+
   it('opens dialog from handle click', () => {
     render(<CRTControls config={DEFAULT_CRT_CONFIG} onChange={() => undefined} />);
     fireEvent.click(screen.getByTestId('crt-controls-handle'));
@@ -30,5 +35,13 @@ describe('CRTControls', () => {
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({ scanlineIntensity: 0.4 })
     );
+  });
+
+  it('marks audio toggle with muted state and hides power control', () => {
+    render(<CRTControls config={DEFAULT_CRT_CONFIG} onChange={() => undefined} />);
+    fireEvent.click(screen.getByTestId('crt-controls-handle'));
+    const audioButton = screen.getByTestId('audio-toggle');
+    expect(audioButton).toHaveAttribute('data-muted', 'true');
+    expect(screen.queryByTestId('crt-toggle-power')).not.toBeInTheDocument();
   });
 });

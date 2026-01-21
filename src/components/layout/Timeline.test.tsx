@@ -247,6 +247,17 @@ describe('Timeline', () => {
       expect(screen.getByText(/MissionLoadout::select_persona/)).toBeInTheDocument();
     });
 
+    it('shows current file path', () => {
+      render(
+        <Timeline
+          position={defaultPosition}
+          status="running"
+          dispatch={mockDispatch}
+        />
+      );
+      expect(screen.getByText('client/mission_loadout.ts')).toBeInTheDocument();
+    });
+
     it('shows progress indicator', () => {
       render(
         <Timeline

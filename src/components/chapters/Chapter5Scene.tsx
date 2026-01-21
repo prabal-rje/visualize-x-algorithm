@@ -75,10 +75,6 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
       <div className={styles.header}>
         <span className={styles.chapterNumber}>CHAPTER 5</span>
         <h2 className={styles.title}>THE DELIVERY</h2>
-        <div className={styles.file}>
-          <span className={styles.fileLabel}>FILE:</span>
-          <span className={styles.filePath}>home-mixer/selectors</span>
-        </div>
       </div>
 
       <div className={styles.narration}>

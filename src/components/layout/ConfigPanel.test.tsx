@@ -89,6 +89,11 @@ describe('ConfigPanel', () => {
     );
   });
 
+  it('renders persona icons', () => {
+    render(<ConfigPanel />);
+    expect(screen.getAllByTestId('persona-icon').length).toBeGreaterThan(0);
+  });
+
   it('starts simulation on begin button', () => {
     render(<ConfigPanel />);
     fireEvent.click(screen.getByRole('button', { name: /continue to audience/i }));

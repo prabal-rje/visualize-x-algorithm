@@ -6,6 +6,18 @@ import styles from '../../styles/config-panel.module.css';
 
 const MAX_TWEET_LENGTH = 280;
 
+const getPersonaInitials = (name: string) => {
+  const tokens = name
+    .replace(/[^a-zA-Z0-9 ]/g, ' ')
+    .split(' ')
+    .filter(Boolean);
+  const initials = tokens
+    .slice(0, 2)
+    .map((token) => token[0]?.toUpperCase() ?? '')
+    .join('');
+  return initials || name.slice(0, 2).toUpperCase();
+};
+
 export default function ConfigPanel() {
   const expertMode = useConfigStore((state) => state.expertMode);
   const setExpertMode = useConfigStore((state) => state.setExpertMode);
@@ -69,7 +81,16 @@ export default function ConfigPanel() {
                 aria-pressed={persona.id === personaId}
                 onClick={() => setPersonaId(persona.id)}
               >
-                <div className={styles.personaName}>{persona.name}</div>
+                <div className={styles.personaHeader}>
+                  <span
+                    className={styles.personaIcon}
+                    data-testid="persona-icon"
+                    aria-hidden="true"
+                  >
+                    {getPersonaInitials(persona.name)}
+                  </span>
+                  <div className={styles.personaName}>{persona.name}</div>
+                </div>
                 <div
                   className={`${styles.personaSubtitle} ${styles.personaSubtitleLarge}`}
                 >

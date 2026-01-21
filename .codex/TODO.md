@@ -81,6 +81,53 @@ Instructions:
 ### 11. Design Spec Testing Checklist
 
 ## Completed
+- [x] Move completed tasks to Completed.
+
+### Work Review 1: Layout, Nav, and CRT Polish
+
+#### Pre-Start
+- [x] Capture baseline Chrome MCP screenshots (default viewport + loadout).
+
+#### Design & Plan
+- [x] Write implementation plan for Work Review 1 fixes.
+- [x] Mirror review checklist into `.codex/work_review_1/FEEDBACK_TODO.md`.
+
+#### Phase 1: Title + Favicon
+- [x] Update `index.html` title + meta.
+- [x] Add CRT-styled favicon asset.
+
+#### Phase 2: Arena Layout + Spacing
+- [x] Expand app shell width + tighten vertical gaps.
+- [x] Make chapter canvas fill available height and avoid hidden scroll.
+- [x] Make Chapter 0 content fill arena width and reduce wasted space.
+
+#### Phase 3: Marquee Loop Fix
+- [x] Implement seamless marquee looping (no mid-screen jump).
+
+#### Phase 4: Timeline + Mobile Controls
+- [x] Add progress label + chapter ticks to progress bar.
+- [x] Ensure chapter tabs scroll on mobile with visible affordance.
+- [x] Replace cramped mobile nav labels with icon mode + 44px targets.
+
+#### Phase 5: Function Panel Links
+- [x] Add clickable file path + GitHub icon link in FunctionPanel.
+
+#### Phase 6: Persona Grid Enhancements
+- [x] Add persona icons in loadout cards.
+- [x] Standardize persona card heights + subtitle clamp.
+- [x] Increase grid column count on desktop.
+
+#### Phase 7: CRT Controls Placement
+- [x] Reposition CRT CTRL handle to reduce right-edge intrusion.
+
+#### Phase 8: Global UI Polish
+- [x] Add CRT-green focus ring for keyboard navigation.
+- [x] Scale UI for large displays (reduce miniaturization).
+- [x] Add Chapter 2 legends/labels where missing.
+
+#### Phase 9: Verification
+- [x] Chrome MCP screenshots at multiple viewports + zoom levels.
+- [x] Run targeted tests and fix failures.
 - [x] Run Playwright end-state screenshot + final tests.
 - [x] Review `git diff`, fix style issues, ensure tests pass.
 - [x] Move completed tasks to Completed and ensure TODO empty.

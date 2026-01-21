@@ -122,6 +122,9 @@ Instructions:
 - [ ] Reduced motion mode disables animations.
 
 ## Completed
+- [x] Split config flow into stepped pages (Persona → Audience → Tweet) with navigation.
+- [x] Remove sample tweet dropdown; add prominent shuffle button with icon and prefilled tweet.
+- [x] Restyle Expert Mode checkbox to CRT green (no pink).
 - [x] Add keyboard shortcuts (Enter to start, Tab between fields).
 - [x] Store selections in Zustand config store.
 - [x] Add Expert Mode toggle with helper copy and persistence.

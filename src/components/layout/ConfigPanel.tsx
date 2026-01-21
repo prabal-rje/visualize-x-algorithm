@@ -1,7 +1,6 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { AUDIENCES } from '../../data/audiences';
 import { PERSONAS } from '../../data/personas';
-import { SAMPLE_TWEETS } from '../../data/tweets';
 import { useConfigStore } from '../../stores/config';
 import styles from '../../styles/config-panel.module.css';
 
@@ -14,18 +13,13 @@ export default function ConfigPanel() {
   const setPersonaId = useConfigStore((state) => state.setPersonaId);
   const tweetText = useConfigStore((state) => state.tweetText);
   const setTweetText = useConfigStore((state) => state.setTweetText);
-  const sampleTweetId = useConfigStore((state) => state.sampleTweetId);
-  const selectSampleTweet = useConfigStore((state) => state.selectSampleTweet);
   const shuffleSampleTweet = useConfigStore((state) => state.shuffleSampleTweet);
   const audienceMix = useConfigStore((state) => state.audienceMix);
   const setAudienceMixValue = useConfigStore((state) => state.setAudienceMixValue);
   const beginSimulation = useConfigStore((state) => state.beginSimulation);
 
+  const [step, setStep] = useState<'persona' | 'audience' | 'tweet'>('persona');
   const remaining = MAX_TWEET_LENGTH - tweetText.length;
-  const sampleOptions = useMemo(
-    () => SAMPLE_TWEETS.map((tweet) => ({ id: tweet.id, text: tweet.text })),
-    []
-  );
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -33,11 +27,13 @@ export default function ConfigPanel() {
       const target = event.target as HTMLElement | null;
       const tag = target?.tagName?.toLowerCase();
       if (tag === 'textarea' || tag === 'input') return;
-      beginSimulation();
+      if (step === 'tweet') {
+        beginSimulation();
+      }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [beginSimulation]);
+  }, [beginSimulation, step]);
 
   return (
     <div className={styles.panel} data-testid="config-panel">
@@ -57,98 +53,134 @@ export default function ConfigPanel() {
         </p>
       </header>
 
-      <section className={styles.section}>
-        <h3 className={styles.sectionTitle}>Persona</h3>
-        <div className={styles.personaGrid}>
-          {PERSONAS.map((persona) => (
-            <button
-              key={persona.id}
-              type="button"
-              className={
-                persona.id === personaId ? styles.personaActive : styles.persona
-              }
-              aria-pressed={persona.id === personaId}
-              onClick={() => setPersonaId(persona.id)}
-            >
-              <div className={styles.personaName}>{persona.name}</div>
-              <div className={styles.personaSubtitle}>{persona.subtitle}</div>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      <section className={styles.section}>
-        <h3 className={styles.sectionTitle}>Tweet Draft</h3>
-        <div className={styles.sampleRow}>
-          <select
-            className={styles.select}
-            data-testid="sample-select"
-            onChange={(event) => selectSampleTweet(event.target.value)}
-            value={sampleTweetId ?? ''}
-          >
-            {sampleOptions.map((tweet) => (
-              <option key={tweet.id} value={tweet.id}>
-                {tweet.text.slice(0, 48)}...
-              </option>
-            ))}
-          </select>
-          <button
-            className={styles.shuffleButton}
-            data-testid="sample-shuffle"
-            onClick={shuffleSampleTweet}
-            type="button"
-          >
-            Shuffle
-          </button>
-        </div>
-        <textarea
-          className={styles.tweetInput}
-          data-testid="tweet-input"
-          maxLength={MAX_TWEET_LENGTH}
-          onChange={(event) => setTweetText(event.target.value)}
-          value={tweetText}
-        />
-        <div className={styles.counter} data-testid="tweet-counter">
-          {tweetText.length}/{MAX_TWEET_LENGTH} ({remaining} left)
-        </div>
-      </section>
-
-      <section className={styles.section}>
-        <h3 className={styles.sectionTitle}>Audience Mix</h3>
-        <div className={styles.audienceList}>
-          {AUDIENCES.map((audience) => (
-            <label key={audience.id} className={styles.audienceRow}>
-              <span>{audience.label}</span>
-              <input
-                className={styles.audienceSlider}
-                data-testid={`audience-slider-${audience.id}`}
-                max={100}
-                min={0}
-                onChange={(event) =>
-                  setAudienceMixValue(audience.id, Number(event.target.value))
+      {step === 'persona' && (
+        <section className={styles.section} data-testid="step-persona">
+          <h3 className={styles.sectionTitle}>Persona</h3>
+          <div className={styles.personaGrid}>
+            {PERSONAS.map((persona) => (
+              <button
+                key={persona.id}
+                type="button"
+                className={
+                  persona.id === personaId ? styles.personaActive : styles.persona
                 }
-                step={5}
-                type="range"
-                value={audienceMix[audience.id] ?? 0}
-              />
-              <span className={styles.audienceValue}>
-                {Math.round(audienceMix[audience.id] ?? 0)}%
-              </span>
-            </label>
-          ))}
-        </div>
-      </section>
+                aria-pressed={persona.id === personaId}
+                onClick={() => setPersonaId(persona.id)}
+              >
+                <div className={styles.personaName}>{persona.name}</div>
+                <div className={styles.personaSubtitle}>{persona.subtitle}</div>
+              </button>
+            ))}
+          </div>
+          <div className={styles.stepActions}>
+            <button
+              className={styles.stepButton}
+              onClick={() => setStep('audience')}
+              type="button"
+            >
+              Continue to Audience
+            </button>
+          </div>
+        </section>
+      )}
 
-      <section className={styles.footer}>
-        <button
-          className={styles.beginButton}
-          data-testid="begin-simulation"
-          onClick={beginSimulation}
-          type="button"
-        >
-          BEGIN SIMULATION
-        </button>
-      </section>
+      {step === 'audience' && (
+        <section className={styles.section} data-testid="step-audience">
+          <h3 className={styles.sectionTitle}>Audience Mix</h3>
+          <div className={styles.audienceList}>
+            {AUDIENCES.map((audience) => (
+              <label key={audience.id} className={styles.audienceRow}>
+                <span>{audience.label}</span>
+                <input
+                  className={styles.audienceSlider}
+                  data-testid={`audience-slider-${audience.id}`}
+                  max={100}
+                  min={0}
+                  onChange={(event) =>
+                    setAudienceMixValue(audience.id, Number(event.target.value))
+                  }
+                  step={5}
+                  type="range"
+                  value={audienceMix[audience.id] ?? 0}
+                />
+                <span className={styles.audienceValue}>
+                  {Math.round(audienceMix[audience.id] ?? 0)}%
+                </span>
+              </label>
+            ))}
+          </div>
+          <div className={styles.stepActions}>
+            <button
+              className={styles.stepButtonGhost}
+              onClick={() => setStep('persona')}
+              type="button"
+            >
+              Back to Persona
+            </button>
+            <button
+              className={styles.stepButton}
+              onClick={() => setStep('tweet')}
+              type="button"
+            >
+              Continue to Tweet
+            </button>
+          </div>
+        </section>
+      )}
+
+      {step === 'tweet' && (
+        <section className={styles.section} data-testid="step-tweet">
+          <h3 className={styles.sectionTitle}>Tweet Draft</h3>
+          <div className={styles.sampleRow}>
+            <button
+              className={styles.shuffleButton}
+              data-testid="sample-shuffle"
+              onClick={shuffleSampleTweet}
+              type="button"
+            >
+              <span className={styles.shuffleIcon} aria-hidden="true">
+                <svg viewBox="0 0 20 20" role="presentation">
+                  <path
+                    d="M3 5h4l2 2 2-2h6M15 3l2 2-2 2M3 15h4l2-2 2 2h6M15 13l2 2-2 2"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="square"
+                    strokeWidth="1.5"
+                  />
+                </svg>
+              </span>
+              Shuffle Draft
+            </button>
+          </div>
+          <textarea
+            className={styles.tweetInput}
+            data-testid="tweet-input"
+            maxLength={MAX_TWEET_LENGTH}
+            onChange={(event) => setTweetText(event.target.value)}
+            value={tweetText}
+          />
+          <div className={styles.counter} data-testid="tweet-counter">
+            {tweetText.length}/{MAX_TWEET_LENGTH} ({remaining} left)
+          </div>
+          <div className={styles.stepActions}>
+            <button
+              className={styles.stepButtonGhost}
+              onClick={() => setStep('audience')}
+              type="button"
+            >
+              Back to Audience
+            </button>
+            <button
+              className={styles.beginButton}
+              data-testid="begin-simulation"
+              onClick={beginSimulation}
+              type="button"
+            >
+              BEGIN SIMULATION
+            </button>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

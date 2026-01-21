@@ -38,31 +38,36 @@ describe('ConfigPanel', () => {
     vi.restoreAllMocks();
   });
 
-  it('renders tweet input, counter, sample controls, audiences, and begin button', () => {
+  it('steps from persona to audience to tweet in order', () => {
     render(<ConfigPanel />);
     expect(screen.getByLabelText('Expert Mode')).toBeInTheDocument();
     expect(screen.getByText('Tech Founder')).toBeInTheDocument();
+    expect(screen.getByTestId('step-persona')).toBeInTheDocument();
+    expect(screen.queryByTestId('step-audience')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('step-tweet')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /continue to audience/i }));
+    expect(screen.getByTestId('step-audience')).toBeInTheDocument();
+    expect(screen.getByTestId('audience-slider-tech')).toBeInTheDocument();
+    expect(screen.queryByTestId('step-persona')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /continue to tweet/i }));
+    expect(screen.getByTestId('step-tweet')).toBeInTheDocument();
     expect(screen.getByTestId('tweet-input')).toBeInTheDocument();
     expect(screen.getByTestId('tweet-counter')).toBeInTheDocument();
-    expect(screen.getByTestId('sample-select')).toBeInTheDocument();
     expect(screen.getByTestId('sample-shuffle')).toBeInTheDocument();
     expect(screen.getByTestId('begin-simulation')).toBeInTheDocument();
-    expect(screen.getByTestId('audience-slider-tech')).toBeInTheDocument();
+    expect(screen.queryByTestId('sample-select')).not.toBeInTheDocument();
   });
 
-  it('updates tweet text when selecting a sample', () => {
+  it('preloads a tweet and shuffles samples', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.9);
     render(<ConfigPanel />);
-    fireEvent.change(screen.getByTestId('sample-select'), {
-      target: { value: SAMPLE_TWEETS[0].id }
-    });
+    fireEvent.click(screen.getByRole('button', { name: /continue to audience/i }));
+    fireEvent.click(screen.getByRole('button', { name: /continue to tweet/i }));
     expect(screen.getByTestId('tweet-input')).toHaveValue(
       SAMPLE_TWEETS[0].text
     );
-  });
-
-  it('shuffles sample tweets', () => {
-    vi.spyOn(Math, 'random').mockReturnValue(0.9);
-    render(<ConfigPanel />);
     fireEvent.click(screen.getByTestId('sample-shuffle'));
     expect(screen.getByTestId('tweet-input')).toHaveValue(
       SAMPLE_TWEETS.at(-1)?.text
@@ -71,6 +76,8 @@ describe('ConfigPanel', () => {
 
   it('starts simulation on begin button', () => {
     render(<ConfigPanel />);
+    fireEvent.click(screen.getByRole('button', { name: /continue to audience/i }));
+    fireEvent.click(screen.getByRole('button', { name: /continue to tweet/i }));
     fireEvent.click(screen.getByTestId('begin-simulation'));
     expect(useConfigStore.getState().simulationStarted).toBe(true);
   });

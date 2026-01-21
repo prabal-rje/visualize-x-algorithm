@@ -44,6 +44,13 @@ describe('Chapter2Scene', () => {
     });
   });
 
+  it('labels embedding as tweet embedding', async () => {
+    render(<Chapter2Scene {...defaultProps} currentStep={0} />);
+    await waitFor(() => {
+      expect(screen.getByText(/TWEET EMBEDDING/)).toBeInTheDocument();
+    });
+  });
+
   it('shows vector space at step 1 after loading', async () => {
     render(<Chapter2Scene {...defaultProps} currentStep={1} />);
     await waitFor(() => {

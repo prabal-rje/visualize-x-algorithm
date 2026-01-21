@@ -31,12 +31,7 @@ Instructions:
 
 ##### Phase 2.75: Changes to "The Gathering"
 
-- [ ] Remove words 'Mean Pool' but maintain the spherical signifier of it
-- [ ] Show glowing golden shadow of words flowing 'into' this nebulous signifier and then the 128-D vector to the right bubbling w/ random colors of the 
-same palette as the vector embedding below - but somewhat dimmer ... GOAL IS TO SHOW THAT THIS IS HOW THE "TWEET EMBEDDING" IS CALCULATED
-- [ ] Replace "User Embedding" with "Tweet Embedding" 
-- [ ] Ensure that in fact the entire tweet is being tokenized?
-- [ ] Use _ instead of ^ to indicate 'space' between words ... but 6 is OK for 'start' of sentence
+ 
 
 
 ##### Phase 2.875: Changes to "The Scoring"
@@ -48,6 +43,7 @@ same palette as the vector embedding below - but somewhat dimmer ... GOAL IS TO 
 - [ ] Currently, loading BIOS screen appears on the side-region - when it should be replacing the entire simulation arena ...
       ONLY WHEN THE LOADING BIOS HAS DISAPPEARED SHOULD THE REGULAR SIMULATION ARENA EVEN BE ALLOWED TO RENDER
 - [ ] Make sure BIOS Loader is in the middle of the screen ... no upper navigation bar, no simulation arena - just marquee and the BIOS Loader ...
+- [ ] Show a type-writer cursor typing a variable speed, remove italic font, fron the justification beneath the chapter title ... 
 
 #### Phase 3: Embedding + Hover Fix
 - [ ] Add token-level (sub-token) embedding animation flowing into mean pool.
@@ -109,6 +105,11 @@ same palette as the vector embedding below - but somewhat dimmer ... GOAL IS TO 
 ### 11. Design Spec Testing Checklist
 
 ## Completed
+- [x] Remove words 'Mean Pool' but maintain the spherical signifier of it.
+- [x] Show glowing golden shadow of words flowing into the signifier and then the 128-D vector bubbling with a dimmer shared palette to illustrate tweet embedding.
+- [x] Replace "User Embedding" with "Tweet Embedding".
+- [x] Ensure that the entire tweet is being tokenized (show total token count).
+- [x] Use _ instead of ^ to indicate space between words (keep ^ for start of sentence).
 - [x] Move progress bar, the chapter buttons, the file name, and the start over /back/pause/next buttons at the top above the simulation arena.
 - [x] Simulation arena should largely fit a regular computers screen without vertical scroll across loadout and chapter visualizations/simulations.
 - [x] Remove the empty sidebar on the right side that's taking up space.

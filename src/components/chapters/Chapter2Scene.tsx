@@ -217,7 +217,7 @@ export default function Chapter2Scene({
                 />
                 <EmbeddingHeatmap
                   embedding={userEmbedding}
-                  label="USER EMBEDDING"
+                  label="TWEET EMBEDDING"
                   isActive={isActive}
                   tokenCount={tokenCount}
                 />

@@ -19,6 +19,7 @@
   grid-template-columns: 1.2fr auto 1fr;
   gap: 16px;
   align-items: center;
+  position: relative;
 }
 
 .tokens {
@@ -52,6 +53,13 @@
   color: rgba(255, 176, 0, 0.8);
 }
 
+.tokenTotal {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 176, 0, 0.75);
+}
+
 .pool {
   position: relative;
   width: 96px;
@@ -60,21 +68,13 @@
   place-items: center;
 }
 
-.poolLabel {
-  position: absolute;
-  top: -16px;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--phosphor-amber);
-}
-
 .poolCore {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(255, 176, 0, 0.2);
-  box-shadow: 0 0 12px rgba(255, 176, 0, 0.6);
+  background: radial-gradient(circle, rgba(255, 220, 140, 0.45), rgba(255, 176, 0, 0.12));
+  box-shadow: 0 0 18px rgba(255, 176, 0, 0.65);
+  filter: blur(0.2px);
 }
 
 .poolRing {
@@ -84,6 +84,44 @@
   border-radius: 50%;
   border: 1px solid rgba(255, 176, 0, 0.4);
   animation: pool-pulse 1.6s ease-in-out infinite;
+}
+
+.tokenStream {
+  position: absolute;
+  left: 4px;
+  right: 0;
+  top: 50%;
+  height: 0;
+  pointer-events: none;
+}
+
+.tokenGhost {
+  position: absolute;
+  left: 0;
+  font-size: 10px;
+  color: rgba(255, 200, 120, 0.9);
+  opacity: 0;
+  animation: token-stream 1.6s ease-in-out infinite;
+  text-shadow: 0 0 10px rgba(255, 190, 90, 0.8);
+}
+
+.poolPulses {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.poolPulse {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 176, 0, 0.6);
+  box-shadow: 0 0 10px rgba(255, 176, 0, 0.7);
+  opacity: 0;
+  animation: pool-token 1.6s ease-out infinite;
 }
 
 .vector {
@@ -103,8 +141,8 @@
 .vectorCell {
   width: 100%;
   height: 100%;
-  background: rgba(0, 255, 127, 0.18);
-  box-shadow: 0 0 6px rgba(0, 255, 127, 0.2);
+  border-radius: 2px;
+  filter: saturate(0.85);
 }
 
 .container[data-active='true'] .token {
@@ -145,13 +183,51 @@
   }
 }
 
+@keyframes token-stream {
+  0% {
+    transform: translate(0, 0) scale(0.85);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.8;
+  }
+  60% {
+    transform: translate(150px, 0) scale(0.8);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(175px, 0) scale(0.6);
+    opacity: 0;
+  }
+}
+
+@keyframes pool-token {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.7;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
 @keyframes vector-pulse {
   0%,
   100% {
     opacity: 0.6;
+    transform: scale(0.94);
   }
   50% {
     opacity: 1;
+    transform: scale(1.05);
   }
 }
 

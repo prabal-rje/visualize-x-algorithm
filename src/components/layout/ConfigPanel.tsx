@@ -19,8 +19,6 @@ const getPersonaInitials = (name: string) => {
 };
 
 export default function ConfigPanel() {
-  const expertMode = useConfigStore((state) => state.expertMode);
-  const setExpertMode = useConfigStore((state) => state.setExpertMode);
   const personaId = useConfigStore((state) => state.personaId);
   const setPersonaId = useConfigStore((state) => state.setPersonaId);
   const tweetText = useConfigStore((state) => state.tweetText);
@@ -72,23 +70,7 @@ export default function ConfigPanel() {
   return (
     <div className={styles.panel} data-testid="config-panel">
       {toastMessage && <div className={styles.toast}>{toastMessage}</div>}
-      <header className={styles.header}>
-        <h2 className={styles.title}>Mission Loadout</h2>
-        <label className={styles.expertToggle}>
-          <input
-            aria-label="Expert Mode"
-            checked={expertMode}
-            className={styles.expertCheckbox}
-            data-testid="expert-check"
-            onChange={(event) => setExpertMode(event.target.checked)}
-            type="checkbox"
-          />
-          Expert Mode
-        </label>
-        <p className={styles.helper}>
-          Unlock deep-dive telemetry, full function signatures, and raw scores.
-        </p>
-      </header>
+      <header className={styles.header} />
 
       {step === 'persona' && (
         <section className={styles.section} data-testid="step-persona">

@@ -18,14 +18,12 @@ describe('ConfigPanel', () => {
   beforeEach(() => {
     useConfigStore.persist?.clearStorage();
     useConfigStore.setState({
-      expertMode: false,
       personaId: 'tech-founder',
       tweetText: SAMPLE_TWEETS[0]?.text ?? '',
       sampleTweetId: SAMPLE_TWEETS[0]?.id ?? null,
       audienceMix: defaultAudienceMix,
       simulationStarted: false,
       simulationResult: null,
-      setExpertMode: useConfigStore.getState().setExpertMode,
       setPersonaId: useConfigStore.getState().setPersonaId,
       setTweetText: useConfigStore.getState().setTweetText,
       selectSampleTweet: useConfigStore.getState().selectSampleTweet,
@@ -42,7 +40,7 @@ describe('ConfigPanel', () => {
 
   it('steps from persona to audience to tweet in order', () => {
     render(<ConfigPanel />);
-    expect(screen.getByLabelText('Expert Mode')).toBeInTheDocument();
+    expect(screen.queryByLabelText('Expert Mode')).not.toBeInTheDocument();
     expect(screen.getByText('Tech Founder')).toBeInTheDocument();
     expect(
       screen.getByText('Building the future, one pivot at a time')
@@ -110,11 +108,8 @@ describe('ConfigPanel', () => {
     expect(useConfigStore.getState().simulationStarted).toBe(true);
   });
 
-  it('toggles expert mode checkbox', () => {
+  it('does not render expert mode toggle', () => {
     render(<ConfigPanel />);
-    const checkbox = screen.getByTestId('expert-check') as HTMLInputElement;
-    expect(checkbox.checked).toBe(false);
-    fireEvent.click(checkbox);
-    expect(checkbox.checked).toBe(true);
+    expect(screen.queryByTestId('expert-check')).not.toBeInTheDocument();
   });
 });

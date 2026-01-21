@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import styles from '../../styles/engagement-scoreboard.module.css';
+import { playScoreTick } from '../../audio/engine';
 
 type ActionGroup = 'positive' | 'negative';
 
@@ -54,6 +55,8 @@ export default function EngagementScoreboard({
     const timer = window.setInterval(() => {
       current = Math.min(finalScore, current + step);
       setDisplayScore(current);
+      const intensity = finalScore > 0 ? current / finalScore : 0;
+      void playScoreTick(intensity);
       if (current >= finalScore) {
         window.clearInterval(timer);
       }

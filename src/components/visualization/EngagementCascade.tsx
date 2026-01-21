@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import styles from '../../styles/engagement-cascade.module.css';
+import { playEngagementPing } from '../../audio/engine';
 
 type EngagementStat = {
   id: string;
@@ -16,6 +18,18 @@ export default function EngagementCascade({
   stats,
   isActive = true
 }: EngagementCascadeProps) {
+  useEffect(() => {
+    if (!isActive) return undefined;
+    let index = 0;
+    const timer = window.setInterval(() => {
+      const pan = index % 5 / 2 - 1;
+      void playEngagementPing(pan);
+      index += 1;
+    }, 480);
+
+    return () => window.clearInterval(timer);
+  }, [isActive]);
+
   const nodes = Array.from({ length: 18 });
   const totalPredicted = stats.reduce((sum, item) => sum + item.predicted, 0);
   const totalActual = stats.reduce((sum, item) => sum + item.actual, 0);

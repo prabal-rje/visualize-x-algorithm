@@ -1,6 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import { gsap } from 'gsap';
 import styles from '../../styles/chapter-wrapper.module.css';
+import { playChapterTransition } from '../../audio/engine';
 
 type ChapterWrapperProps = {
   /** Chapter index (0-based) */
@@ -43,6 +44,7 @@ export default function ChapterWrapper({
           ease: 'power2.out'
         }
       );
+      void playChapterTransition();
     }
 
     // Exit animation when becoming inactive

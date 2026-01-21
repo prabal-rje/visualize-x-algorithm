@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import styles from '../../styles/filter-gate.module.css';
+import { playFilterFail, playFilterPass } from '../../audio/engine';
 
 type FilterTweet = {
   id: string;
@@ -58,6 +59,15 @@ export default function FilterGate({
 
     return () => window.clearInterval(timer);
   }, [isActive, totalPass, totalFail, passStep, failStep]);
+
+  useEffect(() => {
+    if (!isActive) return undefined;
+    void playFilterPass();
+    const timer = window.setTimeout(() => {
+      void playFilterFail();
+    }, 220);
+    return () => window.clearTimeout(timer);
+  }, [isActive]);
 
   return (
     <div className={styles.container} data-testid="filter-gate" data-active={isActive}>

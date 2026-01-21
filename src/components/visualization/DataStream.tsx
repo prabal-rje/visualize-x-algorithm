@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import styles from '../../styles/data-stream.module.css';
+import { playDataChirp, setDataDrone } from '../../audio/engine';
 
 type EngagementItem = {
   action: 'liked' | 'replied' | 'reposted';
@@ -32,6 +34,19 @@ export default function DataStream({
   userFeatures,
   isActive
 }: DataStreamProps) {
+  useEffect(() => {
+    if (!isActive) return undefined;
+    void setDataDrone(true);
+    const timer = window.setInterval(() => {
+      void playDataChirp();
+    }, 700);
+
+    return () => {
+      window.clearInterval(timer);
+      void setDataDrone(false);
+    };
+  }, [isActive]);
+
   return (
     <div
       className={styles.container}

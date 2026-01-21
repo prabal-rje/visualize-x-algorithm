@@ -1,6 +1,8 @@
 import type { FormEvent } from 'react';
 import type { CRTConfig } from './crtConfig';
 import styles from '../../styles/crt-controls.module.css';
+import { useAudioStore } from '../../stores/audio';
+import { startAudio } from '../../audio/engine';
 
 type CRTControlsProps = {
   config: CRTConfig;
@@ -18,12 +20,31 @@ export const createNumberUpdater =
 
 export default function CRTControls({ config, onChange }: CRTControlsProps) {
   const setNumber = createNumberUpdater(config, onChange);
+  const audioMuted = useAudioStore((state) => state.muted);
+  const toggleAudio = useAudioStore((state) => state.toggleMute);
+
+  const handleAudioToggle = () => {
+    const wasMuted = useAudioStore.getState().muted;
+    toggleAudio();
+    if (wasMuted) {
+      void startAudio();
+    }
+  };
 
   return (
     <aside className={styles.panel} data-testid="crt-controls">
       <div className={styles.header}>
         <span className={styles.statusLight} aria-hidden="true" />
         <span className={styles.title}>CRT CONTROL</span>
+        <button
+          className={styles.audioButton}
+          data-testid="audio-toggle"
+          onClick={handleAudioToggle}
+          type="button"
+        >
+          <span className={styles.audioIcon} aria-hidden="true" />
+          {audioMuted ? 'MUTED' : 'LIVE'}
+        </button>
         <button
           className={styles.powerButton}
           data-testid="crt-toggle-power"

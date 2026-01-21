@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/typewriter.module.css';
+import { playTypewriterKey } from '../../audio/engine';
 
 type TypewriterTextProps = {
   /** The text to type out */
@@ -60,6 +61,7 @@ export default function TypewriterText({
     const interval = setInterval(() => {
       if (currentIndex < text.length) {
         setDisplayedText(text.slice(0, currentIndex + 1));
+        void playTypewriterKey();
         currentIndex++;
       } else {
         clearInterval(interval);

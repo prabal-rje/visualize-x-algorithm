@@ -10,7 +10,7 @@
 
 .header {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr auto auto;
   align-items: center;
   gap: 8px;
   border-bottom: 1px solid rgba(51, 255, 51, 0.25);
@@ -39,6 +39,38 @@
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+}
+
+.audioButton {
+  border: 1px solid var(--phosphor-green);
+  background: rgba(0, 20, 0, 0.6);
+  color: var(--phosphor-green);
+  padding: 2px 8px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.audioIcon {
+  width: 10px;
+  height: 10px;
+  border: 1px solid currentColor;
+  position: relative;
+}
+
+.audioIcon::after {
+  content: '';
+  position: absolute;
+  right: -6px;
+  top: 1px;
+  width: 4px;
+  height: 6px;
+  border-right: 1px solid currentColor;
+  border-top: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
 }
 
 .section {

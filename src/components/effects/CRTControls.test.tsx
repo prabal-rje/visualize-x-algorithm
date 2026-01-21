@@ -44,4 +44,12 @@ describe('CRTControls', () => {
     expect(audioButton).toHaveAttribute('data-muted', 'true');
     expect(screen.queryByTestId('crt-toggle-power')).not.toBeInTheDocument();
   });
+
+  it('positions CRT controls on the control band', () => {
+    render(<CRTControls config={DEFAULT_CRT_CONFIG} onChange={() => undefined} />);
+    expect(screen.getByTestId('crt-controls')).toHaveAttribute(
+      'data-placement',
+      'control-band'
+    );
+  });
 });

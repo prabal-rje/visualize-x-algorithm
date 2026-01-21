@@ -37,6 +37,7 @@ export default function CRTControls({ config, onChange }: CRTControlsProps) {
       className={styles.shell}
       data-testid="crt-controls"
       data-open={isOpen}
+      data-placement="control-band"
     >
       <button
         className={styles.handle}

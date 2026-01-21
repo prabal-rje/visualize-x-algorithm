@@ -9,6 +9,11 @@ describe('Chapter5Scene', () => {
     expect(screen.getByTestId('topk-selector')).toBeInTheDocument();
   });
 
+  it('shows user tweet in the top-K ranking', () => {
+    render(<Chapter5Scene currentStep={0} isActive={true} />);
+    expect(screen.getByTestId('user-tweet-rank')).toBeInTheDocument();
+  });
+
   it('renders reach forecast panel on step 1', () => {
     render(<Chapter5Scene currentStep={1} isActive={true} />);
     expect(screen.getByTestId('audience-reach')).toBeInTheDocument();
@@ -23,5 +28,12 @@ describe('Chapter5Scene', () => {
     render(<Chapter5Scene currentStep={3} isActive={true} />);
     expect(screen.getByTestId('delivery-summary')).toBeInTheDocument();
     expect(screen.getByTestId('engagement-cascade')).toBeInTheDocument();
+  });
+
+  it('stages delivery summary rows for progressive reveal', () => {
+    render(<Chapter5Scene currentStep={3} isActive={true} />);
+    const summary = screen.getByTestId('delivery-summary');
+    expect(summary).toHaveAttribute('data-active', 'true');
+    expect(summary.querySelectorAll('[data-reveal]').length).toBeGreaterThan(0);
   });
 });

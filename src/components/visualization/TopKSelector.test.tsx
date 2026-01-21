@@ -7,8 +7,8 @@ describe('TopKSelector', () => {
     render(
       <TopKSelector
         candidates={[
-          { id: 'a', label: 'Tweet A', score: 0.9 },
-          { id: 'b', label: 'Tweet B', score: 0.4 }
+          { id: 'a', label: '@alpha', preview: 'Tweet A', score: 0.9 },
+          { id: 'b', label: '@beta', preview: 'Tweet B', score: 0.4 }
         ]}
         topK={1}
         isActive={false}
@@ -16,5 +16,19 @@ describe('TopKSelector', () => {
     );
     expect(screen.getByText(/TOP 1 SELECTION/i)).toBeInTheDocument();
     expect(screen.getByText(/Tweet A/)).toBeInTheDocument();
+  });
+
+  it('flags the user tweet row', () => {
+    render(
+      <TopKSelector
+        candidates={[
+          { id: 'you', label: 'Your Tweet', preview: 'My tweet', score: 0.88, isUser: true },
+          { id: 'b', label: '@beta', preview: 'Tweet B', score: 0.4 }
+        ]}
+        topK={1}
+        isActive={true}
+      />
+    );
+    expect(screen.getByTestId('user-tweet-rank')).toBeInTheDocument();
   });
 });

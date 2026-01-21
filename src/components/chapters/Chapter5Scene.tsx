@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import Avatar from 'boring-avatars';
 import styles from '../../styles/chapter5-scene.module.css';
 import { AUDIENCES } from '../../data/audiences';
 import { PERSONAS } from '../../data/personas';
@@ -30,14 +31,6 @@ const FUNCTION_LABELS = [
   'format_response()'
 ];
 
-const CANDIDATES = [
-  { id: 'c1', label: 'Candidate A', score: 0.92 },
-  { id: 'c2', label: 'Candidate B', score: 0.81 },
-  { id: 'c3', label: 'Candidate C', score: 0.78 },
-  { id: 'c4', label: 'Candidate D', score: 0.64 },
-  { id: 'c5', label: 'Candidate E', score: 0.58 }
-];
-
 const REACTION_TYPES = ['like', 'reply', 'repost'] as const;
 const REACTION_ICONS: Record<(typeof REACTION_TYPES)[number], string> = {
   like: '♥',
@@ -58,7 +51,20 @@ const BURST_POSITIONS = [
   { left: '68%', top: '72%' }
 ];
 
-const AVATAR_LABELS = ['AE', 'TS', 'MK', 'RP', 'JV', 'CL', 'NB', 'SK', 'OG', 'DA'];
+const AVATAR_LABELS = [
+  'Ava',
+  'Theo',
+  'Mika',
+  'Ria',
+  'Jules',
+  'Clara',
+  'Noah',
+  'Sage',
+  'Omar',
+  'Dani'
+];
+
+const AVATAR_COLORS = ['#1EFC8B', '#49C6FF', '#FFB000', '#FF5C5C', '#A37FFF'];
 
 const TECH_AUDIENCE_IDS = new Set(['tech', 'founders', 'investors', 'students']);
 const NON_TECH_AUDIENCE_IDS = new Set(['casual', 'news', 'creators', 'bots']);
@@ -185,6 +191,46 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
     reaction: REACTION_TYPES[index % REACTION_TYPES.length]
   }));
 
+  const userPreview = (tweetText || 'Your tweet goes here...')
+    .trim()
+    .slice(0, 120);
+  const normalizedPreview =
+    userPreview.length === 120 ? `${userPreview}…` : userPreview;
+  const userScore = Math.min(0.96, Math.max(0.55, adjustedScore * 3));
+  const topCandidates = [
+    {
+      id: 'c1',
+      label: '@latentlabs',
+      preview: 'Rethinking retrieval stacks for multi-tenant LLM systems.',
+      score: Math.min(0.99, userScore + 0.09)
+    },
+    {
+      id: 'you',
+      label: 'Your Tweet',
+      preview: normalizedPreview || 'Your tweet goes here…',
+      score: userScore,
+      isUser: true
+    },
+    {
+      id: 'c2',
+      label: '@founderlog',
+      preview: 'We shipped weekly with a 3-person team and zero burn.',
+      score: Math.max(0.1, userScore - 0.05)
+    },
+    {
+      id: 'c3',
+      label: '@visionai',
+      preview: 'Benchmarking the latest multimodal models against real-world data.',
+      score: Math.max(0.08, userScore - 0.11)
+    },
+    {
+      id: 'c4',
+      label: '@shipsmarter',
+      preview: 'Launch checklist: how we hit 10k users in 12 days.',
+      score: Math.max(0.06, userScore - 0.18)
+    }
+  ];
+
   return (
     <div
       className={styles.container}
@@ -213,7 +259,7 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
         </div>
 
         {currentStep === 0 && (
-          <TopKSelector candidates={CANDIDATES} topK={3} isActive={isActive} />
+          <TopKSelector candidates={topCandidates} topK={3} isActive={isActive} />
         )}
 
         {currentStep === 1 && (
@@ -252,8 +298,23 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
                   className={styles.avatar}
                   data-reaction={avatar.reaction}
                   style={{ '--index': index } as CSSProperties}
+                  aria-label={`Audience member ${avatar.label}`}
                 >
-                  {avatar.label}
+                  <Avatar
+                    size={34}
+                    name={avatar.label}
+                    variant="beam"
+                    colors={AVATAR_COLORS}
+                    className={styles.avatarSvg}
+                  />
+                  <span
+                    className={styles.avatarBurst}
+                    data-reaction={avatar.reaction}
+                    style={{ animationDelay: `${index * 0.18}s` }}
+                    aria-hidden="true"
+                  >
+                    {REACTION_ICONS[avatar.reaction]}
+                  </span>
                 </div>
               ))}
             </div>
@@ -280,7 +341,11 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
 
         {currentStep === 3 && (
           <div className={styles.reportGrid}>
-            <div className={styles.summaryPanel} data-testid="delivery-summary">
+            <div
+              className={styles.summaryPanel}
+              data-testid="delivery-summary"
+              data-active={isActive}
+            >
               <div className={styles.summaryHeader}>
                 <span className={styles.summaryTitle}>PERFORMANCE SUMMARY</span>
                 <span
@@ -290,15 +355,29 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
                   {performanceTier}
                 </span>
               </div>
-              <div className={styles.summaryRow}>
+              <div
+                className={styles.summaryRow}
+                data-reveal="true"
+                style={{ '--delay': '0.08s' } as CSSProperties}
+              >
                 <span>Reach</span>
                 <span>{impressions.toLocaleString()} impressions</span>
               </div>
-              <div className={styles.summaryRow}>
+              <div
+                className={styles.summaryRow}
+                data-reveal="true"
+                style={{ '--delay': '0.16s' } as CSSProperties}
+              >
                 <span>Alignment</span>
                 <span>{alignmentLabel}</span>
               </div>
-              <div className={styles.summaryNote}>{alignmentNote}</div>
+              <div
+                className={styles.summaryNote}
+                data-reveal="true"
+                style={{ '--delay': '0.24s' } as CSSProperties}
+              >
+                {alignmentNote}
+              </div>
             </div>
             <EngagementCascade
               stats={stats}

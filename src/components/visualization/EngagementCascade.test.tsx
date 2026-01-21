@@ -13,6 +13,7 @@ describe('EngagementCascade', () => {
       />
     );
     expect(screen.getByTestId('engagement-cascade')).toBeInTheDocument();
+    expect(screen.getByTestId('engagement-avatars')).toBeInTheDocument();
     expect(screen.getByText(/Likes/)).toBeInTheDocument();
     expect(screen.getByText(/Pred 120/)).toBeInTheDocument();
     expect(screen.getByText(/Actual 98/)).toBeInTheDocument();

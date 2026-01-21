@@ -3,7 +3,9 @@ import styles from '../../styles/topk-selector.module.css';
 type Candidate = {
   id: string;
   label: string;
+  preview: string;
   score: number;
+  isUser?: boolean;
 };
 
 type TopKSelectorProps = {
@@ -34,11 +36,15 @@ export default function TopKSelector({
         {sorted.map((candidate, index) => (
           <div
             key={candidate.id}
-            className={`${styles.row} ${selectedIds.has(candidate.id) ? styles.selected : ''}`.trim()}
+            className={`${styles.row} ${selectedIds.has(candidate.id) ? styles.selected : ''} ${candidate.isUser ? styles.userRow : ''}`.trim()}
             style={{ animationDelay: `${index * 0.08}s` }}
+            data-testid={candidate.isUser ? 'user-tweet-rank' : undefined}
           >
             <span className={styles.rank}>#{index + 1}</span>
-            <span className={styles.label}>{candidate.label}</span>
+            <div className={styles.content}>
+              <span className={styles.handle}>{candidate.label}</span>
+              <span className={styles.preview}>{candidate.preview}</span>
+            </div>
             <span className={styles.score}>{candidate.score.toFixed(2)}</span>
           </div>
         ))}

@@ -45,8 +45,23 @@
   color: rgba(51, 255, 51, 0.6);
 }
 
-.label {
+.content {
+  display: grid;
+  gap: 2px;
+}
+
+.handle {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(51, 255, 51, 0.7);
+}
+
+.preview {
   color: var(--phosphor-green);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .score {
@@ -56,6 +71,12 @@
 .selected {
   border-color: rgba(255, 176, 0, 0.7);
   box-shadow: 0 0 10px rgba(255, 176, 0, 0.4);
+}
+
+.userRow {
+  border-color: rgba(255, 176, 0, 0.8);
+  background: rgba(30, 18, 0, 0.6);
+  box-shadow: 0 0 14px rgba(255, 176, 0, 0.5);
 }
 
 .visibility {

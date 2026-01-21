@@ -36,7 +36,7 @@ Instructions:
 
 ##### Phase 2.875: Changes to "The Scoring"
 
-- [ ] Replace "Liked", "Replied", "Reposted" w/ Icons rather than just 'words' ... ensure visual placement, size, etc. are accurate
+ 
 
 ##### Phase 2.9: Fix Loading BIOS Screen
 
@@ -105,6 +105,7 @@ Instructions:
 ### 11. Design Spec Testing Checklist
 
 ## Completed
+- [x] Replace "Liked", "Replied", "Reposted" with icons rather than just words (aligned and sized in scoring context).
 - [x] Remove words 'Mean Pool' but maintain the spherical signifier of it.
 - [x] Show glowing golden shadow of words flowing into the signifier and then the 128-D vector bubbling with a dimmer shared palette to illustrate tweet embedding.
 - [x] Replace "User Embedding" with "Tweet Embedding".

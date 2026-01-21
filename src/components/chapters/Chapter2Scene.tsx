@@ -233,13 +233,48 @@ export default function Chapter2Scene({
             {isLoading ? (
               <div className={styles.loading}>Computing similarities...</div>
             ) : (
-              <VectorSpace
-                userPoint={USER_POINT}
-                candidates={candidateData}
-                showSimilarity={true}
-                label="EMBEDDING SPACE"
-                isActive={isActive}
-              />
+              <>
+                <div className={styles.legend}>
+                  <div className={styles.legendTitle}>Legend</div>
+                  <div className={styles.legendItems}>
+                    <div className={styles.legendItem}>
+                      <span
+                        className={`${styles.legendDot} ${styles.legendDotUser}`}
+                        aria-hidden="true"
+                      />
+                      Your tweet
+                    </div>
+                    <div className={styles.legendItem}>
+                      <span
+                        className={`${styles.legendDot} ${styles.legendDotHigh}`}
+                        aria-hidden="true"
+                      />
+                      High similarity
+                    </div>
+                    <div className={styles.legendItem}>
+                      <span
+                        className={`${styles.legendDot} ${styles.legendDotMedium}`}
+                        aria-hidden="true"
+                      />
+                      Mid similarity
+                    </div>
+                    <div className={styles.legendItem}>
+                      <span
+                        className={`${styles.legendDot} ${styles.legendDotLow}`}
+                        aria-hidden="true"
+                      />
+                      Low similarity
+                    </div>
+                  </div>
+                </div>
+                <VectorSpace
+                  userPoint={USER_POINT}
+                  candidates={candidateData}
+                  showSimilarity={true}
+                  label="EMBEDDING SPACE"
+                  isActive={isActive}
+                />
+              </>
             )}
           </div>
         )}

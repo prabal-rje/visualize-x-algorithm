@@ -69,6 +69,64 @@
   gap: 16px;
 }
 
+.legend {
+  display: grid;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid rgba(51, 255, 51, 0.25);
+  background: rgba(0, 20, 0, 0.6);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+}
+
+.legendTitle {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: rgba(51, 255, 51, 0.7);
+}
+
+.legendItems {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 6px 16px;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: rgba(51, 255, 51, 0.85);
+}
+
+.legendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(51, 255, 51, 0.3);
+  box-shadow: 0 0 6px rgba(51, 255, 51, 0.2);
+}
+
+.legendDotUser {
+  background: var(--phosphor-green);
+  box-shadow: 0 0 8px var(--phosphor-green);
+}
+
+.legendDotHigh {
+  background: var(--phosphor-green);
+  box-shadow: 0 0 6px var(--phosphor-green);
+}
+
+.legendDotMedium {
+  background: rgba(51, 255, 51, 0.6);
+  box-shadow: 0 0 4px rgba(51, 255, 51, 0.4);
+}
+
+.legendDotLow {
+  background: rgba(51, 255, 51, 0.3);
+}
+
 .stepLabel {
   font-family: var(--font-mono);
   font-size: 12px;

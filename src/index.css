@@ -23,6 +23,7 @@
   --prob-repost: #00ff7f;
   --prob-reply: #1e90ff;
   --prob-click: #ffd700;
+  --ui-scale: 1;
 }
 
 body {
@@ -30,6 +31,7 @@ body {
   color: var(--phosphor-green);
   font-family: 'VT323', 'IBM Plex Mono', monospace;
   letter-spacing: 0.04em;
+  font-size: calc(16px * var(--ui-scale));
 }
 
 @media (prefers-contrast: more) {
@@ -43,6 +45,12 @@ body {
   body {
     background: #000000;
     color: var(--phosphor-green);
+  }
+}
+
+@media (min-width: 1600px) {
+  :root {
+    --ui-scale: 1.04;
   }
 }
 
@@ -63,6 +71,12 @@ select,
 textarea {
   font-family: inherit;
   color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--phosphor-green);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(51, 255, 51, 0.25);
 }
 
 html,

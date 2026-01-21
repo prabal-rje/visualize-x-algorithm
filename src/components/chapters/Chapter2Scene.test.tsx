@@ -58,6 +58,13 @@ describe('Chapter2Scene', () => {
     });
   });
 
+  it('shows a legend label in the gathering step', async () => {
+    render(<Chapter2Scene {...defaultProps} currentStep={1} />);
+    await waitFor(() => {
+      expect(screen.getByText(/Legend/i)).toBeInTheDocument();
+    });
+  });
+
   it('shows candidate streams at step 2 (merging)', () => {
     render(<Chapter2Scene {...defaultProps} currentStep={2} />);
     expect(screen.getByTestId('candidate-streams')).toBeInTheDocument();

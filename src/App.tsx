@@ -1,10 +1,4 @@
-import { useEffect, useState } from 'react';
-import Chapter0Scene from './components/chapters/Chapter0Scene';
-import Chapter1Scene from './components/chapters/Chapter1Scene';
-import Chapter2Scene from './components/chapters/Chapter2Scene';
-import Chapter3Scene from './components/chapters/Chapter3Scene';
-import Chapter4Scene from './components/chapters/Chapter4Scene';
-import Chapter5Scene from './components/chapters/Chapter5Scene';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import CRTControls from './components/effects/CRTControls';
 import { DEFAULT_CRT_CONFIG } from './components/effects/crtConfig';
 import type { CRTConfig } from './components/effects/crtConfig';
@@ -13,6 +7,7 @@ import ScreenFlicker from './components/effects/ScreenFlicker';
 import Marquee from './components/layout/Marquee';
 import Timeline from './components/layout/Timeline';
 import BIOSLoading from './components/visualization/BIOSLoading';
+import ChapterSkeleton from './components/visualization/ChapterSkeleton';
 import ChapterWrapper from './components/visualization/ChapterWrapper';
 import MissionReport from './components/visualization/MissionReport';
 import { useSimulationState } from './hooks/useSimulationState';
@@ -22,6 +17,13 @@ import { setAmbientDrone } from './audio/engine';
 import { useConfigStore } from './stores/config';
 import { useMLStore } from './stores/ml';
 import styles from './styles/app-shell.module.css';
+
+const Chapter0Scene = lazy(() => import('./components/chapters/Chapter0Scene'));
+const Chapter1Scene = lazy(() => import('./components/chapters/Chapter1Scene'));
+const Chapter2Scene = lazy(() => import('./components/chapters/Chapter2Scene'));
+const Chapter3Scene = lazy(() => import('./components/chapters/Chapter3Scene'));
+const Chapter4Scene = lazy(() => import('./components/chapters/Chapter4Scene'));
+const Chapter5Scene = lazy(() => import('./components/chapters/Chapter5Scene'));
 
 function App() {
   const [crtConfig, setCrtConfig] = useState<CRTConfig>(DEFAULT_CRT_CONFIG);
@@ -35,6 +37,7 @@ function App() {
   const setReady = useMLStore((state) => state.setReady);
   const setError = useMLStore((state) => state.setError);
   const { isMobile, prefersReducedMotion, prefersHighContrast } = useViewport();
+  const [isSidePanelOpen, setIsSidePanelOpen] = useState(!isMobile);
   const isModelReady = mlStatus === 'ready';
 
   // Initialize embedder on mount (downloads and caches Nomic model)
@@ -78,6 +81,12 @@ function App() {
     }
   }, [dispatch, simulationStarted]);
 
+  useEffect(() => {
+    if (isMobile) {
+      setIsSidePanelOpen(false);
+    }
+  }, [isMobile]);
+
   const { position } = simulationState;
 
   const renderMainContent = () => {
@@ -97,13 +106,14 @@ function App() {
 
   const mainContent = renderMainContent();
   const showSidePanel = Boolean(mainContent);
+  const sidePanelOpen = showSidePanel && isSidePanelOpen;
   const isCompactChapter = position.chapterIndex >= 3;
 
   const renderChapterScene = () => {
     const { chapterIndex, subChapterIndex } = position;
 
     return (
-      <>
+      <Suspense fallback={<ChapterSkeleton />}>
         {chapterIndex === 0 && (
           <ChapterWrapper chapterIndex={0} isActive={true}>
             <Chapter0Scene currentStep={subChapterIndex} isActive={true} />
@@ -138,7 +148,7 @@ function App() {
             <Chapter5Scene currentStep={subChapterIndex} isActive={true} />
           </ChapterWrapper>
         )}
-      </>
+      </Suspense>
     );
   };
 
@@ -189,7 +199,23 @@ function App() {
             dispatch={dispatch}
           />
         </section>
-        <main className={styles.main} data-side-panel={showSidePanel}>
+        <main
+          className={styles.main}
+          data-side-panel={sidePanelOpen}
+          data-side-open={sidePanelOpen}
+        >
+          {showSidePanel && (
+            <button
+              className={styles.sideToggle}
+              onClick={() => setIsSidePanelOpen((prev) => !prev)}
+              type="button"
+              aria-label={sidePanelOpen ? 'Hide mission report' : 'Show mission report'}
+              aria-expanded={sidePanelOpen}
+              aria-controls="mission-report-panel"
+            >
+              <span className={styles.sideToggleLabel}>REPORT</span>
+            </button>
+          )}
           <section
             className={styles.chapterCanvas}
             data-testid="chapter-canvas"
@@ -200,8 +226,8 @@ function App() {
           >
             {renderChapterScene()}
           </section>
-          {showSidePanel && (
-            <section className={styles.sidePanel}>
+          {sidePanelOpen && (
+            <section className={styles.sidePanel} id="mission-report-panel">
               {mainContent}
             </section>
           )}

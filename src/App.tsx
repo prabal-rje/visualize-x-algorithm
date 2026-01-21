@@ -168,7 +168,11 @@ function App() {
         <ScreenFlicker />
         <Marquee />
         <main className={styles.main}>
-          <section className={styles.chapterCanvas} data-testid="chapter-canvas">
+          <section
+            className={styles.chapterCanvas}
+            data-testid="chapter-canvas"
+            data-proportion="fixed"
+          >
             {mlStatus === 'ready'
               ? renderChapterScene()
               : <div className={styles.placeholder}>

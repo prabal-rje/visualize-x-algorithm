@@ -26,8 +26,7 @@ Instructions:
  
 
 ##### Phase 2.5: Square-ish dimensions
-
-- [ ] Please make sure the simulation area remains of the same proportion throughout ... that's very important ... which might mean fixing the loadout options screens' dimensions too ...
+ 
 - [ ] Move progress bar, the chapter buttons, the file name, and the start over /back/pause/next buttons at the top  above the simulation arena ...
 - [ ] Simulation arena should largely fit a regular computers screen without vertical scroll ... across loadout and chapter visualizations/simulations...
 
@@ -91,6 +90,9 @@ Instructions:
 ### 11. Design Spec Testing Checklist
 
 ## Completed
+- [x] Fix chapter canvas to a stable proportion across chapters (desktop + mobile).
+- [x] Add test marker for fixed proportion.
+- [x] Playwright screenshot + commit.
 - [x] Replace side-panel controls with edge handle + in-screen dialog.
 - [x] Ensure dialog is CRT-native (no traditional UI chrome) and anchored to screen.
 - [x] Add open/close animations + focus-safe close control.

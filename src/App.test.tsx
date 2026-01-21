@@ -48,6 +48,14 @@ describe('App', () => {
     expect(screen.getByTestId('app-shell')).toBeInTheDocument();
   });
 
+  it('marks chapter canvas as fixed proportion', () => {
+    render(<App />);
+    expect(screen.getByTestId('chapter-canvas')).toHaveAttribute(
+      'data-proportion',
+      'fixed'
+    );
+  });
+
   it('shows loadout chapter when simulation not started', () => {
     useMLStore.getState().setReady(); // Skip BIOS loading
     render(<App />);

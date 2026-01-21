@@ -16,9 +16,12 @@
 
 .chapterCanvas {
   min-height: 520px;
+  height: 520px;
+  max-height: 520px;
   border: 1px solid rgba(51, 255, 51, 0.2);
   background: rgba(0, 8, 0, 0.6);
   padding: 16px;
+  overflow: hidden;
 }
 
 .sidePanel {
@@ -43,6 +46,8 @@
 
   .chapterCanvas {
     min-height: 380px;
+    height: 380px;
+    max-height: 380px;
     padding: 12px;
   }
 }

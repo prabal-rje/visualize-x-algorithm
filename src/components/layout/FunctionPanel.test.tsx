@@ -5,10 +5,10 @@ import FunctionPanel, { type FunctionInfo } from './FunctionPanel';
 
 describe('FunctionPanel', () => {
   const mockFunctionInfo: FunctionInfo = {
-    name: 'simulateEngagement()',
-    file: 'src/simulation/simulate.ts',
-    summary: 'Calculates how likely users are to engage with your tweet',
-    githubUrl: 'https://github.com/twitter/the-algorithm/blob/main/src/simulate.ts'
+    name: 'get_scored_posts()',
+    file: 'home-mixer/server.rs',
+    summary: 'Receiving timeline request from client',
+    githubUrl: 'https://github.com/xai-org/x-algorithm/blob/main/home-mixer/server.rs'
   };
 
   beforeEach(() => {
@@ -35,7 +35,7 @@ describe('FunctionPanel', () => {
     it('shows summary text', () => {
       render(<FunctionPanel info={mockFunctionInfo} />);
       expect(
-        screen.getByText('Calculates how likely users are to engage with your tweet')
+        screen.getByText('Receiving timeline request from client')
       ).toBeInTheDocument();
     });
 
@@ -48,17 +48,17 @@ describe('FunctionPanel', () => {
 
     it('does not show technical details by default', () => {
       render(<FunctionPanel info={mockFunctionInfo} />);
-      expect(screen.queryByText('simulateEngagement()')).not.toBeInTheDocument();
+      expect(screen.queryByText('get_scored_posts()')).not.toBeInTheDocument();
       expect(
-        screen.queryByText('src/simulation/simulate.ts')
+        screen.queryByText('home-mixer/server.rs')
       ).not.toBeInTheDocument();
     });
 
     it('expands to show technical details when Learn more clicked', () => {
       render(<FunctionPanel info={mockFunctionInfo} />);
       fireEvent.click(screen.getByRole('button', { name: /learn more/i }));
-      expect(screen.getByText('simulateEngagement()')).toBeInTheDocument();
-      expect(screen.getByText('src/simulation/simulate.ts')).toBeInTheDocument();
+      expect(screen.getByText('get_scored_posts()')).toBeInTheDocument();
+      expect(screen.getByText('home-mixer/server.rs')).toBeInTheDocument();
     });
 
     it('shows GitHub link when expanded', () => {
@@ -67,7 +67,7 @@ describe('FunctionPanel', () => {
       const link = screen.getByRole('link', { name: /view source/i });
       expect(link).toHaveAttribute(
         'href',
-        'https://github.com/twitter/the-algorithm/blob/main/src/simulate.ts'
+        'https://github.com/xai-org/x-algorithm/blob/main/home-mixer/server.rs'
       );
     });
   });
@@ -79,14 +79,14 @@ describe('FunctionPanel', () => {
 
     it('shows technical details by default', () => {
       render(<FunctionPanel info={mockFunctionInfo} />);
-      expect(screen.getByText('simulateEngagement()')).toBeInTheDocument();
-      expect(screen.getByText('src/simulation/simulate.ts')).toBeInTheDocument();
+      expect(screen.getByText('get_scored_posts()')).toBeInTheDocument();
+      expect(screen.getByText('home-mixer/server.rs')).toBeInTheDocument();
     });
 
     it('shows summary text', () => {
       render(<FunctionPanel info={mockFunctionInfo} />);
       expect(
-        screen.getByText('Calculates how likely users are to engage with your tweet')
+        screen.getByText('Receiving timeline request from client')
       ).toBeInTheDocument();
     });
 
@@ -102,7 +102,7 @@ describe('FunctionPanel', () => {
       const link = screen.getByRole('link', { name: /view source/i });
       expect(link).toHaveAttribute(
         'href',
-        'https://github.com/twitter/the-algorithm/blob/main/src/simulate.ts'
+        'https://github.com/xai-org/x-algorithm/blob/main/home-mixer/server.rs'
       );
     });
   });

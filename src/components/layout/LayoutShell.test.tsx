@@ -1,8 +1,13 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import App from '../../App';
+import { useMLStore } from '../../stores/ml';
 
 describe('Layout shell', () => {
+  beforeEach(() => {
+    useMLStore.getState().setReady(); // Skip BIOS loading
+  });
+
   it('renders marquee and panels', () => {
     render(<App />);
     expect(screen.getByTestId('marquee')).toBeInTheDocument();

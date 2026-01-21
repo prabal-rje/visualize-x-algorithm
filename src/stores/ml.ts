@@ -7,6 +7,7 @@ type MLState = {
   progress: number;
   currentStep: string | null;
   error: string | null;
+  startTime: number | null;
   setLoading: (step: string) => void;
   setProgress: (value: number) => void;
   setReady: () => void;
@@ -18,12 +19,17 @@ const initialState = {
   status: 'idle' as MLStatus,
   progress: 0,
   currentStep: null as string | null,
-  error: null as string | null
+  error: null as string | null,
+  startTime: null as number | null
 };
 
 export const useMLStore = create<MLState>()((set) => ({
   ...initialState,
-  setLoading: (step: string) => set({ status: 'loading', currentStep: step }),
+  setLoading: (step: string) => set((state) => ({
+    status: 'loading',
+    currentStep: step,
+    startTime: state.startTime ?? Date.now()
+  })),
   setProgress: (value: number) => set({ progress: Math.max(0, Math.min(1, value)) }),
   setReady: () => set({ status: 'ready', progress: 1 }),
   setError: (message: string) => set({ status: 'error', error: message }),

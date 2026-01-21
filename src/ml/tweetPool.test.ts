@@ -14,9 +14,9 @@ describe('tweetPool', () => {
 
   describe('generateTweetPool', () => {
     it('generates the requested count of tweets', async () => {
-      // Mock embedder that returns 384-dimensional embeddings
+      // Mock embedder that returns 128-dimensional embeddings
       const mockEmbedder = async () => ({
-        data: new Float32Array(384).fill(0.01),
+        data: new Float32Array(128).fill(0.01),
       });
 
       setEmbedderForTests(mockEmbedder);
@@ -29,7 +29,7 @@ describe('tweetPool', () => {
 
     it('each tweet has all required fields', async () => {
       const mockEmbedder = async () => ({
-        data: new Float32Array(384).fill(0.01),
+        data: new Float32Array(128).fill(0.01),
       });
 
       setEmbedderForTests(mockEmbedder);
@@ -54,9 +54,9 @@ describe('tweetPool', () => {
       }
     });
 
-    it('embeddings have 384 dimensions', async () => {
+    it('embeddings have 128 dimensions', async () => {
       const mockEmbedder = async () => ({
-        data: new Float32Array(384).fill(0.01),
+        data: new Float32Array(128).fill(0.01),
       });
 
       setEmbedderForTests(mockEmbedder);
@@ -65,13 +65,13 @@ describe('tweetPool', () => {
       const tweets = await generateTweetPool(5);
 
       for (const tweet of tweets) {
-        expect(tweet.embedding).toHaveLength(384);
+        expect(tweet.embedding).toHaveLength(128);
       }
     });
 
     it('categories have variety (at least 4 different categories in 100 tweets)', async () => {
       const mockEmbedder = async () => ({
-        data: new Float32Array(384).fill(0.01),
+        data: new Float32Array(128).fill(0.01),
       });
 
       setEmbedderForTests(mockEmbedder);
@@ -85,7 +85,7 @@ describe('tweetPool', () => {
 
     it('tweets have unique ids', async () => {
       const mockEmbedder = async () => ({
-        data: new Float32Array(384).fill(0.01),
+        data: new Float32Array(128).fill(0.01),
       });
 
       setEmbedderForTests(mockEmbedder);
@@ -99,7 +99,7 @@ describe('tweetPool', () => {
 
     it('timestamps are within last 24 hours', async () => {
       const mockEmbedder = async () => ({
-        data: new Float32Array(384).fill(0.01),
+        data: new Float32Array(128).fill(0.01),
       });
 
       setEmbedderForTests(mockEmbedder);
@@ -118,7 +118,7 @@ describe('tweetPool', () => {
 
     it('authors come from predefined list', async () => {
       const mockEmbedder = async () => ({
-        data: new Float32Array(384).fill(0.01),
+        data: new Float32Array(128).fill(0.01),
       });
 
       setEmbedderForTests(mockEmbedder);
@@ -135,7 +135,7 @@ describe('tweetPool', () => {
 
     it('tweet texts are non-empty', async () => {
       const mockEmbedder = async () => ({
-        data: new Float32Array(384).fill(0.01),
+        data: new Float32Array(128).fill(0.01),
       });
 
       setEmbedderForTests(mockEmbedder);
@@ -150,7 +150,7 @@ describe('tweetPool', () => {
 
     it('generates zero tweets when count is 0', async () => {
       const mockEmbedder = async () => ({
-        data: new Float32Array(384).fill(0.01),
+        data: new Float32Array(128).fill(0.01),
       });
 
       setEmbedderForTests(mockEmbedder);

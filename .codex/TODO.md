@@ -20,17 +20,6 @@ Instructions:
 ### 4. Phase 4: Timeline and Chapter Framework
 
 ### 5. Phase 5: Chapters 1 and 2
-- [ ] Animate gRPC request visualization (phone -> server).
-- [ ] Show user ID appearing with typewriter effect.
-- [ ] Animate query hydration (engagement history stream).
-- [ ] Show user features populating.
-- [ ] Display function panel for `UserActionSequenceHydrator::hydrate()`.
-- [ ] Implement two-tower retrieval visualization.
-- [ ] Animate user embedding formation (heatmap filling in).
-- [ ] Show candidate embeddings in vector space.
-- [ ] Animate dot product similarity calculation.
-- [ ] Visualize Thunder (blue) and Phoenix (orange) candidate streams.
-- [ ] Show merge into candidate pool with count.
 
 ### 6. Phase 6: Chapter 3 (Filtering)
 - [ ] Create FilterGate component with pass/fail animations.
@@ -100,6 +89,18 @@ Instructions:
 - [ ] Reduced motion mode disables animations.
 
 ## Completed
+- [x] Match embedding heatmap glow to each cell color (no green halo).
+- [x] Show merge into candidate pool with count.
+- [x] Visualize Thunder (blue) and Phoenix (orange) candidate streams.
+- [x] Animate dot product similarity calculation.
+- [x] Show candidate embeddings in vector space.
+- [x] Animate user embedding formation (heatmap filling in).
+- [x] Implement two-tower retrieval visualization.
+- [x] Display function panel for `UserActionSequenceHydrator::hydrate()`.
+- [x] Show user features populating.
+- [x] Animate query hydration (engagement history stream).
+- [x] Show user ID appearing with typewriter effect.
+- [x] Animate gRPC request visualization (phone -> server).
 - [x] Implement current function panel (shows active fn + GitHub link).
 - [x] Add keyboard controls (space = play/pause, arrows = skip).
 - [x] Implement chapter progress indicators.

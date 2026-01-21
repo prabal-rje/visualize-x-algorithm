@@ -69,11 +69,25 @@
   margin-top: 8px;
 }
 
+.progressRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
 .progressBar {
   color: var(--phosphor-cyan, #00ffff);
   font-family: monospace;
   text-shadow: 0 0 6px rgba(0, 255, 255, 0.5);
   letter-spacing: 0.05em;
+}
+
+.elapsed {
+  color: var(--phosphor-amber, #ffb000);
+  font-family: monospace;
+  text-shadow: 0 0 6px rgba(255, 176, 0, 0.5);
+  white-space: nowrap;
 }
 
 .currentStep {

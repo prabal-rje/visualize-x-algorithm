@@ -49,12 +49,14 @@ describe('App', () => {
   });
 
   it('shows ConfigPanel when simulation not started', () => {
+    useMLStore.getState().setReady(); // Skip BIOS loading
     render(<App />);
     expect(screen.getByTestId('config-panel')).toBeInTheDocument();
     expect(screen.queryByTestId('mission-report')).not.toBeInTheDocument();
   });
 
   it('shows MissionReport when simulation started with rpgStats', () => {
+    useMLStore.getState().setReady(); // Skip BIOS loading
     useConfigStore.setState({
       simulationStarted: true,
       rpgStats: {
@@ -70,6 +72,7 @@ describe('App', () => {
   });
 
   it('clicking replay resets to ConfigPanel', () => {
+    useMLStore.getState().setReady(); // Skip BIOS loading
     useConfigStore.setState({
       simulationStarted: true,
       rpgStats: {
@@ -100,10 +103,10 @@ describe('App', () => {
     expect(screen.queryByTestId('bios-loading')).not.toBeInTheDocument();
   });
 
-  it('shows ConfigPanel when ML status is idle', () => {
-    // idle is initial state, should show config panel
+  it('shows BIOSLoading when ML status is idle (not ready)', () => {
+    // When not ready, show BIOS loading
     render(<App />);
-    expect(screen.getByTestId('config-panel')).toBeInTheDocument();
-    expect(screen.queryByTestId('bios-loading')).not.toBeInTheDocument();
+    expect(screen.getByTestId('bios-loading')).toBeInTheDocument();
+    expect(screen.queryByTestId('config-panel')).not.toBeInTheDocument();
   });
 });

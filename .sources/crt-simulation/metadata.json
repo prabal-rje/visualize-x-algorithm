@@ -1,0 +1,5 @@
+{
+  "name": "CRT Simulation",
+  "description": "An ultra-realistic, configurable CRT screen simulation featuring phosphor persistence trails, scanlines, RGB chromatic aberration, and interactive physics.",
+  "requestFramePermissions": []
+}

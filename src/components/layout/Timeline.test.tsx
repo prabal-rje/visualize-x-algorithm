@@ -241,7 +241,7 @@ describe('Timeline', () => {
         />
       );
       // First function of first chapter
-      expect(screen.getByText(/handleRequest/)).toBeInTheDocument();
+      expect(screen.getByText(/get_scored_posts/)).toBeInTheDocument();
     });
 
     it('shows progress indicator', () => {

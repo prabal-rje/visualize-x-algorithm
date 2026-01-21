@@ -1,0 +1,176 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background: rgba(0, 20, 0, 0.95);
+  border: 2px solid var(--phosphor-green);
+  box-shadow: 0 0 20px rgba(51, 255, 51, 0.3);
+}
+
+.header {
+  margin-bottom: 12px;
+  font-family: var(--font-mono);
+}
+
+.label {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--phosphor-green);
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 10px var(--phosphor-green);
+}
+
+.space {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  background: rgba(0, 30, 0, 0.5);
+  border: 1px solid rgba(51, 255, 51, 0.3);
+  overflow: hidden;
+}
+
+/* Grid lines for depth effect */
+.grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.gridLineH,
+.gridLineV {
+  position: absolute;
+  background: rgba(51, 255, 51, 0.1);
+}
+
+.gridLineH {
+  left: 0;
+  right: 0;
+  height: 1px;
+}
+
+.gridLineV {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+/* Point styling */
+.point {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.pointDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--phosphor-green);
+}
+
+.pointLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--phosphor-green);
+  white-space: nowrap;
+}
+
+/* User point - larger and brighter */
+.user .pointDot {
+  width: 16px;
+  height: 16px;
+  background: var(--phosphor-green);
+  box-shadow: 0 0 15px var(--phosphor-green), 0 0 30px var(--phosphor-green);
+}
+
+.user .pointLabel {
+  font-weight: bold;
+  text-shadow: 0 0 8px var(--phosphor-green);
+}
+
+/* Candidate points */
+.candidate {
+  cursor: pointer;
+  z-index: 1;
+}
+
+.candidate:hover {
+  z-index: 10;
+}
+
+.candidate .pointDot {
+  width: 10px;
+  height: 10px;
+  transition: all 0.2s ease;
+}
+
+.candidate:hover .pointDot {
+  transform: scale(1.8);
+  box-shadow: 0 0 15px var(--phosphor-green), 0 0 25px var(--phosphor-green);
+}
+
+.similarity {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: rgba(51, 255, 51, 0.8);
+}
+
+/* Similarity levels */
+.high .pointDot {
+  background: var(--phosphor-green);
+  box-shadow: 0 0 10px var(--phosphor-green);
+}
+
+.medium .pointDot {
+  background: rgba(51, 255, 51, 0.6);
+  box-shadow: 0 0 5px rgba(51, 255, 51, 0.5);
+}
+
+.low .pointDot {
+  background: rgba(51, 255, 51, 0.3);
+  box-shadow: none;
+}
+
+/* Active state animations */
+.container[data-active='true'] .user .pointDot {
+  animation: user-pulse 2s ease-in-out infinite;
+}
+
+.container[data-active='true'] .high {
+  animation: attract 3s ease-in-out infinite;
+}
+
+@keyframes user-pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px var(--phosphor-green), 0 0 30px var(--phosphor-green);
+  }
+  50% {
+    box-shadow: 0 0 25px var(--phosphor-green), 0 0 50px var(--phosphor-green);
+  }
+}
+
+@keyframes attract {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+/* Inactive state */
+.container[data-active='false'] {
+  opacity: 0.6;
+  box-shadow: none;
+}
+
+.container[data-active='false'] .point {
+  animation: none;
+}
+
+.container[data-active='false'] .pointDot {
+  box-shadow: none;
+}

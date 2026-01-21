@@ -1,0 +1,136 @@
+.container {
+  display: flex;
+  gap: 30px;
+  padding: 20px;
+  justify-content: center;
+}
+
+.stream {
+  width: 320px;
+  border: 2px solid var(--phosphor-green);
+  background: rgba(0, 20, 0, 0.9);
+  box-shadow: 0 0 20px rgba(51, 255, 51, 0.3);
+  font-family: var(--font-mono);
+  overflow: hidden;
+}
+
+.header {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--phosphor-green);
+  padding: 12px 16px 8px;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 10px var(--phosphor-green);
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--phosphor-green) 10%,
+    var(--phosphor-green) 90%,
+    transparent
+  );
+  margin: 0 16px;
+  opacity: 0.7;
+}
+
+.content {
+  padding: 12px 16px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.item {
+  font-size: 12px;
+  color: var(--phosphor-green);
+  padding: 4px 0;
+  display: flex;
+  gap: 8px;
+  opacity: 0.9;
+}
+
+.action {
+  color: var(--phosphor-green);
+}
+
+.meta {
+  color: rgba(51, 255, 51, 0.6);
+  font-size: 11px;
+}
+
+/* Scrollbar styling */
+.content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.content::-webkit-scrollbar-track {
+  background: rgba(0, 20, 0, 0.5);
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: var(--phosphor-green);
+  opacity: 0.5;
+}
+
+/* Active state animation */
+.container[data-active='true'] .stream {
+  animation: stream-pulse 2s ease-in-out infinite;
+}
+
+.container[data-active='true'] .item {
+  animation: item-appear 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+.container[data-active='true'] .item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.container[data-active='true'] .item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.container[data-active='true'] .item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.container[data-active='true'] .item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.container[data-active='true'] .item:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+@keyframes stream-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(51, 255, 51, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(51, 255, 51, 0.5);
+  }
+}
+
+@keyframes item-appear {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  100% {
+    opacity: 0.9;
+    transform: translateX(0);
+  }
+}
+
+/* Inactive state */
+.container[data-active='false'] .stream {
+  opacity: 0.6;
+  box-shadow: none;
+}
+
+.container[data-active='false'] .item {
+  animation: none;
+  opacity: 0.5;
+}

@@ -21,6 +21,8 @@ export type Chapter = {
   subChapters: SubChapter[];
 };
 
+const GITHUB_BASE = 'https://github.com/xai-org/x-algorithm/blob/main';
+
 export const CHAPTERS: Chapter[] = [
   {
     id: 'ch1',
@@ -35,26 +37,31 @@ export const CHAPTERS: Chapter[] = [
         functions: [
           {
             id: 'ch1-a-1',
-            name: 'handleRequest()',
+            name: 'get_scored_posts()',
             file: 'home-mixer/server.rs',
             summary: 'Receiving timeline request from client',
-            githubUrl:
-              'https://github.com/twitter/the-algorithm/blob/main/home-mixer/server/src/main/scala/com/twitter/home_mixer/HomeMixerServer.scala'
+            githubUrl: `${GITHUB_BASE}/home-mixer/server.rs`
           }
         ]
       },
       {
         id: 'ch1-b',
-        labelSimple: 'Parse',
-        labelTechnical: 'Request Parsing',
+        labelSimple: 'Hydrate',
+        labelTechnical: 'Query Hydration',
         functions: [
           {
             id: 'ch1-b-1',
-            name: 'parseClientContext()',
-            file: 'home-mixer/request.rs',
-            summary: 'Extracting user context and preferences',
-            githubUrl:
-              'https://github.com/twitter/the-algorithm/blob/main/home-mixer/server/src/main/scala/com/twitter/home_mixer/HomeMixerRequestHandler.scala'
+            name: 'UserActionSeqQueryHydrator::hydrate()',
+            file: 'home-mixer/query_hydrators/user_action_seq_query_hydrator.rs',
+            summary: 'Fetching user engagement history',
+            githubUrl: `${GITHUB_BASE}/home-mixer/query_hydrators/user_action_seq_query_hydrator.rs`
+          },
+          {
+            id: 'ch1-b-2',
+            name: 'UserFeaturesQueryHydrator::hydrate()',
+            file: 'home-mixer/query_hydrators/user_features_query_hydrator.rs',
+            summary: 'Fetching user profile features',
+            githubUrl: `${GITHUB_BASE}/home-mixer/query_hydrators/user_features_query_hydrator.rs`
           }
         ]
       }
@@ -68,39 +75,36 @@ export const CHAPTERS: Chapter[] = [
     subChapters: [
       {
         id: 'ch2-a',
-        labelSimple: 'Candidates',
-        labelTechnical: 'Candidate Sources',
+        labelSimple: 'Thunder',
+        labelTechnical: 'In-Network Source',
         functions: [
           {
             id: 'ch2-a-1',
-            name: 'fetchInNetworkCandidates()',
-            file: 'candidate-sources/in-network.rs',
+            name: 'ThunderSource::get_candidates()',
+            file: 'home-mixer/sources/thunder_source.rs',
             summary: 'Fetching tweets from users you follow',
-            githubUrl:
-              'https://github.com/twitter/the-algorithm/blob/main/home-mixer/server/src/main/scala/com/twitter/home_mixer/candidate_source/InNetworkCandidateSource.scala'
-          },
-          {
-            id: 'ch2-a-2',
-            name: 'fetchOutOfNetworkCandidates()',
-            file: 'candidate-sources/out-of-network.rs',
-            summary: 'Discovering tweets outside your network',
-            githubUrl:
-              'https://github.com/twitter/the-algorithm/blob/main/home-mixer/server/src/main/scala/com/twitter/home_mixer/candidate_source/OutOfNetworkCandidateSource.scala'
+            githubUrl: `${GITHUB_BASE}/home-mixer/sources/thunder_source.rs`
           }
         ]
       },
       {
         id: 'ch2-b',
-        labelSimple: 'Features',
-        labelTechnical: 'Feature Hydration',
+        labelSimple: 'Phoenix',
+        labelTechnical: 'Out-of-Network Source',
         functions: [
           {
             id: 'ch2-b-1',
-            name: 'hydrateFeatures()',
-            file: 'feature-hydrator/hydrator.rs',
-            summary: 'Computing features for each candidate',
-            githubUrl:
-              'https://github.com/twitter/the-algorithm/blob/main/home-mixer/server/src/main/scala/com/twitter/home_mixer/feature_hydrator/FeatureHydrator.scala'
+            name: 'TwoTowerModel.user_tower()',
+            file: 'phoenix/recsys_retrieval_model.py',
+            summary: 'Encoding user into embedding vector',
+            githubUrl: `${GITHUB_BASE}/phoenix/recsys_retrieval_model.py`
+          },
+          {
+            id: 'ch2-b-2',
+            name: 'PhoenixSource::get_candidates()',
+            file: 'home-mixer/sources/phoenix_source.rs',
+            summary: 'Discovering tweets outside your network',
+            githubUrl: `${GITHUB_BASE}/home-mixer/sources/phoenix_source.rs`
           }
         ]
       }
@@ -114,46 +118,43 @@ export const CHAPTERS: Chapter[] = [
     subChapters: [
       {
         id: 'ch3-a',
-        labelSimple: 'Safety',
-        labelTechnical: 'Safety Filters',
+        labelSimple: 'Dedup',
+        labelTechnical: 'Deduplication Filters',
         functions: [
           {
             id: 'ch3-a-1',
-            name: 'applySafetyFilters()',
-            file: 'filters/safety.rs',
-            summary: 'Removing content violating policies',
-            githubUrl:
-              'https://github.com/twitter/the-algorithm/blob/main/home-mixer/server/src/main/scala/com/twitter/home_mixer/filter/SafetyFilter.scala'
+            name: 'DropDuplicatesFilter::filter()',
+            file: 'home-mixer/filters/drop_duplicates_filter.rs',
+            summary: 'Removing duplicate tweets',
+            githubUrl: `${GITHUB_BASE}/home-mixer/filters/drop_duplicates_filter.rs`
           }
         ]
       },
       {
         id: 'ch3-b',
-        labelSimple: 'Visibility',
-        labelTechnical: 'Visibility Filtering',
+        labelSimple: 'Social',
+        labelTechnical: 'Social Graph Filter',
         functions: [
           {
             id: 'ch3-b-1',
-            name: 'filterByVisibility()',
-            file: 'filters/visibility.rs',
-            summary: 'Applying visibility rules and blocks',
-            githubUrl:
-              'https://github.com/twitter/the-algorithm/blob/main/home-mixer/server/src/main/scala/com/twitter/home_mixer/filter/VisibilityFilter.scala'
+            name: 'AuthorSocialgraphFilter::filter()',
+            file: 'home-mixer/filters/author_socialgraph_filter.rs',
+            summary: 'Filtering by blocks and mutes',
+            githubUrl: `${GITHUB_BASE}/home-mixer/filters/author_socialgraph_filter.rs`
           }
         ]
       },
       {
         id: 'ch3-c',
-        labelSimple: 'Quality',
-        labelTechnical: 'Quality Scoring',
+        labelSimple: 'Keywords',
+        labelTechnical: 'Muted Keywords',
         functions: [
           {
             id: 'ch3-c-1',
-            name: 'scoreQuality()',
-            file: 'filters/quality.rs',
-            summary: 'Computing content quality scores',
-            githubUrl:
-              'https://github.com/twitter/the-algorithm/blob/main/home-mixer/server/src/main/scala/com/twitter/home_mixer/filter/QualityFilter.scala'
+            name: 'MutedKeywordFilter::filter()',
+            file: 'home-mixer/filters/muted_keyword_filter.rs',
+            summary: 'Filtering muted keywords',
+            githubUrl: `${GITHUB_BASE}/home-mixer/filters/muted_keyword_filter.rs`
           }
         ]
       }
@@ -167,39 +168,43 @@ export const CHAPTERS: Chapter[] = [
     subChapters: [
       {
         id: 'ch4-a',
-        labelSimple: 'Embed',
-        labelTechnical: 'Embeddings',
+        labelSimple: 'Phoenix',
+        labelTechnical: 'Phoenix Scorer',
         functions: [
           {
             id: 'ch4-a-1',
-            name: 'computeEmbeddings()',
-            file: 'ranker/embeddings.rs',
-            summary: 'Converting tweets to vector representations',
-            githubUrl:
-              'https://github.com/twitter/the-algorithm/blob/main/home-mixer/server/src/main/scala/com/twitter/home_mixer/ranker/EmbeddingComputer.scala'
+            name: 'PhoenixRanker.forward()',
+            file: 'phoenix/recsys_model.py',
+            summary: 'Predicting engagement probabilities',
+            githubUrl: `${GITHUB_BASE}/phoenix/recsys_model.py`
+          },
+          {
+            id: 'ch4-a-2',
+            name: 'PhoenixScorer::score()',
+            file: 'home-mixer/scorers/phoenix_scorer.rs',
+            summary: 'Computing Phoenix model scores',
+            githubUrl: `${GITHUB_BASE}/home-mixer/scorers/phoenix_scorer.rs`
           }
         ]
       },
       {
         id: 'ch4-b',
-        labelSimple: 'Predict',
-        labelTechnical: 'Engagement Prediction',
+        labelSimple: 'Combine',
+        labelTechnical: 'Weighted Scoring',
         functions: [
           {
             id: 'ch4-b-1',
-            name: 'predictEngagement()',
-            file: 'ranker/heavy-ranker.rs',
-            summary: 'Predicting likes, retweets, and replies',
-            githubUrl:
-              'https://github.com/twitter/the-algorithm/blob/main/home-mixer/server/src/main/scala/com/twitter/home_mixer/ranker/HeavyRanker.scala'
+            name: 'WeightedScorer::score()',
+            file: 'home-mixer/scorers/weighted_scorer.rs',
+            summary: 'Combining scores with weights',
+            githubUrl: `${GITHUB_BASE}/home-mixer/scorers/weighted_scorer.rs`
           },
           {
             id: 'ch4-b-2',
-            name: 'combineScores()',
-            file: 'ranker/scorer.rs',
-            summary: 'Combining engagement predictions into final score',
-            githubUrl:
-              'https://github.com/twitter/the-algorithm/blob/main/home-mixer/server/src/main/scala/com/twitter/home_mixer/ranker/Scorer.scala'
+            name: 'AuthorDiversityScorer::score()',
+            file: 'home-mixer/scorers/author_diversity_scorer.rs',
+            summary: 'Penalizing repeated authors',
+            githubUrl: `${GITHUB_BASE}/home-mixer/scorers/author_diversity_scorer.rs`
           }
         ]
       }
@@ -213,31 +218,29 @@ export const CHAPTERS: Chapter[] = [
     subChapters: [
       {
         id: 'ch5-a',
-        labelSimple: 'Mix',
-        labelTechnical: 'Content Mixing',
+        labelSimple: 'Select',
+        labelTechnical: 'Top-K Selector',
         functions: [
           {
             id: 'ch5-a-1',
-            name: 'mixContent()',
-            file: 'mixer/content-mixer.rs',
-            summary: 'Balancing content types in the timeline',
-            githubUrl:
-              'https://github.com/twitter/the-algorithm/blob/main/home-mixer/server/src/main/scala/com/twitter/home_mixer/mixer/ContentMixer.scala'
+            name: 'TopKScoreSelector::select()',
+            file: 'home-mixer/selectors/top_k_score_selector.rs',
+            summary: 'Selecting top scored tweets',
+            githubUrl: `${GITHUB_BASE}/home-mixer/selectors/top_k_score_selector.rs`
           }
         ]
       },
       {
         id: 'ch5-b',
-        labelSimple: 'Select',
-        labelTechnical: 'Final Selection',
+        labelSimple: 'Pipeline',
+        labelTechnical: 'Candidate Pipeline',
         functions: [
           {
             id: 'ch5-b-1',
-            name: 'selectTopK()',
-            file: 'mixer/selector.rs',
-            summary: 'Selecting final tweets for your timeline',
-            githubUrl:
-              'https://github.com/twitter/the-algorithm/blob/main/home-mixer/server/src/main/scala/com/twitter/home_mixer/mixer/Selector.scala'
+            name: 'PhoenixCandidatePipeline::run()',
+            file: 'home-mixer/candidate_pipeline/phoenix_candidate_pipeline.rs',
+            summary: 'Orchestrating the full pipeline',
+            githubUrl: `${GITHUB_BASE}/home-mixer/candidate_pipeline/phoenix_candidate_pipeline.rs`
           }
         ]
       }

@@ -9,7 +9,6 @@ Instructions:
 ## Stack (Top = next)
 
 ### 0. CRT Fidelity Fixes
-- [ ] Verify pixel/retro fonts are applied across UI (no modern font fallbacks).
 
 ### 1. Phase 1: Foundation
 ### 2. Phase 2: Configuration Panel
@@ -131,6 +130,7 @@ Instructions:
 - [ ] Reduced motion mode disables animations.
 
 ## Completed
+- [x] Verify pixel/retro fonts are applied across UI (no modern font fallbacks).
 - [x] Remove CRT curvature + rounded frame effects (no barrel distortion or curvature control).
 - [x] Fix barrel distortion map so the frame isn't vertically shifted.
 - [x] Add phosphor control knob (persistence + glow) to CRT controls.

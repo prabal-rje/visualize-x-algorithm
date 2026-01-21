@@ -37,6 +37,7 @@ function App() {
   const setReady = useMLStore((state) => state.setReady);
   const setError = useMLStore((state) => state.setError);
   const { isMobile, prefersReducedMotion, prefersHighContrast } = useViewport();
+  const isModelReady = mlStatus === 'ready';
 
   // Initialize embedder on mount (downloads and caches Nomic model)
   useEffect(() => {
@@ -88,10 +89,6 @@ function App() {
   );
 
   const renderMainContent = () => {
-    // Always show BIOS loading until model is ready
-    if (mlStatus !== 'ready') {
-      return <BIOSLoading />;
-    }
     if (simulationStarted && rpgStats) {
       return (
         <MissionReport
@@ -110,9 +107,6 @@ function App() {
   const showSidePanel = simulationStarted || Boolean(mainContent);
 
   const renderChapterScene = () => {
-    // Don't render chapters until model is ready
-    if (mlStatus !== 'ready') return null;
-
     const { chapterIndex, subChapterIndex } = position;
 
     return (
@@ -155,6 +149,31 @@ function App() {
     );
   };
 
+  if (!isModelReady) {
+    return (
+      <CRTOverlay
+        config={crtConfig}
+        reducedEffects={isMobile}
+        reducedMotion={prefersReducedMotion}
+      >
+        <div
+          data-testid="app-shell"
+          className={styles.appShell}
+          data-loading="true"
+          data-mobile={isMobile}
+          data-reduced-motion={prefersReducedMotion}
+          data-high-contrast={prefersHighContrast}
+        >
+          <ScreenFlicker />
+          <Marquee />
+          <div className={styles.loadingCenter}>
+            <BIOSLoading />
+          </div>
+        </div>
+      </CRTOverlay>
+    );
+  }
+
   return (
     <CRTOverlay
       config={crtConfig}
@@ -184,12 +203,7 @@ function App() {
             data-proportion="fixed"
             data-viewport-fit="true"
           >
-            {mlStatus === 'ready'
-              ? renderChapterScene()
-              : <div className={styles.placeholder}>
-                  Waiting for model to load...
-                </div>
-            }
+            {renderChapterScene()}
           </section>
           {showSidePanel && (
             <section className={styles.sidePanel}>

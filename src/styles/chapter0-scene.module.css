@@ -46,7 +46,6 @@
   font-family: var(--font-mono);
   font-size: 13px;
   color: var(--phosphor-green);
-  font-style: italic;
   opacity: 0.9;
   min-height: 48px;
 }

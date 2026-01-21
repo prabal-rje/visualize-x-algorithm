@@ -9,6 +9,8 @@ type TypewriterTextProps = {
   started: boolean;
   /** Typing speed in ms per character (default: 50) */
   speed?: number;
+  /** Variance in typing speed (ms) for more organic cadence */
+  speedVariance?: number;
   /** Whether to show cursor */
   showCursor?: boolean;
   /** Whether to hide cursor when complete */
@@ -25,6 +27,7 @@ export default function TypewriterText({
   text,
   started,
   speed = 50,
+  speedVariance = 0,
   showCursor = false,
   hideCursorOnComplete = false,
   onComplete,
@@ -58,20 +61,39 @@ export default function TypewriterText({
     setDisplayedText('');
     setIsComplete(false);
 
-    const interval = setInterval(() => {
-      if (currentIndex < text.length) {
-        setDisplayedText(text.slice(0, currentIndex + 1));
-        void playTypewriterKey();
-        currentIndex++;
-      } else {
-        clearInterval(interval);
-        setIsComplete(true);
-        onCompleteRef.current?.();
-      }
-    }, speed);
+    const variance = Math.max(0, speedVariance);
+    const minDelay = Math.max(10, speed - variance);
+    const maxDelay = speed + variance;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
-    return () => clearInterval(interval);
-  }, [text, started, speed, instant]);
+    const getDelay = () => {
+      if (variance === 0) return speed;
+      const range = maxDelay - minDelay;
+      return Math.round(minDelay + Math.random() * range);
+    };
+
+    const scheduleNext = () => {
+      timeoutId = setTimeout(() => {
+        if (currentIndex < text.length) {
+          setDisplayedText(text.slice(0, currentIndex + 1));
+          void playTypewriterKey();
+          currentIndex += 1;
+          scheduleNext();
+        } else {
+          setIsComplete(true);
+          onCompleteRef.current?.();
+        }
+      }, getDelay());
+    };
+
+    scheduleNext();
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [text, started, speed, speedVariance, instant]);
 
   const shouldShowCursor = showCursor && (!hideCursorOnComplete || !isComplete);
 

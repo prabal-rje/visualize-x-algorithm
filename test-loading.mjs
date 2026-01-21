@@ -51,6 +51,16 @@ page.on('response', response => {
 console.log('Navigating to app (with fresh cache)...');
 await page.goto('http://localhost:5175/', { waitUntil: 'domcontentloaded', timeout: 60000 });
 
+const captureLoadingOnly = process.env.CAPTURE_LOADING === '1';
+if (captureLoadingOnly) {
+  await page.waitForTimeout(1000);
+  const screenshotPath = process.env.SCREENSHOT_PATH || '/tmp/loading-screenshot.png';
+  await page.screenshot({ path: screenshotPath, fullPage: true });
+  console.log(`Screenshot saved to ${screenshotPath}`);
+  await browser.close();
+  process.exit(0);
+}
+
 // Wait for loading to complete or timeout
 console.log('Waiting for model to load (max 120s)...');
 const startTime = Date.now();
@@ -81,6 +91,53 @@ while (Date.now() - startTime < 120000) {
 const elapsed = Math.round((Date.now() - startTime) / 1000);
 console.log('Test finished after ' + elapsed + 's');
 
+const screenshotPath = process.env.SCREENSHOT_PATH || '/tmp/loading-screenshot.png';
+const shouldStartSimulation =
+  process.env.SIM_START === '1' ||
+  Boolean(process.env.TARGET_CHAPTER) ||
+  Boolean(process.env.STEP_FORWARD) ||
+  process.env.HOVER_VECTOR === '1';
+
+if (shouldStartSimulation) {
+  const beginButton = page.locator('[data-testid="begin-simulation"]');
+  if (await beginButton.isVisible()) {
+    await beginButton.click();
+    await page.waitForTimeout(500);
+  }
+}
+
+if (process.env.TARGET_CHAPTER) {
+  const chapterIndex = Number.parseInt(process.env.TARGET_CHAPTER, 10);
+  if (Number.isFinite(chapterIndex)) {
+    const marker = page.locator(`[data-testid="chapter-marker-${chapterIndex}"]`);
+    if (await marker.isVisible()) {
+      await marker.click();
+      await page.waitForTimeout(400);
+    }
+  }
+}
+
+if (process.env.STEP_FORWARD) {
+  const stepCount = Number.parseInt(process.env.STEP_FORWARD, 10);
+  if (Number.isFinite(stepCount)) {
+    const nextButton = page.getByRole('button', { name: /next/i });
+    for (let i = 0; i < stepCount; i += 1) {
+      if (await nextButton.isVisible()) {
+        await nextButton.click();
+        await page.waitForTimeout(300);
+      }
+    }
+  }
+}
+
+if (process.env.HOVER_VECTOR === '1') {
+  const candidate = page.locator('[data-testid="vector-space-candidate"]').first();
+  if (await candidate.isVisible()) {
+    await candidate.hover();
+    await page.waitForTimeout(300);
+  }
+}
+
 if (process.env.OPEN_CRT_CONTROLS === '1') {
   const handle = page.locator('[data-testid="crt-controls-handle"]');
   if (await handle.isVisible()) {
@@ -90,7 +147,7 @@ if (process.env.OPEN_CRT_CONTROLS === '1') {
 }
 
 // Take screenshot
-await page.screenshot({ path: '/tmp/loading-screenshot.png', fullPage: true });
-console.log('Screenshot saved to /tmp/loading-screenshot.png');
+await page.screenshot({ path: screenshotPath, fullPage: true });
+console.log(`Screenshot saved to ${screenshotPath}`);
 
 await browser.close();

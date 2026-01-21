@@ -11,7 +11,7 @@ Instructions:
 ### 0. Immediate: RPG Chapter Revamp & Verification
 
 #### Pre-Start
- 
+
 
 
 #### Design & Plan
@@ -39,11 +39,7 @@ Instructions:
  
 
 ##### Phase 2.9: Fix Loading BIOS Screen
-
-- [ ] Currently, loading BIOS screen appears on the side-region - when it should be replacing the entire simulation arena ...
-      ONLY WHEN THE LOADING BIOS HAS DISAPPEARED SHOULD THE REGULAR SIMULATION ARENA EVEN BE ALLOWED TO RENDER
-- [ ] Make sure BIOS Loader is in the middle of the screen ... no upper navigation bar, no simulation arena - just marquee and the BIOS Loader ...
-- [ ] Show a type-writer cursor typing a variable speed, remove italic font, fron the justification beneath the chapter title ... 
+ 
 
 #### Phase 3: Embedding + Hover Fix
 - [ ] Add token-level (sub-token) embedding animation flowing into mean pool.
@@ -105,6 +101,15 @@ Instructions:
 ### 11. Design Spec Testing Checklist
 
 ## Completed
+- [x] Confirm all edits stay in project root (no `.worktrees` changes).
+- [x] Currently, loading BIOS screen appears on the side-region - when it should be replacing the entire simulation arena ...
+      ONLY WHEN THE LOADING BIOS HAS DISAPPEARED SHOULD THE REGULAR SIMULATION ARENA EVEN BE ALLOWED TO RENDER
+- [x] Make sure BIOS Loader is in the middle of the screen ... no upper navigation bar, no simulation arena - just marquee and the BIOS Loader ...
+- [x] Show a type-writer cursor typing a variable speed, remove italic font, fron the justification beneath the chapter title ...
+- [x] Update App tests for BIOS-only layout and narration typewriter variance.
+- [x] Update TypewriterText to support variable typing speed + cursor in narration.
+- [x] Remove italic narration styles across chapters 0-5.
+- [x] Playwright screenshot + commit.
 - [x] Replace "Liked", "Replied", "Reposted" with icons rather than just words (aligned and sized in scoring context).
 - [x] Remove words 'Mean Pool' but maintain the spherical signifier of it.
 - [x] Show glowing golden shadow of words flowing into the signifier and then the 128-D vector bubbling with a dimmer shared palette to illustrate tweet embedding.

@@ -58,6 +58,7 @@ describe('App', () => {
   });
 
   it('marks chapter canvas as fixed proportion', () => {
+    useMLStore.getState().setReady();
     render(<App />);
     expect(screen.getByTestId('chapter-canvas')).toHaveAttribute(
       'data-proportion',
@@ -66,6 +67,7 @@ describe('App', () => {
   });
 
   it('marks chapter canvas as viewport-fit', () => {
+    useMLStore.getState().setReady();
     render(<App />);
     expect(screen.getByTestId('chapter-canvas')).toHaveAttribute(
       'data-viewport-fit',
@@ -125,6 +127,10 @@ describe('App', () => {
     useMLStore.getState().setLoading('Initializing embeddings...');
     render(<App />);
     expect(screen.getByTestId('bios-loading')).toBeInTheDocument();
+    expect(screen.getByTestId('marquee')).toBeInTheDocument();
+    expect(screen.queryByTestId('timeline')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('chapter-canvas')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('crt-controls')).not.toBeInTheDocument();
     expect(screen.queryByTestId('config-panel')).not.toBeInTheDocument();
   });
 
@@ -139,6 +145,10 @@ describe('App', () => {
     // When not ready, show BIOS loading
     render(<App />);
     expect(screen.getByTestId('bios-loading')).toBeInTheDocument();
+    expect(screen.getByTestId('marquee')).toBeInTheDocument();
+    expect(screen.queryByTestId('timeline')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('chapter-canvas')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('crt-controls')).not.toBeInTheDocument();
     expect(screen.queryByTestId('config-panel')).not.toBeInTheDocument();
   });
 });

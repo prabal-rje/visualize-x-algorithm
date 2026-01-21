@@ -106,4 +106,29 @@ describe('TypewriterText', () => {
     });
     expect(element.textContent).toBe('AB');
   });
+
+  it('supports variable typing speed when speedVariance is set', () => {
+    const randomSpy = vi.spyOn(Math, 'random').mockReturnValue(0);
+    render(
+      <TypewriterText text="AB" started={true} speed={60} speedVariance={30} />
+    );
+    const element = screen.getByTestId('typewriter-text');
+
+    act(() => {
+      vi.advanceTimersByTime(29);
+    });
+    expect(element.textContent).toBe('');
+
+    act(() => {
+      vi.advanceTimersByTime(1);
+    });
+    expect(element.textContent).toBe('A');
+
+    act(() => {
+      vi.advanceTimersByTime(30);
+    });
+    expect(element.textContent).toBe('AB');
+
+    randomSpy.mockRestore();
+  });
 });

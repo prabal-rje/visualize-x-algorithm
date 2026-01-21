@@ -7,6 +7,18 @@
   position: relative;
 }
 
+.appShell[data-loading='true'] {
+  min-height: min(100vh, 100dvh);
+  grid-template-rows: auto 1fr;
+}
+
+.loadingCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: clamp(320px, 60vh, 640px);
+}
+
 .main {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);

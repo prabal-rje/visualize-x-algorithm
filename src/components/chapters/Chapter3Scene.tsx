@@ -131,6 +131,7 @@ export default function Chapter3Scene({ currentStep, isActive }: Chapter3ScenePr
           text={STEP_NARRATION[currentStep] || STEP_NARRATION[0]}
           started={isActive}
           speed={26}
+          speedVariance={10}
           showCursor={true}
           hideCursorOnComplete={true}
         />

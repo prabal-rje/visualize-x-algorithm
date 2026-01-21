@@ -4,6 +4,8 @@
   flex-direction: column;
   gap: 16px;
   padding: 24px;
+  width: 100%;
+  max-width: 640px;
   background: var(--crt-black, #0a0a0a);
   border: 1px solid var(--phosphor-green, #33ff33);
   font-family: 'VT323', monospace;

@@ -82,6 +82,7 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
           text={STEP_NARRATION[currentStep] || STEP_NARRATION[0]}
           started={isActive}
           speed={24}
+          speedVariance={10}
           showCursor={true}
           hideCursorOnComplete={true}
         />

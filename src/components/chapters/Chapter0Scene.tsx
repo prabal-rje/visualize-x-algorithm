@@ -34,6 +34,7 @@ export default function Chapter0Scene({ currentStep, isActive }: Chapter0ScenePr
           text={STEP_NARRATION[currentStep] || STEP_NARRATION[0]}
           started={isActive}
           speed={24}
+          speedVariance={10}
           showCursor={true}
           hideCursorOnComplete={true}
         />

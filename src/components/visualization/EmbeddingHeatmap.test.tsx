@@ -41,6 +41,11 @@ describe('EmbeddingHeatmap', () => {
     expect(screen.getByText(/128-dim/)).toBeInTheDocument();
   });
 
+  it('renders token pooling pulses when tokenCount provided', () => {
+    render(<EmbeddingHeatmap embedding={mockEmbedding} tokenCount={3} />);
+    expect(screen.getAllByTestId('heatmap-token-pulse')).toHaveLength(3);
+  });
+
   it('applies isActive state', () => {
     render(<EmbeddingHeatmap embedding={mockEmbedding} isActive={true} />);
     const element = screen.getByTestId('embedding-heatmap');

@@ -100,9 +100,11 @@ export default function VectorSpace({
           <span className={styles.pointLabel}>{userPoint.label}</span>
         </div>
       </div>
-      {showHover && hovered?.text ? (
-        <VectorSpaceHover tweet={hovered.text} similarity={hovered.similarity} />
-      ) : null}
+      <div className={styles.hoverSlot} data-testid="vector-space-hover-slot">
+        {showHover && hovered?.text ? (
+          <VectorSpaceHover tweet={hovered.text} similarity={hovered.similarity} />
+        ) : null}
+      </div>
     </div>
   );
 }

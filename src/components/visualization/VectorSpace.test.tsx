@@ -75,6 +75,13 @@ describe('VectorSpace', () => {
     expect(screen.getByText(/EMBEDDING SPACE/)).toBeInTheDocument();
   });
 
+  it('reserves a hover slot to avoid layout shift', () => {
+    render(
+      <VectorSpace userPoint={mockUserPoint} candidates={mockCandidates} />
+    );
+    expect(screen.getByTestId('vector-space-hover-slot')).toBeInTheDocument();
+  });
+
   it('handles empty candidates', () => {
     render(<VectorSpace userPoint={mockUserPoint} candidates={[]} />);
     expect(screen.getByTestId('vector-space-user')).toBeInTheDocument();

@@ -70,6 +70,7 @@
   background: rgba(5, 5, 10, 0.95);
   padding: 4px;
   border-radius: 2px;
+  position: relative;
 }
 
 .cell {
@@ -104,4 +105,42 @@
 
 .container[data-active='false'] .cell {
   animation: none;
+}
+
+.tokenLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.tokenPulse {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 176, 0, 0.6);
+  box-shadow: 0 0 12px rgba(255, 176, 0, 0.7);
+  transform: translate(-50%, -50%) scale(0.2);
+  opacity: 0;
+  animation: token-pulse 1.6s ease-out infinite;
+}
+
+@keyframes token-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.7;
+  }
+  60% {
+    transform: translate(-50%, -50%) scale(1.4);
+    opacity: 0.4;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.8);
+    opacity: 0;
+  }
 }

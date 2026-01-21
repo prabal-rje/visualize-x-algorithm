@@ -5,6 +5,7 @@
   background: rgba(0, 20, 0, 0.95);
   border: 2px solid var(--phosphor-green);
   box-shadow: 0 0 20px rgba(51, 255, 51, 0.3);
+  position: relative;
 }
 
 .header {
@@ -27,6 +28,14 @@
   background: rgba(0, 30, 0, 0.5);
   border: 1px solid rgba(51, 255, 51, 0.3);
   overflow: hidden;
+}
+
+.hoverSlot {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: 220px;
+  pointer-events: none;
 }
 
 /* Grid lines for depth effect */

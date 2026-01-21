@@ -7,6 +7,8 @@ type EmbeddingHeatmapProps = {
   label?: string;
   /** Whether the animation is active */
   isActive?: boolean;
+  /** Number of pooled tokens driving the animation */
+  tokenCount?: number;
 };
 
 // X's Phoenix model uses 128-dimensional embeddings
@@ -87,7 +89,8 @@ function valueToColor(value: number): string {
 export default function EmbeddingHeatmap({
   embedding,
   label = 'EMBEDDING',
-  isActive = true
+  isActive = true,
+  tokenCount = 0
 }: EmbeddingHeatmapProps) {
   // Pad or trim embedding to fit 128 cells (X's Phoenix model dimension)
   const rawCells = Array.from({ length: TOTAL_CELLS }, (_, i) =>
@@ -139,6 +142,18 @@ export default function EmbeddingHeatmap({
               />
             );
           })}
+          {tokenCount > 0 && (
+            <div className={styles.tokenLayer} aria-hidden="true">
+              {Array.from({ length: tokenCount }).map((_, index) => (
+                <span
+                  key={`token-pulse-${index}`}
+                  className={styles.tokenPulse}
+                  data-testid="heatmap-token-pulse"
+                  style={{ animationDelay: `${index * 0.12}s` }}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

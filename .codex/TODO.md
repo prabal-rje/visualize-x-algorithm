@@ -42,11 +42,7 @@ Instructions:
  
 
 #### Phase 3: Embedding + Hover Fix
-- [ ] Add token-level (sub-token) embedding animation flowing into mean pool.
-- [ ] Animate pooled token contributions into 128-d heatmap.
-- [ ] Fix vector space hover flicker (overlay or reserved layout).
-- [ ] Update visualization tests.
-- [ ] Playwright screenshot + commit.
+ 
 
 #### Phase 4: Chapter 3 Split + Height Control
 - [ ] Split Chapter 3 into 4 sub-steps with explanations.
@@ -101,6 +97,11 @@ Instructions:
 ### 11. Design Spec Testing Checklist
 
 ## Completed
+- [x] Add token-level (sub-token) embedding animation flowing into mean pool.
+- [x] Animate pooled token contributions into 128-d heatmap.
+- [x] Fix vector space hover flicker (overlay or reserved layout).
+- [x] Update visualization tests.
+- [x] Playwright screenshot + commit.
 - [x] Confirm all edits stay in project root (no `.worktrees` changes).
 - [x] Currently, loading BIOS screen appears on the side-region - when it should be replacing the entire simulation arena ...
       ONLY WHEN THE LOADING BIOS HAS DISAPPEARED SHOULD THE REGULAR SIMULATION ARENA EVEN BE ALLOWED TO RENDER

@@ -11,9 +11,11 @@ describe('CRTOverlay', () => {
     expect(screen.getByTestId('crt-mask')).toBeInTheDocument();
   });
 
-  it('applies barrel distortion filter to the frame', () => {
+  it('does not apply barrel distortion or frame curvature', () => {
     render(<CRTOverlay />);
     const [frame] = screen.getAllByTestId('crt-frame');
-    expect(frame.style.filter).toContain('url(#barrel-distortion)');
+    expect(frame.style.filter).not.toContain('url(#barrel-distortion)');
+    expect(frame.style.transform).toBe('');
+    expect(frame.style.borderRadius).toBe('');
   });
 });

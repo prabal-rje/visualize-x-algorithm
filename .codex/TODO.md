@@ -131,6 +131,7 @@ Instructions:
 - [ ] Reduced motion mode disables animations.
 
 ## Completed
+- [x] Remove CRT curvature + rounded frame effects (no barrel distortion or curvature control).
 - [x] Fix barrel distortion map so the frame isn't vertically shifted.
 - [x] Add phosphor control knob (persistence + glow) to CRT controls.
 - [x] Apply global phosphor glow + tracer afterglow across UI text.

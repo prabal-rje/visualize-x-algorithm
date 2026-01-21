@@ -69,23 +69,6 @@ export default function CRTControls({ config, onChange }: CRTControlsProps) {
       </div>
 
       <div className={styles.section}>
-        <label className={styles.label} htmlFor="curvature">
-          Curvature
-        </label>
-        <input
-          className={styles.slider}
-          data-testid="crt-slider-curvature"
-          id="curvature"
-          max={1.5}
-          min={0}
-          onInput={setNumber('curvature')}
-          step={0.1}
-          type="range"
-          value={config.curvature}
-        />
-      </div>
-
-      <div className={styles.section}>
         <label className={styles.label} htmlFor="aberration">
           RGB Shift
         </label>

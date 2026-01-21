@@ -1,5 +1,4 @@
 import type { CSSProperties, PropsWithChildren } from 'react';
-import { BARREL_MAP_DATA_URI } from './barrelDistortion';
 import { DEFAULT_CRT_CONFIG } from './crtConfig';
 import type { CRTConfig } from './crtConfig';
 import styles from '../../styles/crt.module.css';
@@ -10,8 +9,6 @@ type CRTOverlayProps = PropsWithChildren<{
 
 export default function CRTOverlay({ children, config }: CRTOverlayProps) {
   const crtConfig = config ?? DEFAULT_CRT_CONFIG;
-  const frameRadius = 20;
-  const barrelScale = Math.round((crtConfig.power ? crtConfig.curvature : 0) * 32);
   const contentOpacity = crtConfig.power ? 1 : 0;
   const phosphorIntensity = Math.min(Math.max(crtConfig.phosphorIntensity, 0), 1);
   const phosphorPersistenceMs = Math.round(400 + phosphorIntensity * 1000);
@@ -24,12 +21,9 @@ export default function CRTOverlay({ children, config }: CRTOverlayProps) {
   }) brightness(${crtConfig.power ? crtConfig.brightness : 0}) saturate(${
     crtConfig.power ? 1.1 : 0
   })`;
-  const filterChain = `url(#barrel-distortion) ${frameFilter}`;
 
   const frameStyle = {
-    borderRadius: `${frameRadius}px`,
-    transform: `scale(${1 - crtConfig.curvature * 0.015})`,
-    filter: filterChain,
+    filter: frameFilter,
     boxShadow: `inset 0 0 ${100 * crtConfig.vignetteIntensity}px rgba(0,0,0,0.9), 0 0 40px var(--crt-glow)`
   };
   const rootStyle: CSSProperties & Record<string, string> = {
@@ -42,24 +36,6 @@ export default function CRTOverlay({ children, config }: CRTOverlayProps) {
 
   return (
     <div className={styles.crtRoot} data-testid="crt-overlay" style={rootStyle}>
-      <svg className={styles.crtFilter} aria-hidden="true">
-        <filter
-          id="barrel-distortion"
-          x="-20%"
-          y="-20%"
-          width="140%"
-          height="140%"
-        >
-          <feImage href={BARREL_MAP_DATA_URI} result="barrelMap" />
-          <feDisplacementMap
-            in="SourceGraphic"
-            in2="barrelMap"
-            scale={barrelScale}
-            xChannelSelector="R"
-            yChannelSelector="G"
-          />
-        </filter>
-      </svg>
       <div className={styles.crtFrame} style={frameStyle} data-testid="crt-frame">
         <div className={styles.crtContent} style={{ opacity: contentOpacity }}>
           {children}

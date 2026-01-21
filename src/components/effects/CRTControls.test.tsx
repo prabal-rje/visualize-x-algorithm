@@ -5,10 +5,10 @@ import { DEFAULT_CRT_CONFIG } from './crtConfig';
 import CRTControls, { createNumberUpdater } from './CRTControls';
 
 describe('CRTControls', () => {
-  it('renders core sliders', () => {
+  it('renders core sliders without curvature control', () => {
     render(<CRTControls config={DEFAULT_CRT_CONFIG} onChange={() => undefined} />);
     expect(screen.getByTestId('crt-slider-scanlines')).toBeInTheDocument();
-    expect(screen.getByTestId('crt-slider-curvature')).toBeInTheDocument();
+    expect(screen.queryByTestId('crt-slider-curvature')).not.toBeInTheDocument();
     expect(screen.getByTestId('crt-slider-noise')).toBeInTheDocument();
     expect(screen.getByTestId('crt-slider-phosphor')).toBeInTheDocument();
   });

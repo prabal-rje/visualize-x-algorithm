@@ -25,13 +25,6 @@
   text-shadow: inherit;
 }
 
-.crtFilter {
-  position: absolute;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-}
-
 .crtAfterglow {
   position: absolute;
   inset: 0;

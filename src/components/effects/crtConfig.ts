@@ -1,6 +1,5 @@
 export type CRTConfig = {
   power: boolean;
-  curvature: number;
   phosphorIntensity: number;
   scanlineIntensity: number;
   chromaticAberration: number;
@@ -11,7 +10,6 @@ export type CRTConfig = {
 
 export const DEFAULT_CRT_CONFIG: CRTConfig = {
   power: true,
-  curvature: 0.8,
   phosphorIntensity: 0.7,
   scanlineIntensity: 0.25,
   chromaticAberration: 0.6,

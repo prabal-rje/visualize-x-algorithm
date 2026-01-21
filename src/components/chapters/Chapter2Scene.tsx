@@ -8,6 +8,7 @@ import EmbeddingHeatmap from '../visualization/EmbeddingHeatmap';
 import VectorSpace from '../visualization/VectorSpace';
 import CandidateStreams from '../visualization/CandidateStreams';
 import TypewriterText from '../visualization/TypewriterText';
+import TokenizationFlow from '../visualization/TokenizationFlow';
 
 type Chapter2SceneProps = {
   /** Current step (0 = user tower, 1 = similarity, 2 = merging) */
@@ -209,11 +210,14 @@ export default function Chapter2Scene({
             {isLoading ? (
               <div className={styles.loading}>Computing embedding...</div>
             ) : (
-              <EmbeddingHeatmap
-                embedding={userEmbedding}
-                label="USER EMBEDDING"
-                isActive={isActive}
-              />
+              <>
+                <TokenizationFlow tweet={tweetText} isActive={isActive} />
+                <EmbeddingHeatmap
+                  embedding={userEmbedding}
+                  label="USER EMBEDDING"
+                  isActive={isActive}
+                />
+              </>
             )}
           </div>
         )}

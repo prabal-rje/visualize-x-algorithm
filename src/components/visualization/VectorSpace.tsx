@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import styles from '../../styles/vector-space.module.css';
+import VectorSpaceHover from './VectorSpaceHover';
 
 type Point = {
   x: number; // 0-100 percentage
@@ -37,6 +39,9 @@ export default function VectorSpace({
   label = 'VECTOR SPACE',
   isActive = true
 }: VectorSpaceProps) {
+  const [hovered, setHovered] = useState<CandidatePoint | null>(null);
+  const showHover = hovered && hovered.text;
+
   return (
     <div
       className={styles.container}
@@ -68,6 +73,11 @@ export default function VectorSpace({
               top: `${candidate.y}%`,
               animationDelay: `${index * 0.1}s`
             }}
+            onMouseEnter={() => setHovered(candidate)}
+            onMouseLeave={() => setHovered(null)}
+            onFocus={() => setHovered(candidate)}
+            onBlur={() => setHovered(null)}
+            tabIndex={0}
             title={candidate.text ? `${candidate.text}\n\nSimilarity: ${candidate.similarity.toFixed(3)}` : undefined}
           >
             <div className={styles.pointDot} />
@@ -90,6 +100,9 @@ export default function VectorSpace({
           <span className={styles.pointLabel}>{userPoint.label}</span>
         </div>
       </div>
+      {showHover && hovered?.text ? (
+        <VectorSpaceHover tweet={hovered.text} similarity={hovered.similarity} />
+      ) : null}
     </div>
   );
 }

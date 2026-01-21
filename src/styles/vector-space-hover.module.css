@@ -1,0 +1,38 @@
+.container {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(51, 255, 51, 0.4);
+  background: rgba(0, 15, 0, 0.85);
+  box-shadow: 0 0 16px rgba(51, 255, 51, 0.25);
+  display: grid;
+  gap: 6px;
+}
+
+.label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(51, 255, 51, 0.7);
+}
+
+.tweet {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--phosphor-green);
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: rgba(255, 176, 0, 0.9);
+}
+
+.metaLabel {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.metaValue {
+  font-weight: bold;
+}

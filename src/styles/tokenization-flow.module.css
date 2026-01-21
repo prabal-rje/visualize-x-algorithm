@@ -1,0 +1,166 @@
+.container {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(51, 255, 51, 0.35);
+  background: rgba(5, 15, 5, 0.85);
+  box-shadow: inset 0 0 20px rgba(51, 255, 51, 0.1);
+}
+
+.header {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.flow {
+  display: grid;
+  grid-template-columns: 1.2fr auto 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.tokens {
+  display: grid;
+  gap: 8px;
+}
+
+.sectionLabel {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(51, 255, 51, 0.8);
+}
+
+.tokenList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.token {
+  border: 1px solid rgba(51, 255, 51, 0.4);
+  padding: 2px 6px;
+  font-size: 12px;
+  background: rgba(0, 20, 0, 0.7);
+  box-shadow: 0 0 8px rgba(51, 255, 51, 0.2);
+}
+
+.tokenEllipsis {
+  font-size: 14px;
+  color: rgba(255, 176, 0, 0.8);
+}
+
+.pool {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  display: grid;
+  place-items: center;
+}
+
+.poolLabel {
+  position: absolute;
+  top: -16px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--phosphor-amber);
+}
+
+.poolCore {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 176, 0, 0.2);
+  box-shadow: 0 0 12px rgba(255, 176, 0, 0.6);
+}
+
+.poolRing {
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 176, 0, 0.4);
+  animation: pool-pulse 1.6s ease-in-out infinite;
+}
+
+.vector {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+}
+
+.vectorGrid {
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  gap: 2px;
+  width: 176px;
+  height: 88px;
+}
+
+.vectorCell {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 255, 127, 0.18);
+  box-shadow: 0 0 6px rgba(0, 255, 127, 0.2);
+}
+
+.container[data-active='true'] .token {
+  animation: token-float 1.8s ease-in-out infinite;
+}
+
+.container[data-active='true'] .vectorCell {
+  animation: vector-pulse 2.2s ease-in-out infinite;
+}
+
+.container[data-active='false'] .token,
+.container[data-active='false'] .vectorCell,
+.container[data-active='false'] .poolRing {
+  animation: none;
+}
+
+@keyframes token-float {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+@keyframes pool-pulse {
+  0%,
+  100% {
+    transform: scale(0.95);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+@keyframes vector-pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 900px) {
+  .flow {
+    grid-template-columns: 1fr;
+  }
+
+  .pool {
+    justify-self: center;
+  }
+}

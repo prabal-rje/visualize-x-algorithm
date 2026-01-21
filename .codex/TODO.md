@@ -53,9 +53,7 @@ Instructions:
 #### Phase 6: Chapter 5 Split + Delivery Feedback
 
 #### Pre-Finish
-- [ ] Run Playwright end-state screenshot + final tests.
-- [ ] Review `git diff`, fix style issues, ensure tests pass.
-- [ ] Move completed tasks to Completed and ensure TODO empty.
+ 
 
 ### 0. CRT Fidelity Fixes
 
@@ -83,6 +81,9 @@ Instructions:
 ### 11. Design Spec Testing Checklist
 
 ## Completed
+- [x] Run Playwright end-state screenshot + final tests.
+- [x] Review `git diff`, fix style issues, ensure tests pass.
+- [x] Move completed tasks to Completed and ensure TODO empty.
 - [x] Add input tweet performance summary (below/med/above avg).
 - [x] Add reach + audience delivery breakdown.
 - [x] Add avatar reactions (like/comment/retweet bursts).

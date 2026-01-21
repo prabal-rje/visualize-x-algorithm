@@ -25,6 +25,7 @@ type ConfigState = {
   setTweetText: (text: string) => void;
   selectSampleTweet: (id: string) => void;
   shuffleSampleTweet: () => void;
+  setAudienceMix: (mix: AudienceMix) => void;
   setAudienceMixValue: (id: AudienceId, value: number) => void;
   beginSimulation: () => void;
   resetSimulation: () => void;
@@ -65,6 +66,7 @@ export const useConfigStore = create<ConfigState>()(
         if (!sample) return;
         set({ sampleTweetId: sample.id, tweetText: sample.text });
       },
+      setAudienceMix: (mix) => set({ audienceMix: mix }),
       setAudienceMixValue: (id, value) => {
         const clamped = Math.max(0, Math.min(100, value));
         set((state) => ({

@@ -51,7 +51,7 @@ describe('ConfigPanel', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /continue to audience/i }));
     expect(screen.getByTestId('step-audience')).toBeInTheDocument();
-    expect(screen.getByTestId('audience-slider-tech')).toBeInTheDocument();
+    expect(screen.getByTestId('audience-chip-tech')).toBeInTheDocument();
     expect(screen.queryByTestId('step-persona')).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: /continue to tweet/i }));
@@ -93,6 +93,15 @@ describe('ConfigPanel', () => {
     expect(
       screen.getByText(/Using defaults: AI\/ML Researcher persona/i)
     ).toBeInTheDocument();
+  });
+
+  it('toggles audience selections via multi-select chips', () => {
+    render(<ConfigPanel />);
+    fireEvent.click(screen.getByRole('button', { name: /continue to audience/i }));
+    const chip = screen.getByTestId('audience-chip-tech');
+    expect(chip).toHaveAttribute('aria-pressed', 'true');
+    fireEvent.click(chip);
+    expect(chip).toHaveAttribute('aria-pressed', 'false');
   });
 
   it('renders persona icons', () => {

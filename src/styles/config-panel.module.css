@@ -212,42 +212,37 @@
 
 .audienceList {
   display: grid;
-  gap: 12px;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
-.audienceRow {
+.audienceChip,
+.audienceChipActive {
+  border: 1px solid rgba(51, 255, 51, 0.3);
+  background: rgba(0, 18, 0, 0.6);
+  color: var(--phosphor-green);
+  padding: 10px 12px;
+  text-align: left;
   display: grid;
-  gap: 8px;
-  grid-template-columns: 1fr 2fr auto;
-  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.audienceSlider {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 6px;
-  background: rgba(51, 255, 51, 0.2);
-  border: 1px solid rgba(51, 255, 51, 0.4);
+.audienceChipActive {
+  border-color: var(--phosphor-amber);
+  box-shadow: 0 0 12px rgba(255, 176, 0, 0.3);
 }
 
-.audienceSlider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 12px;
-  height: 12px;
-  background: var(--phosphor-green);
-  box-shadow: 0 0 10px var(--phosphor-green);
+.audienceLabel {
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-.audienceSlider::-moz-range-thumb {
-  width: 12px;
-  height: 12px;
-  background: var(--phosphor-green);
-  border: none;
-  box-shadow: 0 0 10px var(--phosphor-green);
-}
-
-.audienceValue {
-  color: var(--phosphor-amber);
+.audienceMeta {
+  font-size: 11px;
+  color: rgba(51, 255, 51, 0.7);
 }
 
 .stepActions {

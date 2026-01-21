@@ -5,6 +5,30 @@ import { useConfigStore } from '../../stores/config';
 import styles from '../../styles/config-panel.module.css';
 
 const MAX_TWEET_LENGTH = 280;
+type AudienceId = (typeof AUDIENCES)[number]['id'];
+type PersonaId = (typeof PERSONAS)[number]['id'];
+
+const PERSONA_AUDIENCE_DEFAULTS: Partial<Record<PersonaId, AudienceId[]>> = {
+  'ai-researcher': ['tech', 'founders', 'news'],
+  'software-engineer': ['tech', 'creators', 'students'],
+  'tech-founder': ['founders', 'investors', 'tech'],
+  'venture-capitalist': ['investors', 'founders', 'news'],
+  'data-scientist': ['tech', 'news', 'students'],
+  'cybersecurity-pro': ['tech', 'news', 'founders'],
+  'indie-hacker': ['creators', 'tech', 'founders'],
+  'product-manager': ['tech', 'creators', 'founders'],
+  'content-creator': ['creators', 'casual', 'news'],
+  'tech-reporter': ['news', 'tech', 'casual']
+};
+
+const buildAudienceMix = (selectedIds: AudienceId[]) => {
+  const count = selectedIds.length;
+  const share = count > 0 ? 100 / count : 0;
+  return AUDIENCES.reduce<Record<AudienceId, number>>((acc, audience) => {
+    acc[audience.id] = selectedIds.includes(audience.id) ? share : 0;
+    return acc;
+  }, {} as Record<AudienceId, number>);
+};
 
 const getPersonaInitials = (name: string) => {
   const tokens = name
@@ -25,7 +49,7 @@ export default function ConfigPanel() {
   const setTweetText = useConfigStore((state) => state.setTweetText);
   const shuffleSampleTweet = useConfigStore((state) => state.shuffleSampleTweet);
   const audienceMix = useConfigStore((state) => state.audienceMix);
-  const setAudienceMixValue = useConfigStore((state) => state.setAudienceMixValue);
+  const setAudienceMix = useConfigStore((state) => state.setAudienceMix);
   const beginSimulation = useConfigStore((state) => state.beginSimulation);
 
   const [step, setStep] = useState<'persona' | 'audience' | 'tweet'>('persona');
@@ -67,6 +91,28 @@ export default function ConfigPanel() {
     };
   }, []);
 
+  const selectedAudienceIds = AUDIENCES.filter(
+    (audience) => (audienceMix[audience.id] ?? 0) > 0
+  ).map((audience) => audience.id);
+
+  const handleAudienceToggle = (audienceId: AudienceId) => {
+    setAudienceTouched(true);
+    const nextSelected = selectedAudienceIds.includes(audienceId)
+      ? selectedAudienceIds.filter((id) => id !== audienceId)
+      : [...selectedAudienceIds, audienceId];
+    if (nextSelected.length === 0) {
+      return;
+    }
+    setAudienceMix(buildAudienceMix(nextSelected));
+  };
+
+  const applyPersonaDefaults = (personaId: PersonaId) => {
+    const defaults =
+      PERSONA_AUDIENCE_DEFAULTS[personaId] ??
+      (AUDIENCES.map((audience) => audience.id) as AudienceId[]);
+    setAudienceMix(buildAudienceMix(defaults));
+  };
+
   return (
     <div className={styles.panel} data-testid="config-panel">
       {toastMessage && <div className={styles.toast}>{toastMessage}</div>}
@@ -87,6 +133,9 @@ export default function ConfigPanel() {
                 onClick={() => {
                   setPersonaId(persona.id);
                   setPersonaTouched(true);
+                  if (!audienceTouched) {
+                    applyPersonaDefaults(persona.id);
+                  }
                 }}
               >
                 <div className={styles.personaHeader}>
@@ -111,7 +160,7 @@ export default function ConfigPanel() {
             <button
               className={styles.stepButton}
               onClick={() => {
-                if (!personaTouched) {
+                if (!personaTouched && !audienceTouched) {
                   showDefaultsToast();
                 }
                 setStep('audience');
@@ -128,27 +177,26 @@ export default function ConfigPanel() {
         <section className={styles.section} data-testid="step-audience">
           <h3 className={styles.sectionTitle}>Audience Mix</h3>
           <div className={styles.audienceList}>
-            {AUDIENCES.map((audience) => (
-              <label key={audience.id} className={styles.audienceRow}>
-                <span>{audience.label}</span>
-                <input
-                  className={styles.audienceSlider}
-                  data-testid={`audience-slider-${audience.id}`}
-                  max={100}
-                  min={0}
-                  onChange={(event) => {
-                    setAudienceMixValue(audience.id, Number(event.target.value));
-                    setAudienceTouched(true);
-                  }}
-                  step={5}
-                  type="range"
-                  value={audienceMix[audience.id] ?? 0}
-                />
-                <span className={styles.audienceValue}>
-                  {Math.round(audienceMix[audience.id] ?? 0)}%
-                </span>
-              </label>
-            ))}
+            {AUDIENCES.map((audience) => {
+              const isSelected = selectedAudienceIds.includes(audience.id);
+              return (
+                <button
+                  key={audience.id}
+                  type="button"
+                  data-testid={`audience-chip-${audience.id}`}
+                  className={
+                    isSelected ? styles.audienceChipActive : styles.audienceChip
+                  }
+                  aria-pressed={isSelected}
+                  onClick={() => handleAudienceToggle(audience.id)}
+                >
+                  <span className={styles.audienceLabel}>{audience.label}</span>
+                  <span className={styles.audienceMeta}>
+                    {isSelected ? 'Selected' : 'Tap to add'}
+                  </span>
+                </button>
+              );
+            })}
           </div>
           <div className={styles.stepActions}>
             <button
@@ -161,7 +209,7 @@ export default function ConfigPanel() {
             <button
               className={styles.stepButton}
               onClick={() => {
-                if (!audienceTouched) {
+                if (!audienceTouched && !personaTouched) {
                   showDefaultsToast();
                 }
                 setStep('tweet');

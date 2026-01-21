@@ -9,7 +9,6 @@ Instructions:
 ## Stack (Top = next)
 
 ### 1. Phase 1: Foundation
-- [ ] Configure Tailwind with custom CSS variables from spec (Section 1.2.1).
 - [ ] Implement CRT overlay effects (scanlines, vignette, barrel distortion).
 - [ ] Implement phosphor text component with ghosting.
 - [ ] Implement screen flicker effect.
@@ -137,6 +136,7 @@ Instructions:
 - [ ] Reduced motion mode disables animations.
 
 ## Completed
+- [x] Configure Tailwind with custom CSS variables from spec (Section 1.2.1).
 - [x] Read full implementation brief, design spec, and appendix.
 - [x] Create TODO stack file with instructions.
 - [x] Update `.codex/AGENTS.md` with coding style and TODO guidance.

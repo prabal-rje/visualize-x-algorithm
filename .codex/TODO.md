@@ -12,7 +12,6 @@ Instructions:
 
 
 ### 2. Phase 2: Configuration Panel
-- [ ] Implement persona selector (16 personas from appendix Section A).
 - [ ] Populate sample tweets from appendix Section C (full dataset).
 - [ ] Implement audience mix sliders (8 audiences from appendix Section B).
 - [ ] Implement tweet input with character counter.
@@ -131,6 +130,7 @@ Instructions:
 - [ ] Reduced motion mode disables animations.
 
 ## Completed
+- [x] Implement persona selector (16 personas from appendix Section A).
 - [x] Add persona technicality mapping (explicit list, default mode).
 - [x] Implement marquee with attribution data from appendix (Section F).
 - [x] Set up Google Fonts (VT323, Press Start 2P, IBM Plex Mono).

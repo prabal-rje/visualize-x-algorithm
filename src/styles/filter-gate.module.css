@@ -75,13 +75,11 @@
 .tweet[data-status='pass'] {
   border-color: rgba(51, 255, 51, 0.7);
   box-shadow: 0 0 8px rgba(51, 255, 51, 0.4);
-  animation: pass-flow 1.6s ease-in-out infinite;
 }
 
 .tweet[data-status='fail'] {
   border-color: rgba(255, 51, 51, 0.7);
   color: rgba(255, 120, 120, 0.9);
-  animation: fail-flow 1.6s ease-in-out infinite;
 }
 
 .scanline {
@@ -121,6 +119,14 @@
   color: var(--phosphor-green);
 }
 
+.container[data-active='true'] .tweet[data-status='pass'] {
+  animation: pass-flow 1.6s ease-in-out infinite;
+}
+
+.container[data-active='true'] .tweet[data-status='fail'] {
+  animation: fail-out 1.4s ease-in forwards;
+}
+
 .container[data-active='false'] .scanline,
 .container[data-active='false'] .tweet[data-status='pass'],
 .container[data-active='false'] .tweet[data-status='fail'] {
@@ -151,14 +157,17 @@
   }
 }
 
-@keyframes fail-flow {
-  0%,
-  100% {
+@keyframes fail-out {
+  0% {
     transform: translateX(0);
-    opacity: 0.9;
+    opacity: 1;
   }
-  50% {
-    transform: translateX(10px);
+  60% {
+    transform: translateX(14px) scale(0.98);
     opacity: 0.4;
+  }
+  100% {
+    transform: translateX(24px) scale(0.92);
+    opacity: 0;
   }
 }

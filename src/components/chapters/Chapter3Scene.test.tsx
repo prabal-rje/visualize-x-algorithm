@@ -10,8 +10,13 @@ describe('Chapter3Scene', () => {
     expect(screen.getAllByTestId('filter-gate').length).toBeGreaterThan(0);
   });
 
-  it('renders 4th step label for content filters', () => {
-    render(<Chapter3Scene currentStep={3} isActive={true} />);
-    expect(screen.getByText(/3D: Content Filters/i)).toBeInTheDocument();
+  it('renders filter stack for the active step', () => {
+    render(<Chapter3Scene currentStep={0} isActive={true} />);
+    expect(screen.getByTestId('filter-stack')).toBeInTheDocument();
+  });
+
+  it('renders recency step label for the final step', () => {
+    render(<Chapter3Scene currentStep={2} isActive={true} />);
+    expect(screen.getByText(/3C: Recency & History/i)).toBeInTheDocument();
   });
 });

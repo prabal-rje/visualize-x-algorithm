@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import styles from '../../styles/chapter3-scene.module.css';
 import { useConfigStore } from '../../stores/config';
 import FilterCascade from '../visualization/FilterCascade';
@@ -11,22 +12,13 @@ type Chapter3SceneProps = {
 const STEP_NARRATION = [
   'First pass: strip duplicates and near-identical reposts to keep the pool clean...',
   'Social graph filters remove blocked, muted, and self-authored posts...',
-  'Recency and history filters drop stale or already-seen candidates...',
-  'Content filters sweep for muted keywords and ineligible subscriptions...'
+  'Recency, history, and muted keywords filters drop stale or already-seen candidates...'
 ];
 
 const STEP_LABELS = [
   '3A: Deduplication',
   '3B: Social Graph',
-  '3C: Recency & History',
-  '3D: Content Filters'
-];
-
-const FUNCTION_LABELS = [
-  'DropDuplicatesFilter::filter()',
-  'AuthorSocialgraphFilter::filter()',
-  'AgeFilter::filter()',
-  'MutedKeywordFilter::filter()'
+  '3C: Recency & History'
 ];
 
 const STEP_CALLOUTS = [
@@ -44,14 +36,8 @@ const STEP_CALLOUTS = [
   },
   {
     title: 'Recency + history sweep',
-    detail: 'Stale or already-seen tweets are removed from the candidate stream.',
-    focus: 'RECENCY',
-    userStatus: 'PASS'
-  },
-  {
-    title: 'Content safety pass',
-    detail: 'Muted keywords and ineligible subscriptions are filtered out.',
-    focus: 'CONTENT FILTERS',
+    detail: 'Stale, already-seen, and muted-keyword tweets are removed from the candidate stream.',
+    focus: 'RECENCY + CONTENT',
     userStatus: 'PASS'
   }
 ];
@@ -142,14 +128,27 @@ const GATES = [
 const GATES_BY_STEP = [
   [GATES[0]],
   [GATES[1], GATES[2]],
-  [GATES[3], GATES[4]],
-  [GATES[5]]
+  [GATES[3], GATES[4], GATES[5]]
 ];
 
 export default function Chapter3Scene({ currentStep, isActive }: Chapter3SceneProps) {
   const tweetText = useConfigStore((state) => state.tweetText);
   const gatesForStep = GATES_BY_STEP[currentStep] || GATES_BY_STEP[0];
   const callout = STEP_CALLOUTS[currentStep] || STEP_CALLOUTS[0];
+  const [activeGateIndex, setActiveGateIndex] = useState(0);
+
+  useEffect(() => {
+    if (!isActive) {
+      setActiveGateIndex(0);
+      return;
+    }
+    setActiveGateIndex(0);
+    if (gatesForStep.length <= 1) return;
+    const interval = window.setInterval(() => {
+      setActiveGateIndex((prev) => (prev + 1) % gatesForStep.length);
+    }, 1600);
+    return () => window.clearInterval(interval);
+  }, [gatesForStep.length, currentStep, isActive]);
 
   return (
     <div
@@ -193,17 +192,25 @@ export default function Chapter3Scene({ currentStep, isActive }: Chapter3ScenePr
         </div>
         <FilterCascade
           gates={gatesForStep}
-          activeGateIndex={0}
+          activeGateIndex={activeGateIndex}
           highlightTweet={tweetText}
           isActive={isActive}
         />
       </div>
 
-      <div className={styles.functionRef}>
-        <span className={styles.funcLabel}>FUNCTION:</span>
-        <code className={styles.funcName}>
-          {FUNCTION_LABELS[currentStep] || FUNCTION_LABELS[0]}
-        </code>
+      <div className={styles.functionRef} data-testid="filter-stack">
+        <span className={styles.funcLabel}>FUNCTION STACK</span>
+        <div className={styles.funcList}>
+          {gatesForStep.map((gate, index) => (
+            <span
+              key={gate.id}
+              className={styles.funcItem}
+              data-active={index === activeGateIndex}
+            >
+              {gate.functionName}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );

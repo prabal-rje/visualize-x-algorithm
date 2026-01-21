@@ -9,7 +9,7 @@ Instructions:
 ## Stack (Top = next)
 
 ### 1. Phase 1: Foundation
-- [ ] Implement marquee with attribution data from appendix (Section F).
+
 
 ### 2. Phase 2: Configuration Panel
 - [ ] Implement persona selector (16 personas from appendix Section A).
@@ -131,6 +131,7 @@ Instructions:
 - [ ] Reduced motion mode disables animations.
 
 ## Completed
+- [x] Implement marquee with attribution data from appendix (Section F).
 - [x] Set up Google Fonts (VT323, Press Start 2P, IBM Plex Mono).
 - [x] Create basic layout shell (marquee, canvas area, timeline, panels).
 - [x] Implement CRT overlay effects (scanlines, vignette, barrel distortion).

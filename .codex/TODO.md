@@ -8,6 +8,79 @@ Instructions:
 
 ## Stack (Top = next)
 
+### 0. Work Review 2: UX Review Across Device Sizes
+
+#### Pre-Start
+- [ ] Mirror review checklist into `.codex/work_review_2/FEEDBACK_TODO.md`.
+- [ ] Capture baseline Chrome MCP screenshots (desktop/tablet/mobile).
+
+#### Design & Plan
+- [ ] Write design notes for Work Review 2 fixes.
+- [ ] Write implementation plan for Work Review 2 fixes.
+
+#### Phase 1: Critical UX Fixes
+- [ ] Add defaults warning toast when proceeding without explicit selections.
+- [ ] Fix embedding hover tooltip readability and layering.
+- [ ] Make attention weights hover show meaningful details.
+- [ ] Show user's tweet in Top-K ranking (highlighted).
+- [ ] Round MOMENTUM to max 1 decimal place.
+
+#### Phase 2: Mission Prep (Ch0) UX
+- [ ] Remove redundant Mission Loadout header across sub-steps.
+- [ ] Remove Expert Mode checkbox and related UI.
+- [ ] Replace audience sliders with multi-select boxes + persona-based defaults.
+- [ ] Strengthen RPG framing copy for loadout.
+
+#### Phase 3: Chapter 1 (Request) Improvements
+- [ ] Consolidate function references to one location.
+- [ ] Add engagement history emoji flow visualization.
+- [ ] Add USER_PROFILE avatar visualization.
+- [ ] Merge redundant pages; show function stack instead.
+
+#### Phase 4: Chapter 2 (Gathering) Improvements
+- [ ] Ensure token list fully visible (scroll/resize).
+- [ ] Animate tokenization → embeddings → pooling → final vector sequence.
+- [ ] Fix function bar to match encoding step.
+- [ ] Vary similarity dot brightness/size; hover on user shows text.
+- [ ] Animate tweet placement and retrieval (Thunder/Phoenix).
+
+#### Phase 5: Chapter 3 (Filtering) Improvements
+- [ ] Consolidate filter pages with function stack.
+- [ ] Animate posts being filtered out.
+
+#### Phase 6: Chapter 4 (Scoring) Improvements
+- [ ] Animate attention weight bars progressively.
+- [ ] Merge combining scores + author penalty steps.
+- [ ] Animate P(like)/P(retweet) calculation + sum.
+
+#### Phase 7: Chapter 5 (Delivery) Improvements
+- [ ] Replace candidate labels with tweet previews.
+- [ ] Add fake avatar library for simulated users.
+- [ ] Animate engagement cascade with emojis.
+- [ ] Progressive stat reveal for delivery report.
+
+#### Phase 8: Mobile + Tablet Responsiveness
+- [ ] Fix title truncation + ellipsis handling on mobile.
+- [ ] Fix chapter tab overflow (scroll or menu) + indicators.
+- [ ] Fix nav buttons (full-width or icon+tooltips).
+- [ ] Stack persona grid to single column on mobile.
+- [ ] Center CTA buttons and make full-width on mobile.
+- [ ] Increase touch target sizes (>=44px) and slider size.
+- [ ] Hide/collapse sidebar and CRT CTRL on mobile.
+- [ ] Tablet: restore full-text nav buttons + padding tweaks.
+
+#### Phase 9: Technical + Global Enhancements
+- [ ] Collapse sidebar to icon/expandable panel.
+- [ ] Use Web Worker for embeddings (async).
+- [ ] Use Matryoshka N=30 for similarity.
+- [ ] Add function stack header (desktop marquee/mobile vertical).
+- [ ] Clarify CRT CTRL button (tooltip/label).
+
+#### Phase 10: Verification
+- [ ] Chrome MCP screenshots at multiple viewports + zoom levels.
+- [ ] Run targeted tests and fix failures.
+- [ ] Move completed tasks to Completed.
+
 ### 0. Immediate: RPG Chapter Revamp & Verification
 
 #### Pre-Start

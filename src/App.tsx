@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import Chapter1Scene from './components/chapters/Chapter1Scene';
 import Chapter2Scene from './components/chapters/Chapter2Scene';
+import Chapter3Scene from './components/chapters/Chapter3Scene';
+import Chapter4Scene from './components/chapters/Chapter4Scene';
+import Chapter5Scene from './components/chapters/Chapter5Scene';
 import CRTControls from './components/effects/CRTControls';
 import { DEFAULT_CRT_CONFIG } from './components/effects/crtConfig';
 import type { CRTConfig } from './components/effects/crtConfig';
@@ -15,9 +18,12 @@ import ChapterWrapper from './components/visualization/ChapterWrapper';
 import MissionReport from './components/visualization/MissionReport';
 import { getFunctionAtPosition } from './data/chapters';
 import { useSimulationState } from './hooks/useSimulationState';
+import { useViewport } from './hooks/useViewport';
 import { initializeEmbedder, isInitialized } from './ml/embeddings';
+import { setAmbientDrone } from './audio/engine';
 import { useConfigStore } from './stores/config';
 import { useMLStore } from './stores/ml';
+import styles from './styles/app-shell.module.css';
 
 function App() {
   const [crtConfig, setCrtConfig] = useState<CRTConfig>(DEFAULT_CRT_CONFIG);
@@ -30,6 +36,7 @@ function App() {
   const setProgress = useMLStore((state) => state.setProgress);
   const setReady = useMLStore((state) => state.setReady);
   const setError = useMLStore((state) => state.setError);
+  const { isMobile, prefersReducedMotion, prefersHighContrast } = useViewport();
 
   // Initialize embedder on mount (downloads and caches Nomic model)
   useEffect(() => {
@@ -51,6 +58,17 @@ function App() {
         setError(err instanceof Error ? err.message : 'Failed to load model');
       });
   }, [mlStatus, setLoading, setProgress, setReady, setError]);
+
+  useEffect(() => {
+    if (!simulationStarted || mlStatus !== 'ready') {
+      void setAmbientDrone(false);
+      return undefined;
+    }
+    void setAmbientDrone(true);
+    return () => {
+      void setAmbientDrone(false);
+    };
+  }, [simulationStarted, mlStatus]);
 
   // Get current function info from simulation position
   const { position } = simulationState;
@@ -101,30 +119,50 @@ function App() {
             <Chapter2Scene currentStep={subChapterIndex} isActive={true} />
           </ChapterWrapper>
         )}
-        {chapterIndex > 1 && (
-          <div style={{ padding: '20px', color: 'var(--phosphor-green)', fontFamily: 'var(--font-mono)' }}>
-            Chapter {chapterIndex + 1} coming soon...
-          </div>
+        {chapterIndex === 2 && (
+          <ChapterWrapper chapterIndex={2} isActive={true}>
+            <Chapter3Scene currentStep={subChapterIndex} isActive={true} />
+          </ChapterWrapper>
+        )}
+        {chapterIndex === 3 && (
+          <ChapterWrapper chapterIndex={3} isActive={true}>
+            <Chapter4Scene currentStep={subChapterIndex} isActive={true} />
+          </ChapterWrapper>
+        )}
+        {chapterIndex === 4 && (
+          <ChapterWrapper chapterIndex={4} isActive={true}>
+            <Chapter5Scene currentStep={subChapterIndex} isActive={true} />
+          </ChapterWrapper>
         )}
       </>
     );
   };
 
   return (
-    <CRTOverlay config={crtConfig}>
-      <div data-testid="app-shell">
+    <CRTOverlay
+      config={crtConfig}
+      reducedEffects={isMobile}
+      reducedMotion={prefersReducedMotion}
+    >
+      <div
+        data-testid="app-shell"
+        className={styles.appShell}
+        data-mobile={isMobile}
+        data-reduced-motion={prefersReducedMotion}
+        data-high-contrast={prefersHighContrast}
+      >
         <ScreenFlicker />
         <Marquee />
-        <main>
-          <section data-testid="chapter-canvas">
+        <main className={styles.main}>
+          <section className={styles.chapterCanvas} data-testid="chapter-canvas">
             {simulationStarted && mlStatus === 'ready'
               ? renderChapterScene()
-              : <div style={{ padding: '20px', color: 'var(--phosphor-green)', fontFamily: 'var(--font-mono)' }}>
+              : <div className={styles.placeholder}>
                   {mlStatus !== 'ready' ? 'Waiting for model to load...' : 'Configure and start simulation'}
                 </div>
             }
           </section>
-          <section>
+          <section className={styles.sidePanel}>
             <FunctionPanel
               info={
                 simulationStarted && currentFunction

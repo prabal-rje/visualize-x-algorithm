@@ -1,0 +1,47 @@
+.appShell {
+  display: grid;
+  gap: 24px;
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.chapterCanvas {
+  min-height: 520px;
+  border: 1px solid rgba(51, 255, 51, 0.2);
+  background: rgba(0, 8, 0, 0.6);
+  padding: 16px;
+}
+
+.sidePanel {
+  display: grid;
+  gap: 16px;
+}
+
+.placeholder {
+  padding: 20px;
+  color: var(--phosphor-green);
+  font-family: var(--font-mono);
+}
+
+@media (max-width: 900px) {
+  .appShell {
+    padding: 16px;
+  }
+
+  .main {
+    grid-template-columns: 1fr;
+  }
+
+  .chapterCanvas {
+    min-height: 380px;
+    padding: 12px;
+  }
+}

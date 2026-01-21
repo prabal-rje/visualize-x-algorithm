@@ -4,6 +4,7 @@ import { simulateEngagement } from '../../simulation/simulate';
 import EngagementCascade from '../visualization/EngagementCascade';
 import TopKSelector from '../visualization/TopKSelector';
 import TypewriterText from '../visualization/TypewriterText';
+import { useViewport } from '../../hooks/useViewport';
 
 const STEP_NARRATION = [
   'Top-K selection picks the strongest candidates for delivery...',
@@ -30,6 +31,7 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
   const tweetText = useConfigStore((state) => state.tweetText);
   const audienceMix = useConfigStore((state) => state.audienceMix);
   const simulationResult = useConfigStore((state) => state.simulationResult);
+  const { isMobile } = useViewport();
 
   const result = simulationResult ??
     simulateEngagement({
@@ -92,7 +94,7 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
       <div className={styles.content}>
         <div className={styles.stepLabel}>{STEP_LABELS[currentStep] || STEP_LABELS[0]}</div>
         <TopKSelector candidates={CANDIDATES} topK={3} isActive={isActive} />
-        <EngagementCascade stats={stats} isActive={isActive} />
+        <EngagementCascade stats={stats} isActive={isActive} nodeCount={isMobile ? 12 : 18} />
       </div>
 
       <div className={styles.functionRef}>

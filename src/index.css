@@ -32,6 +32,31 @@ body {
   letter-spacing: 0.04em;
 }
 
+@media (prefers-contrast: more) {
+  :root {
+    --phosphor-green: #7cff7c;
+    --phosphor-amber: #ffd24a;
+    --crt-black: #000000;
+    --crt-dark: #060606;
+  }
+
+  body {
+    background: #000000;
+    color: var(--phosphor-green);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 button,
 input,
 select,

@@ -9,6 +9,7 @@ import VectorSpace from '../visualization/VectorSpace';
 import CandidateStreams from '../visualization/CandidateStreams';
 import TypewriterText from '../visualization/TypewriterText';
 import TokenizationFlow from '../visualization/TokenizationFlow';
+import { useViewport } from '../../hooks/useViewport';
 
 type Chapter2SceneProps = {
   /** Current step (0 = user tower, 1 = similarity, 2 = merging) */
@@ -97,6 +98,8 @@ export default function Chapter2Scene({
   isActive
 }: Chapter2SceneProps) {
   const tweetText = useConfigStore((state) => state.tweetText);
+  const { isMobile } = useViewport();
+  const candidateCount = isMobile ? 8 : CANDIDATE_COUNT;
   const [userEmbedding, setUserEmbedding] = useState<number[]>([]);
   const [tweetPool, setTweetPool] = useState<TweetCandidate[]>([]);
   const [candidateData, setCandidateData] = useState<Array<{
@@ -116,7 +119,7 @@ export default function Chapter2Scene({
       }
 
       try {
-        const pool = await generateTweetPool(CANDIDATE_COUNT);
+        const pool = await generateTweetPool(candidateCount);
         setTweetPool(pool);
       } catch (error) {
         console.error('Failed to generate tweet pool:', error);
@@ -124,7 +127,7 @@ export default function Chapter2Scene({
     }
 
     loadTweetPool();
-  }, []);
+  }, [candidateCount]);
 
   // Compute user embedding and similarities when tweet changes or pool loads
   useEffect(() => {

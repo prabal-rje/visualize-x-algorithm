@@ -5,12 +5,16 @@ import styles from '../../styles/crt.module.css';
 
 type CRTOverlayProps = PropsWithChildren<{
   config?: CRTConfig;
+  reducedEffects?: boolean;
+  reducedMotion?: boolean;
 }>;
 
-export default function CRTOverlay({ children, config }: CRTOverlayProps) {
+export default function CRTOverlay({ children, config, reducedEffects = false, reducedMotion = false }: CRTOverlayProps) {
   const crtConfig = config ?? DEFAULT_CRT_CONFIG;
+  const effectScale = reducedEffects ? 0.35 : 1;
+  const motionScale = reducedMotion ? 0 : 1;
   const contentOpacity = crtConfig.power ? 1 : 0;
-  const phosphorIntensity = Math.min(Math.max(crtConfig.phosphorIntensity, 0), 1);
+  const phosphorIntensity = Math.min(Math.max(crtConfig.phosphorIntensity, 0), 1) * effectScale;
   const phosphorPersistenceMs = Math.round(400 + phosphorIntensity * 1000);
   const phosphorGlow = 4 + phosphorIntensity * 6;
   const phosphorGlowStrong = phosphorGlow * 2;
@@ -60,31 +64,31 @@ export default function CRTOverlay({ children, config }: CRTOverlayProps) {
         <div
           className={styles.crtScanlines}
           data-testid="crt-scanlines"
-          style={{ opacity: crtConfig.power ? crtConfig.scanlineIntensity : 0 }}
+          style={{ opacity: crtConfig.power ? crtConfig.scanlineIntensity * effectScale * motionScale : 0 }}
         />
         <div
           className={styles.crtAberrationRed}
           style={{
-            opacity: crtConfig.power ? 0.4 : 0,
-            transform: `translate(${crtConfig.chromaticAberration * 2}px, 0)`
+            opacity: crtConfig.power ? 0.4 * effectScale : 0,
+            transform: `translate(${crtConfig.chromaticAberration * 2 * effectScale}px, 0)`
           }}
         />
         <div
           className={styles.crtAberrationBlue}
           style={{
-            opacity: crtConfig.power ? 0.4 : 0,
-            transform: `translate(${-crtConfig.chromaticAberration * 2}px, 0)`
+            opacity: crtConfig.power ? 0.4 * effectScale : 0,
+            transform: `translate(${-crtConfig.chromaticAberration * 2 * effectScale}px, 0)`
           }}
         />
         <div
           className={styles.crtFlicker}
-          style={{ opacity: crtConfig.power ? 0.03 : 0 }}
+          style={{ opacity: crtConfig.power ? 0.03 * motionScale : 0 }}
         />
         <div className={styles.crtGlare} />
         <div
           className={styles.crtNoise}
           data-testid="crt-noise"
-          style={{ opacity: crtConfig.power ? crtConfig.noiseIntensity * 0.1 : 0 }}
+          style={{ opacity: crtConfig.power ? crtConfig.noiseIntensity * 0.1 * effectScale * motionScale : 0 }}
         />
       </div>
       {!crtConfig.power && <div className={styles.crtPowerOff} />}

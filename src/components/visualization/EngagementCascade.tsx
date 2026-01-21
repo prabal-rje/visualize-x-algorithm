@@ -12,11 +12,13 @@ type EngagementStat = {
 type EngagementCascadeProps = {
   stats: EngagementStat[];
   isActive?: boolean;
+  nodeCount?: number;
 };
 
 export default function EngagementCascade({
   stats,
-  isActive = true
+  isActive = true,
+  nodeCount
 }: EngagementCascadeProps) {
   useEffect(() => {
     if (!isActive) return undefined;
@@ -30,7 +32,7 @@ export default function EngagementCascade({
     return () => window.clearInterval(timer);
   }, [isActive]);
 
-  const nodes = Array.from({ length: 18 });
+  const nodes = Array.from({ length: nodeCount ?? 18 });
   const totalPredicted = stats.reduce((sum, item) => sum + item.predicted, 0);
   const totalActual = stats.reduce((sum, item) => sum + item.actual, 0);
 

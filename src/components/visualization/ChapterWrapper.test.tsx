@@ -42,6 +42,16 @@ describe('ChapterWrapper', () => {
     expect(wrapper).toHaveAttribute('data-active', 'false');
   });
 
+  it('marks wrapper as in-view by default', () => {
+    render(
+      <ChapterWrapper chapterIndex={0} isActive={true}>
+        <div>Content</div>
+      </ChapterWrapper>
+    );
+    const wrapper = screen.getByTestId('chapter-wrapper-0');
+    expect(wrapper).toHaveAttribute('data-in-view', 'true');
+  });
+
   it('applies chapter-specific class', () => {
     render(
       <ChapterWrapper chapterIndex={2} isActive={true}>

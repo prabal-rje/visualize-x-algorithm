@@ -39,6 +39,18 @@ describe('Chapter1Scene', () => {
     expect(screen.getByText(/USER_PROFILE/)).toBeInTheDocument();
   });
 
+  it('shows engagement emoji flow in step 1', () => {
+    render(<Chapter1Scene {...defaultProps} currentStep={1} />);
+    expect(
+      screen.getByTestId('engagement-emoji-flow')
+    ).toBeInTheDocument();
+  });
+
+  it('shows user profile avatar in step 1', () => {
+    render(<Chapter1Scene {...defaultProps} currentStep={1} />);
+    expect(screen.getByTestId('user-profile-avatar')).toBeInTheDocument();
+  });
+
   it('displays user ID', () => {
     render(<Chapter1Scene {...defaultProps} />);
     expect(screen.getByText(/8392847293/)).toBeInTheDocument();

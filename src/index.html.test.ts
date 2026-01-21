@@ -9,4 +9,10 @@ describe('index.html fonts', () => {
     expect(html).toContain('family=Press+Start+2P');
     expect(html).toContain('family=IBM+Plex+Mono');
   });
+
+  it('sets the app title and favicon', () => {
+    expect(html).toContain('<title>The Anatomy of Virality</title>');
+    expect(html).toContain('rel="icon"');
+    expect(html).toContain('favicon.svg');
+  });
 });

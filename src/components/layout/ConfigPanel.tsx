@@ -3,6 +3,7 @@ import { AUDIENCES } from '../../data/audiences';
 import { PERSONAS } from '../../data/personas';
 import { useConfigStore } from '../../stores/config';
 import styles from '../../styles/config-panel.module.css';
+import { useViewport } from '../../hooks/useViewport';
 
 const MAX_TWEET_LENGTH = 280;
 type AudienceId = (typeof AUDIENCES)[number]['id'];
@@ -51,6 +52,7 @@ export default function ConfigPanel() {
   const audienceMix = useConfigStore((state) => state.audienceMix);
   const setAudienceMix = useConfigStore((state) => state.setAudienceMix);
   const beginSimulation = useConfigStore((state) => state.beginSimulation);
+  const { isMobile } = useViewport();
 
   const [step, setStep] = useState<'persona' | 'audience' | 'tweet'>('persona');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -121,7 +123,11 @@ export default function ConfigPanel() {
       {step === 'persona' && (
         <section className={styles.section} data-testid="step-persona">
           <h3 className={styles.sectionTitle}>Persona</h3>
-          <div className={styles.personaGrid}>
+          <div
+            className={styles.personaGrid}
+            data-testid="persona-grid"
+            data-layout={isMobile ? 'mobile' : 'desktop'}
+          >
             {PERSONAS.map((persona) => (
               <button
                 key={persona.id}

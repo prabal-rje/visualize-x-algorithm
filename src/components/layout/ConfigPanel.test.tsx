@@ -104,6 +104,28 @@ describe('ConfigPanel', () => {
     expect(chip).toHaveAttribute('aria-pressed', 'false');
   });
 
+  it('marks persona grid as mobile layout when viewport is small', () => {
+    const originalMatchMedia = window.matchMedia;
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches: query.includes('max-width: 900px'),
+      media: query,
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn()
+    }));
+
+    render(<ConfigPanel />);
+    expect(screen.getByTestId('persona-grid')).toHaveAttribute(
+      'data-layout',
+      'mobile'
+    );
+
+    window.matchMedia = originalMatchMedia;
+  });
+
   it('renders persona icons', () => {
     render(<ConfigPanel />);
     expect(screen.getAllByTestId('persona-icon').length).toBeGreaterThan(0);

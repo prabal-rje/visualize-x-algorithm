@@ -303,3 +303,45 @@
     min-height: 132px;
   }
 }
+
+@media (max-width: 900px) {
+  .panel {
+    padding: 16px;
+  }
+
+  .personaGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .persona,
+  .personaActive {
+    min-height: auto;
+  }
+
+  .audienceList {
+    grid-template-columns: 1fr;
+  }
+
+  .audienceChip,
+  .audienceChipActive {
+    min-height: 44px;
+  }
+
+  .stepActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .stepButton,
+  .stepButtonGhost,
+  .beginButton {
+    width: 100%;
+    text-align: center;
+    min-height: 44px;
+  }
+
+  .toast {
+    position: static;
+    margin-bottom: 8px;
+  }
+}

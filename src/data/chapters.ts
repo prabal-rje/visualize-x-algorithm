@@ -334,7 +334,7 @@ export const CHAPTERS: Chapter[] = [
     id: 'ch5',
     number: 5,
     labelSimple: 'Deliver',
-    labelTechnical: 'Top-K Selection',
+    labelTechnical: 'Delivery Report',
     subChapters: [
       {
         id: 'ch5-a',
@@ -352,25 +352,39 @@ export const CHAPTERS: Chapter[] = [
       },
       {
         id: 'ch5-b',
-        labelSimple: 'Visibility',
-        labelTechnical: 'Visibility Filter',
+        labelSimple: 'Reach',
+        labelTechnical: 'Reach Forecast',
         functions: [
           {
             id: 'ch5-b-1',
-            name: 'VFFilter::filter()',
-            file: 'home-mixer/filters/visibility.rs',
-            summary: 'Removing spam or unsafe posts',
-            githubUrl: `${GITHUB_BASE}/home-mixer/filters/visibility.rs`
+            name: 'AudienceReachForecaster::estimate()',
+            file: 'home-mixer/pipelines/reach_forecaster.rs',
+            summary: 'Estimating reach from embeddings + audience mix',
+            githubUrl: `${GITHUB_BASE}/home-mixer/pipelines/reach_forecaster.rs`
           }
         ]
       },
       {
         id: 'ch5-c',
-        labelSimple: 'Deliver',
-        labelTechnical: 'Response Format',
+        labelSimple: 'Reactions',
+        labelTechnical: 'Engagement Burst',
         functions: [
           {
             id: 'ch5-c-1',
+            name: 'EngagementBurstSimulator::run()',
+            file: 'home-mixer/pipelines/engagement_burst_simulator.rs',
+            summary: 'Simulating early reactions from the audience',
+            githubUrl: `${GITHUB_BASE}/home-mixer/pipelines/engagement_burst_simulator.rs`
+          }
+        ]
+      },
+      {
+        id: 'ch5-d',
+        labelSimple: 'Report',
+        labelTechnical: 'Delivery Report',
+        functions: [
+          {
+            id: 'ch5-d-1',
             name: 'format_response()',
             file: 'home-mixer/server.rs',
             summary: 'Serializing final timeline payload',

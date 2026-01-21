@@ -21,7 +21,7 @@ describe('data fixtures', () => {
     const ch4 = CHAPTERS.find((chapter) => chapter.id === 'ch4');
     const ch5 = CHAPTERS.find((chapter) => chapter.id === 'ch5');
     expect(ch3?.subChapters.length).toBeGreaterThanOrEqual(4);
-    expect(ch4?.subChapters.length).toBeGreaterThanOrEqual(3);
-    expect(ch5?.subChapters.length).toBeGreaterThanOrEqual(3);
+    expect(ch4?.subChapters.length).toBeGreaterThanOrEqual(4);
+    expect(ch5?.subChapters.length).toBeGreaterThanOrEqual(4);
   });
 });

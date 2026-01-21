@@ -51,12 +51,6 @@ Instructions:
  
 
 #### Phase 6: Chapter 5 Split + Delivery Feedback
-- [ ] Add input tweet performance summary (below/med/above avg).
-- [ ] Add reach + audience delivery breakdown.
-- [ ] Add avatar reactions (like/comment/retweet bursts).
-- [ ] Split Chapter 5 into granular sub-steps + height control.
-- [ ] Update chapter data + tests.
-- [ ] Playwright screenshot + commit.
 
 #### Pre-Finish
 - [ ] Run Playwright end-state screenshot + final tests.
@@ -89,6 +83,14 @@ Instructions:
 ### 11. Design Spec Testing Checklist
 
 ## Completed
+- [x] Add input tweet performance summary (below/med/above avg).
+- [x] Add reach + audience delivery breakdown.
+- [x] Add avatar reactions (like/comment/retweet bursts).
+- [x] Split Chapter 5 into granular sub-steps + height control.
+- [x] Add delivery step styles (reach panel, reaction burst, report layout).
+- [x] Update Chapter 5 tests for new steps.
+- [x] Update chapter data + tests.
+- [x] Playwright screenshot + commit.
 - [x] Add P(...) estimation flow using embedding model data.
 - [x] Enhance attention weights interactivity + explanation.
 - [x] Split Chapter 4 into granular sub-steps + height control.

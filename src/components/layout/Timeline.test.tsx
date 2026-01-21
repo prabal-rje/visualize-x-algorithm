@@ -67,7 +67,7 @@ describe('Timeline', () => {
       expect(screen.getByText('Thunder/Phoenix')).toBeInTheDocument();
       expect(screen.getByText('Filter Cascade')).toBeInTheDocument();
       expect(screen.getByText('Heavy Ranker')).toBeInTheDocument();
-      expect(screen.getByText('Top-K Selection')).toBeInTheDocument();
+      expect(screen.getByText('Delivery Report')).toBeInTheDocument();
     });
   });
 

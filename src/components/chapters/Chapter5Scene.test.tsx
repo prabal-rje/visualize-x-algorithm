@@ -8,4 +8,20 @@ describe('Chapter5Scene', () => {
     expect(screen.getByTestId('chapter-5-scene')).toBeInTheDocument();
     expect(screen.getByTestId('topk-selector')).toBeInTheDocument();
   });
+
+  it('renders reach forecast panel on step 1', () => {
+    render(<Chapter5Scene currentStep={1} isActive={true} />);
+    expect(screen.getByTestId('audience-reach')).toBeInTheDocument();
+  });
+
+  it('renders reaction burst panel on step 2', () => {
+    render(<Chapter5Scene currentStep={2} isActive={true} />);
+    expect(screen.getByTestId('reaction-burst')).toBeInTheDocument();
+  });
+
+  it('renders delivery summary and cascade on step 3', () => {
+    render(<Chapter5Scene currentStep={3} isActive={true} />);
+    expect(screen.getByTestId('delivery-summary')).toBeInTheDocument();
+    expect(screen.getByTestId('engagement-cascade')).toBeInTheDocument();
+  });
 });

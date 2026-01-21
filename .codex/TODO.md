@@ -23,11 +23,7 @@ Instructions:
 
 
 #### Phase 2: CRT Controls Overlay
-- [ ] Replace side-panel controls with edge handle + in-screen dialog.
-- [ ] Ensure dialog is CRT-native (no traditional UI chrome) and anchored to screen.
-- [ ] Add open/close animations + focus-safe close control.
-- [ ] Update CRT controls tests.
-- [ ] Playwright screenshot + commit.
+ 
 
 ##### Phase 2.5: Square-ish dimensions
 
@@ -95,6 +91,11 @@ Instructions:
 ### 11. Design Spec Testing Checklist
 
 ## Completed
+- [x] Replace side-panel controls with edge handle + in-screen dialog.
+- [x] Ensure dialog is CRT-native (no traditional UI chrome) and anchored to screen.
+- [x] Add open/close animations + focus-safe close control.
+- [x] Update CRT controls tests.
+- [x] Playwright screenshot + commit.
 - [x] Verify Chapter 0 loadout steps (persona/audience/tweet) are the only view before simulation.
 - [x] Ensure simulation arena content stays hidden until simulation starts.
 - [x] Re-run chapter/timeline tests if needed.

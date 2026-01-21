@@ -81,6 +81,14 @@ while (Date.now() - startTime < 120000) {
 const elapsed = Math.round((Date.now() - startTime) / 1000);
 console.log('Test finished after ' + elapsed + 's');
 
+if (process.env.OPEN_CRT_CONTROLS === '1') {
+  const handle = page.locator('[data-testid="crt-controls-handle"]');
+  if (await handle.isVisible()) {
+    await handle.click();
+    await page.waitForTimeout(600);
+  }
+}
+
 // Take screenshot
 await page.screenshot({ path: '/tmp/loading-screenshot.png', fullPage: true });
 console.log('Screenshot saved to /tmp/loading-screenshot.png');

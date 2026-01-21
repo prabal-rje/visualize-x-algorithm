@@ -190,9 +190,9 @@ function App() {
               }
             />
             {renderMainContent()}
-            <CRTControls config={crtConfig} onChange={setCrtConfig} />
           </section>
         </main>
+        <CRTControls config={crtConfig} onChange={setCrtConfig} />
         <Timeline
           position={simulationState.position}
           status={simulationState.status}

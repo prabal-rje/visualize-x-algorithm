@@ -1,20 +1,80 @@
-.panel {
-  display: grid;
-  gap: 12px;
-  padding: 16px;
-  border: 1px solid rgba(51, 255, 51, 0.35);
-  background: rgba(10, 10, 10, 0.9);
-  box-shadow: 0 0 24px rgba(51, 255, 51, 0.2);
+.shell {
+  position: absolute;
+  top: 140px;
+  right: 0;
+  z-index: 30;
+  pointer-events: none;
   font-family: 'VT323', monospace;
 }
 
+.handle {
+  pointer-events: auto;
+  position: absolute;
+  right: -6px;
+  top: 0;
+  padding: 10px 8px;
+  border: 1px solid rgba(51, 255, 51, 0.6);
+  background: linear-gradient(180deg, rgba(0, 25, 0, 0.95), rgba(0, 8, 0, 0.9));
+  color: var(--phosphor-green);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  border-radius: 4px 0 0 4px;
+  cursor: pointer;
+  box-shadow: 0 0 14px rgba(51, 255, 51, 0.4);
+}
+
+.handleLabel {
+  display: block;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 12px;
+}
+
+.dialog {
+  position: absolute;
+  right: 24px;
+  top: -12px;
+  width: 260px;
+  padding: 12px;
+  border: 1px solid rgba(51, 255, 51, 0.45);
+  background: radial-gradient(circle at top, rgba(0, 25, 0, 0.92), rgba(0, 8, 0, 0.98));
+  box-shadow: 0 0 26px rgba(51, 255, 51, 0.25);
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateX(12px) scale(0.98);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  visibility: hidden;
+}
+
+.dialog::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 0.2) 1px,
+    rgba(0, 0, 0, 0) 3px,
+    rgba(0, 0, 0, 0) 6px
+  );
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.shell[data-open='true'] .dialog {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  visibility: visible;
+}
+
 .header {
-  display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  display: flex;
   align-items: center;
   gap: 8px;
   border-bottom: 1px solid rgba(51, 255, 51, 0.25);
-  padding-bottom: 8px;
+  padding-bottom: 6px;
+  position: relative;
+  z-index: 1;
 }
 
 .statusLight {
@@ -29,6 +89,33 @@
   font-size: 16px;
   letter-spacing: 0.12em;
   color: var(--phosphor-green);
+  flex: 1;
+}
+
+.closeButton {
+  border: 1px solid rgba(51, 255, 51, 0.4);
+  background: transparent;
+  color: var(--phosphor-green);
+  padding: 2px 6px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 11px;
+}
+
+.headerActions {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.body {
+  display: grid;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
 }
 
 .powerButton {

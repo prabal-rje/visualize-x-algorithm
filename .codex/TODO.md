@@ -12,14 +12,6 @@ Instructions:
 
 ### 1. Phase 1: Foundation
 ### 2. Phase 2: Configuration Panel
-- [ ] Populate sample tweets from appendix Section C (full dataset).
-- [ ] Implement audience mix sliders (8 audiences from appendix Section B).
-- [ ] Implement tweet input with character counter.
-- [ ] Implement shuffle button for sample tweets (appendix Section C).
-- [ ] Implement "BEGIN SIMULATION" button with CRT-style hover.
-- [ ] Add Expert Mode toggle with helper copy and persistence.
-- [ ] Store selections in Zustand config store.
-- [ ] Add keyboard shortcuts (Enter to start, Tab between fields).
 
 ### 2.5 RPG Experience Layer
 - [ ] Update UI copy to RPG framing (Mission Loadout, Mission Report).
@@ -130,6 +122,14 @@ Instructions:
 - [ ] Reduced motion mode disables animations.
 
 ## Completed
+- [x] Add keyboard shortcuts (Enter to start, Tab between fields).
+- [x] Store selections in Zustand config store.
+- [x] Add Expert Mode toggle with helper copy and persistence.
+- [x] Implement "BEGIN SIMULATION" button with CRT-style hover.
+- [x] Implement shuffle button for sample tweets (appendix Section C).
+- [x] Implement tweet input with character counter.
+- [x] Implement audience mix sliders (8 audiences from appendix Section B).
+- [x] Populate sample tweets from appendix Section C (full dataset).
 - [x] Verify pixel/retro fonts are applied across UI (no modern font fallbacks).
 - [x] Remove CRT curvature + rounded frame effects (no barrel distortion or curvature control).
 - [x] Fix barrel distortion map so the frame isn't vertically shifted.

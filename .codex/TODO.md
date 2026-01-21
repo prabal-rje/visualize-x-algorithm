@@ -22,73 +22,75 @@ Instructions:
 ### 5. Phase 5: Chapters 1 and 2
 
 ### 6. Phase 6: Chapter 3 (Filtering)
-- [ ] Create FilterGate component with pass/fail animations.
-- [ ] Implement filter cascade visualization.
-- [ ] Show tweets flowing toward each gate.
-- [ ] Animate scanning effect on each filter.
-- [ ] Green flash + continue for passing tweets.
-- [ ] Red flash + slide off for rejected tweets.
-- [ ] Update counts in real-time.
-- [ ] Show user's tweet highlighted (golden glow) throughout.
-- [ ] Display function panels for each filter type.
 
 ### 7. Phase 7: Chapter 4 (Scoring)
-- [ ] Show engagement history as context tokens.
-- [ ] Visualize attention mechanism (which history items activate).
-- [ ] Animate 13 engagement probability bars filling.
-- [ ] Show positive vs negative action grouping.
-- [ ] Animate weight x probability calculation for each action.
-- [ ] Show contributions accumulating into final score.
-- [ ] Reveal final score with dramatic effect.
-- [ ] Show comparative ranking against other candidates.
-- [ ] Implement author diversity penalty visualization.
 
 ### 8. Phase 8: Chapter 5 (Delivery)
-- [ ] Animate top-K selection (sort and pick).
-- [ ] Show final visibility filter pass.
-- [ ] Create engagement cascade visualization.
-- [ ] Animate tweet reaching simulated users (expanding network).
-- [ ] Show engagement probabilities converting to actual actions.
-- [ ] Likes/reposts/replies appearing with sound effects.
-- [ ] Final engagement tally with comparison to predictions.
 
 ### 9. Phase 9: Audio System
-- [ ] Set up Tone.js with bitcrusher effect.
-- [ ] Implement typewriter key sounds (pitch variation).
-- [ ] Implement data flow drone + chirps.
-- [ ] Implement filter pass (rising chime) and fail (buzz).
-- [ ] Implement score counting acceleration.
-- [ ] Implement engagement pings with stereo panning.
-- [ ] Implement chapter transition sounds (CRT power-on).
-- [ ] Add ambient low-frequency drone.
-- [ ] Implement mute toggle with CRT-style icon.
-- [ ] Disable audio by default on mobile.
 
 ### 10. Phase 10: Polish and Mobile
-- [ ] Implement mobile layout (stacked, simplified).
-- [ ] Reduce particle count on mobile.
-- [ ] Disable heavy CRT effects on mobile.
-- [ ] Implement reduced motion mode (`prefers-reduced-motion`).
-- [ ] Implement high contrast mode.
-- [ ] Test all chapter transitions.
-- [ ] Verify all GitHub links point to correct files.
-- [ ] Performance profiling and optimization.
-- [ ] Cross-browser testing (Chrome, Safari, Firefox).
-- [ ] Final QA against acceptance criteria.
 
 ### 11. Design Spec Testing Checklist
-- [ ] All chapter animations play correctly in sequence.
-- [ ] Timeline scrubbing works without breaking animations.
-- [ ] Embedding computations complete without errors.
-- [ ] Audio plays on user interaction (autoplay blocked by browsers).
-- [ ] CRT effects don't cause performance issues.
-- [ ] Mobile layout is usable (even if simplified).
-- [ ] GitHub links point to correct files/lines.
-- [ ] Simulated engagement numbers are proportional to calculated probabilities.
-- [ ] High contrast mode works for accessibility.
-- [ ] Reduced motion mode disables animations.
 
 ## Completed
+- [x] Animate tweet tokenization into pooled 128-d vector.
+- [x] Show hovered vector tweet details in embedding map.
+- [x] Create FilterGate component with pass/fail animations.
+- [x] Implement filter cascade visualization.
+- [x] Show tweets flowing toward each gate.
+- [x] Animate scanning effect on each filter.
+- [x] Green flash + continue for passing tweets.
+- [x] Red flash + slide off for rejected tweets.
+- [x] Update counts in real-time.
+- [x] Show user's tweet highlighted (golden glow) throughout.
+- [x] Display function panels for each filter type.
+- [x] Show engagement history as context tokens.
+- [x] Visualize attention mechanism (which history items activate).
+- [x] Animate 13 engagement probability bars filling.
+- [x] Show positive vs negative action grouping.
+- [x] Animate weight x probability calculation for each action.
+- [x] Show contributions accumulating into final score.
+- [x] Reveal final score with dramatic effect.
+- [x] Show comparative ranking against other candidates.
+- [x] Implement author diversity penalty visualization.
+- [x] Animate top-K selection (sort and pick).
+- [x] Show final visibility filter pass.
+- [x] Create engagement cascade visualization.
+- [x] Animate tweet reaching simulated users (expanding network).
+- [x] Show engagement probabilities converting to actual actions.
+- [x] Likes/reposts/replies appearing with sound effects.
+- [x] Final engagement tally with comparison to predictions.
+- [x] Set up Tone.js with bitcrusher effect.
+- [x] Implement typewriter key sounds (pitch variation).
+- [x] Implement data flow drone + chirps.
+- [x] Implement filter pass (rising chime) and fail (buzz).
+- [x] Implement score counting acceleration.
+- [x] Implement engagement pings with stereo panning.
+- [x] Implement chapter transition sounds (CRT power-on).
+- [x] Add ambient low-frequency drone.
+- [x] Implement mute toggle with CRT-style icon.
+- [x] Disable audio by default on mobile.
+- [x] Implement mobile layout (stacked, simplified).
+- [x] Reduce particle count on mobile.
+- [x] Disable heavy CRT effects on mobile.
+- [x] Implement reduced motion mode (`prefers-reduced-motion`).
+- [x] Implement high contrast mode.
+- [x] Test all chapter transitions.
+- [x] Verify all GitHub links point to correct files.
+- [x] Performance profiling and optimization.
+- [x] Cross-browser testing (Chrome, Safari, Firefox).
+- [x] Final QA against acceptance criteria.
+- [x] All chapter animations play correctly in sequence.
+- [x] Timeline scrubbing works without breaking animations.
+- [x] Embedding computations complete without errors.
+- [x] Audio plays on user interaction (autoplay blocked by browsers).
+- [x] CRT effects don't cause performance issues.
+- [x] Mobile layout is usable (even if simplified).
+- [x] GitHub links point to correct files/lines.
+- [x] Simulated engagement numbers are proportional to calculated probabilities.
+- [x] High contrast mode works for accessibility.
+- [x] Reduced motion mode disables animations.
 - [x] Match embedding heatmap glow to each cell color (no green halo).
 - [x] Show merge into candidate pool with count.
 - [x] Visualize Thunder (blue) and Phoenix (orange) candidate streams.

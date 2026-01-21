@@ -364,15 +364,6 @@ export default function Chapter2Scene({
         )}
       </div>
 
-      {/* Function Panel Reference */}
-      <div className={styles.functionRef}>
-        <span className={styles.funcLabel}>FUNCTION:</span>
-        <code className={styles.funcName}>
-          {currentStep === 0 && 'TwoTowerModel.user_tower()'}
-          {currentStep === 1 && 'approximate_nearest_neighbors()'}
-          {currentStep === 2 && 'PhoenixCandidatePipeline::run()'}
-        </code>
-      </div>
     </div>
   );
 }

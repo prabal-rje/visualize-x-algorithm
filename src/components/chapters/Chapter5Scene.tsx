@@ -24,13 +24,6 @@ const STEP_LABELS = [
   '5D: Delivery Report'
 ];
 
-const FUNCTION_LABELS = [
-  'TopKScoreSelector::select()',
-  'AudienceReachForecaster::estimate()',
-  'EngagementBurstSimulator::run()',
-  'format_response()'
-];
-
 const REACTION_TYPES = ['like', 'reply', 'repost'] as const;
 const REACTION_ICONS: Record<(typeof REACTION_TYPES)[number], string> = {
   like: '♥',
@@ -388,12 +381,6 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
         )}
       </div>
 
-      <div className={styles.functionRef}>
-        <span className={styles.funcLabel}>FUNCTION:</span>
-        <code className={styles.funcName}>
-          {FUNCTION_LABELS[currentStep] || FUNCTION_LABELS[0]}
-        </code>
-      </div>
     </div>
   );
 }

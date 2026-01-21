@@ -10,13 +10,11 @@ import { DEFAULT_CRT_CONFIG } from './components/effects/crtConfig';
 import type { CRTConfig } from './components/effects/crtConfig';
 import CRTOverlay from './components/effects/CRTOverlay';
 import ScreenFlicker from './components/effects/ScreenFlicker';
-import FunctionPanel from './components/layout/FunctionPanel';
 import Marquee from './components/layout/Marquee';
 import Timeline from './components/layout/Timeline';
 import BIOSLoading from './components/visualization/BIOSLoading';
 import ChapterWrapper from './components/visualization/ChapterWrapper';
 import MissionReport from './components/visualization/MissionReport';
-import { getFunctionAtPosition } from './data/chapters';
 import { useSimulationState } from './hooks/useSimulationState';
 import { useViewport } from './hooks/useViewport';
 import { initializeEmbedder, isInitialized } from './ml/embeddings';
@@ -80,13 +78,7 @@ function App() {
     }
   }, [dispatch, simulationStarted]);
 
-  // Get current function info from simulation position
   const { position } = simulationState;
-  const currentFunction = getFunctionAtPosition(
-    position.chapterIndex,
-    position.subChapterIndex,
-    position.functionIndex
-  );
 
   const renderMainContent = () => {
     if (simulationStarted && rpgStats) {
@@ -104,7 +96,7 @@ function App() {
   };
 
   const mainContent = renderMainContent();
-  const showSidePanel = simulationStarted || Boolean(mainContent);
+  const showSidePanel = Boolean(mainContent);
   const isCompactChapter = position.chapterIndex >= 3;
 
   const renderChapterScene = () => {
@@ -210,18 +202,6 @@ function App() {
           </section>
           {showSidePanel && (
             <section className={styles.sidePanel}>
-              <FunctionPanel
-                info={
-                  simulationStarted && currentFunction
-                    ? {
-                        name: currentFunction.name,
-                        file: currentFunction.file,
-                        summary: currentFunction.summary,
-                        githubUrl: currentFunction.githubUrl,
-                      }
-                    : undefined
-                }
-              />
               {mainContent}
             </section>
           )}

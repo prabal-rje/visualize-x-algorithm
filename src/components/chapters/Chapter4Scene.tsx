@@ -46,13 +46,6 @@ const STEP_CALLOUTS = [
   }
 ];
 
-const FUNCTION_LABELS = [
-  'PhoenixRanker.forward()',
-  'PhoenixRanker::attention()',
-  'PhoenixScorer::score()',
-  'WeightedScorer::score()'
-];
-
 const CONTEXT_TOKENS = [
   { id: 'c1', action: 'liked', text: 'AI tool demo', weight: 0.34 },
   { id: 'c2', action: 'replied', text: 'Startup advice', weight: 0.18 },
@@ -219,12 +212,6 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
         )}
       </div>
 
-      <div className={styles.functionRef}>
-        <span className={styles.funcLabel}>FUNCTION:</span>
-        <code className={styles.funcName}>
-          {FUNCTION_LABELS[currentStep] || FUNCTION_LABELS[0]}
-        </code>
-      </div>
     </div>
   );
 }

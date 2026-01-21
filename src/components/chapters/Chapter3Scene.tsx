@@ -198,20 +198,6 @@ export default function Chapter3Scene({ currentStep, isActive }: Chapter3ScenePr
         />
       </div>
 
-      <div className={styles.functionRef} data-testid="filter-stack">
-        <span className={styles.funcLabel}>FUNCTION STACK</span>
-        <div className={styles.funcList}>
-          {gatesForStep.map((gate, index) => (
-            <span
-              key={gate.id}
-              className={styles.funcItem}
-              data-active={index === activeGateIndex}
-            >
-              {gate.functionName}
-            </span>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }

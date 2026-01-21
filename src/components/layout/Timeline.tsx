@@ -2,6 +2,7 @@ import { useEffect, useCallback } from 'react';
 import { CHAPTERS, getFunctionAtPosition } from '../../data/chapters';
 import type { SimulationPosition, SimulationAction, SimulationStatus } from '../../hooks/useSimulationState';
 import { useConfigStore } from '../../stores/config';
+import { useViewport } from '../../hooks/useViewport';
 import styles from '../../styles/timeline.module.css';
 
 type TimelineProps = {
@@ -99,15 +100,20 @@ function progressToPosition(progressPercent: number): SimulationPosition {
 
 export default function Timeline({ position, status, dispatch }: TimelineProps) {
   const expertMode = useConfigStore((state) => state.expertMode);
+  const { isMobile } = useViewport();
   const currentFunction = getFunctionAtPosition(
     position.chapterIndex,
     position.subChapterIndex,
     position.functionIndex
   );
+  const currentChapter = CHAPTERS[position.chapterIndex];
+  const currentSubChapter = currentChapter?.subChapters[position.subChapterIndex];
+  const functionStack = currentSubChapter?.functions ?? [];
   const atStart = isAtStart(position);
   const atEnd = isAtEnd(position) || status === 'complete';
   const progress = calculateProgress(position);
   const isPlaying = status === 'running';
+  const stackVariant = isMobile ? 'stack' : 'marquee';
 
   const handleStepBack = useCallback(() => {
     if (!atStart) {
@@ -176,8 +182,56 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [handlePlayPause, handleStepForward, handleStepBack]);
 
+  const renderStackItems = (keyPrefix: string) =>
+    functionStack.map((fn, index) => (
+      <span
+        key={`${keyPrefix}-${fn.id}`}
+        className={styles.functionStackItem}
+        data-active={index === position.functionIndex}
+      >
+        {fn.name}
+      </span>
+    ));
+
   return (
     <div className={styles.timeline} data-testid="timeline">
+      {functionStack.length > 0 && (
+        <div
+          className={styles.functionStack}
+          data-testid="function-stack"
+          data-mode={stackVariant}
+        >
+          <div className={styles.functionStackHeader}>
+            <span className={styles.functionStackLabel}>FUNCTION STACK</span>
+            {currentFunction && (
+              <span className={styles.functionStackFile}>
+                {currentFunction.file}
+              </span>
+            )}
+          </div>
+          <div className={styles.functionStackTrack} data-mode={stackVariant}>
+            <div className={styles.functionStackScroller} data-mode={stackVariant}>
+              <div className={styles.functionStackRow}>
+                {renderStackItems('primary')}
+              </div>
+              {!isMobile && (
+                <div
+                  className={styles.functionStackRow}
+                  aria-hidden="true"
+                >
+                  {renderStackItems('clone')}
+                </div>
+              )}
+            </div>
+          </div>
+          {currentFunction && (
+            <div className={styles.functionStackSummary}>
+              {currentFunction.summary}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Navigation Controls */}
       <div className={styles.controls}>
         <button
@@ -253,6 +307,9 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
             );
           })}
         </div>
+        <span className={styles.scrollHint} aria-hidden="true">
+          Swipe for more →
+        </span>
       </div>
 
       {/* Progress Indicator */}
@@ -289,16 +346,6 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
         <span className={styles.progressText}>{progress}%</span>
       </div>
 
-      {/* Current Function Info */}
-      {currentFunction && (
-        <div className={styles.functionInfo}>
-          <div className={styles.functionHeader}>
-            <code className={styles.functionName}>{currentFunction.name}</code>
-            <span className={styles.functionFile}>{currentFunction.file}</span>
-          </div>
-          <span className={styles.functionSummary}>{currentFunction.summary}</span>
-        </div>
-      )}
     </div>
   );
 }

@@ -235,6 +235,17 @@ describe('Timeline', () => {
   });
 
   describe('status display', () => {
+    it('renders function stack header', () => {
+      render(
+        <Timeline
+          position={defaultPosition}
+          status="running"
+          dispatch={mockDispatch}
+        />
+      );
+      expect(screen.getByTestId('function-stack')).toBeInTheDocument();
+    });
+
     it('shows current function info', () => {
       render(
         <Timeline
@@ -244,7 +255,9 @@ describe('Timeline', () => {
         />
       );
       // First function of loadout chapter
-      expect(screen.getByText(/MissionLoadout::select_persona/)).toBeInTheDocument();
+      expect(
+        screen.getAllByText(/MissionLoadout::select_persona/).length
+      ).toBeGreaterThan(0);
     });
 
     it('shows current file path', () => {
@@ -267,8 +280,8 @@ describe('Timeline', () => {
         />
       );
       expect(
-        screen.getByText(/TwoTowerModel\.user_tower\(\)/)
-      ).toBeInTheDocument();
+        screen.getAllByText(/TwoTowerModel\.user_tower\(\)/).length
+      ).toBeGreaterThan(0);
     });
 
     it('shows progress indicator', () => {

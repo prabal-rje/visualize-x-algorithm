@@ -10,11 +10,6 @@ describe('Chapter3Scene', () => {
     expect(screen.getAllByTestId('filter-gate').length).toBeGreaterThan(0);
   });
 
-  it('renders filter stack for the active step', () => {
-    render(<Chapter3Scene currentStep={0} isActive={true} />);
-    expect(screen.getByTestId('filter-stack')).toBeInTheDocument();
-  });
-
   it('renders recency step label for the final step', () => {
     render(<Chapter3Scene currentStep={2} isActive={true} />);
     expect(screen.getByText(/3C: Recency & History/i)).toBeInTheDocument();

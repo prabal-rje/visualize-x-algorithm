@@ -137,6 +137,9 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
     }
   }, [dispatch, isPlaying]);
 
+  const playLabel = isPlaying ? 'PAUSE' : 'PLAY';
+  const playIcon = isPlaying ? '||' : '>';
+
   const handleProgressClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
     const clickX = event.clientX - rect.left;
@@ -183,7 +186,10 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
           onClick={handleStartOver}
           aria-label="Start over"
         >
-          START OVER
+          <span className={styles.controlIcon} aria-hidden="true">
+            RST
+          </span>
+          <span className={styles.controlLabel}>START OVER</span>
         </button>
         <button
           type="button"
@@ -192,7 +198,10 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
           disabled={atStart}
           aria-label="Step back"
         >
-          &lt;&lt; BACK
+          <span className={styles.controlIcon} aria-hidden="true">
+            &lt;&lt;
+          </span>
+          <span className={styles.controlLabel}>&lt;&lt; BACK</span>
         </button>
         <button
           type="button"
@@ -200,7 +209,10 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
           onClick={handlePlayPause}
           aria-label={isPlaying ? 'Pause' : 'Play'}
         >
-          {isPlaying ? 'PAUSE' : 'PLAY'}
+          <span className={styles.controlIcon} aria-hidden="true">
+            {playIcon}
+          </span>
+          <span className={styles.controlLabel}>{playLabel}</span>
         </button>
         <button
           type="button"
@@ -209,36 +221,45 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
           disabled={atEnd}
           aria-label="Step forward"
         >
-          NEXT &gt;&gt;
+          <span className={styles.controlIcon} aria-hidden="true">
+            &gt;&gt;
+          </span>
+          <span className={styles.controlLabel}>NEXT &gt;&gt;</span>
         </button>
       </div>
 
       {/* Chapter Markers */}
-      <div className={styles.chapters}>
-        {CHAPTERS.map((chapter, index) => {
-          const isActive = index === position.chapterIndex;
-          const isVisited = index < position.chapterIndex;
+      <div className={styles.chaptersWrap}>
+        <div className={styles.chapters}>
+          {CHAPTERS.map((chapter, index) => {
+            const isActive = index === position.chapterIndex;
+            const isVisited = index < position.chapterIndex;
 
-          return (
-            <button
-              key={chapter.id}
-              type="button"
-              className={styles.marker}
-              data-testid={`chapter-marker-${index}`}
-              data-active={isActive}
-              data-visited={isVisited}
-              onClick={() => handleChapterClick(index)}
-            >
-              <span className={styles.chapterNumber}>CH.{chapter.number}</span>
-              <span className={styles.chapterLabel}>
-                {expertMode ? chapter.labelTechnical : chapter.labelSimple}
-              </span>
-            </button>
-          );
-        })}
+            return (
+              <button
+                key={chapter.id}
+                type="button"
+                className={styles.marker}
+                data-testid={`chapter-marker-${index}`}
+                data-active={isActive}
+                data-visited={isVisited}
+                onClick={() => handleChapterClick(index)}
+              >
+                <span className={styles.chapterNumber}>CH.{chapter.number}</span>
+                <span className={styles.chapterLabel}>
+                  {expertMode ? chapter.labelTechnical : chapter.labelSimple}
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Progress Indicator */}
+      <div className={styles.progressHeader}>
+        <span className={styles.progressLabel}>Simulation Progress</span>
+        <span className={styles.progressValue}>{progress}%</span>
+      </div>
       <div
         className={styles.progressContainer}
         data-testid="progress-indicator"
@@ -248,9 +269,23 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
         aria-valuemin={0}
         aria-valuemax={100}
         aria-label="Simulation progress"
-        style={{ cursor: 'pointer' }}
+        style={
+          {
+            cursor: 'pointer',
+            '--tick-count': CHAPTERS.length
+          } as React.CSSProperties
+        }
       >
         <div className={styles.progressBar} style={{ width: `${progress}%` }} />
+        <div className={styles.progressTicks} aria-hidden="true">
+          {CHAPTERS.map((chapter) => (
+            <span
+              key={chapter.id}
+              className={styles.progressTick}
+              data-testid="progress-tick"
+            />
+          ))}
+        </div>
         <span className={styles.progressText}>{progress}%</span>
       </div>
 

@@ -269,6 +269,20 @@ describe('Timeline', () => {
       // Should show some kind of progress
       expect(screen.getByTestId('progress-indicator')).toBeInTheDocument();
     });
+
+    it('shows progress label and tick markers', () => {
+      render(
+        <Timeline
+          position={defaultPosition}
+          status="running"
+          dispatch={mockDispatch}
+        />
+      );
+      expect(screen.getByText(/Simulation Progress/i)).toBeInTheDocument();
+      expect(screen.getAllByTestId('progress-tick')).toHaveLength(
+        CHAPTERS.length
+      );
+    });
   });
 
   describe('play/pause controls', () => {

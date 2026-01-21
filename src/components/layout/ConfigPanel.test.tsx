@@ -24,6 +24,7 @@ describe('ConfigPanel', () => {
       sampleTweetId: SAMPLE_TWEETS[0]?.id ?? null,
       audienceMix: defaultAudienceMix,
       simulationStarted: false,
+      simulationResult: null,
       setExpertMode: useConfigStore.getState().setExpertMode,
       setPersonaId: useConfigStore.getState().setPersonaId,
       setTweetText: useConfigStore.getState().setTweetText,

@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 import { AUDIENCES } from '../data/audiences';
 import { PERSONAS } from '../data/personas';
 import { SAMPLE_TWEETS } from '../data/tweets';
+import { simulateEngagement, type SimulationResult } from '../simulation/simulate';
 import type { Persona } from '../data/personas';
 
 type PersonaId = Persona['id'];
@@ -16,6 +17,7 @@ type ConfigState = {
   sampleTweetId: string | null;
   audienceMix: AudienceMix;
   simulationStarted: boolean;
+  simulationResult: SimulationResult | null;
   setExpertMode: (value: boolean) => void;
   setPersonaId: (id: PersonaId) => void;
   setTweetText: (text: string) => void;
@@ -43,6 +45,7 @@ export const useConfigStore = create<ConfigState>()(
       sampleTweetId: defaultSampleTweet?.id ?? null,
       audienceMix: defaultAudienceMix,
       simulationStarted: false,
+      simulationResult: null,
       setExpertMode: (value) => set({ expertMode: value }),
       setPersonaId: (personaId) => set({ personaId }),
       setTweetText: (text) => set({ tweetText: text, sampleTweetId: null }),
@@ -65,8 +68,17 @@ export const useConfigStore = create<ConfigState>()(
           audienceMix: { ...state.audienceMix, [id]: clamped }
         }));
       },
-      beginSimulation: () => set({ simulationStarted: true }),
-      resetSimulation: () => set({ simulationStarted: false })
+      beginSimulation: () =>
+        set((state) => ({
+          simulationStarted: true,
+          simulationResult: simulateEngagement({
+            personaId: state.personaId,
+            tweetText: state.tweetText,
+            audienceMix: state.audienceMix
+          })
+        })),
+      resetSimulation: () =>
+        set({ simulationStarted: false, simulationResult: null })
     }),
     {
       name: 'x-algorithm-config',

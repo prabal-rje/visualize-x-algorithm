@@ -37,4 +37,19 @@ describe('config store', () => {
     resetSimulation();
     expect(useConfigStore.getState().simulationStarted).toBe(false);
   });
+
+  it('computes a simulation result on begin', () => {
+    useConfigStore.setState({
+      personaId: 'tech-founder',
+      tweetText: 'demo',
+      simulationStarted: false,
+      simulationResult: null
+    });
+    useConfigStore.getState().beginSimulation();
+    const result = useConfigStore.getState().simulationResult;
+    expect(result).not.toBeNull();
+    expect(result?.rates.likeRate).toBeCloseTo(
+      (result?.counts.likes ?? 0) / (result?.counts.impressions ?? 1)
+    );
+  });
 });

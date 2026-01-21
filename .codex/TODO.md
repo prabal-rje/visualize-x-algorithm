@@ -8,8 +8,6 @@ Instructions:
 
 ## Stack (Top = next)
 
-### 0. Project Setup and RPG Spec
-
 ### 1. Phase 1: Foundation
 - [ ] Initialize Vite + React + TypeScript project.
 - [ ] Configure Tailwind with custom CSS variables from spec (Section 1.2.1).
@@ -147,3 +145,4 @@ Instructions:
 - [x] Draft RPG experience + complexity-mode spec.
 - [x] Review spec against the implementation brief and append gaps to the stack.
 - [x] Add RPG spec artifacts to the repo.
+- [x] Write implementation plan document for full checklist execution.

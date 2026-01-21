@@ -9,9 +9,6 @@ Instructions:
 ## Stack (Top = next)
 
 ### 1. Phase 1: Foundation
-- [ ] Implement CRT overlay effects (scanlines, vignette, barrel distortion).
-- [ ] Implement phosphor text component with ghosting.
-- [ ] Implement screen flicker effect.
 - [ ] Set up Google Fonts (VT323, Press Start 2P, IBM Plex Mono).
 - [ ] Create basic layout shell (marquee, canvas area, timeline, panels).
 - [ ] Implement marquee with attribution data from appendix (Section F).
@@ -136,6 +133,9 @@ Instructions:
 - [ ] Reduced motion mode disables animations.
 
 ## Completed
+- [x] Implement CRT overlay effects (scanlines, vignette, barrel distortion).
+- [x] Implement phosphor text component with ghosting.
+- [x] Implement screen flicker effect.
 - [x] Configure Tailwind with custom CSS variables from spec (Section 1.2.1).
 - [x] Read full implementation brief, design spec, and appendix.
 - [x] Create TODO stack file with instructions.

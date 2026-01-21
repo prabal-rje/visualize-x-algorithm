@@ -1,0 +1,25 @@
+.crtOverlay::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.crtOverlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.phosphorText {
+  text-shadow: 0 0 6px var(--phosphor-green);
+}

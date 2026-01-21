@@ -9,6 +9,14 @@ describe('global css', () => {
     expect(css).toContain('--crt-black');
   });
 
+  it('defines phosphor persistence variable', () => {
+    expect(css).toContain('--phosphor-persistence');
+  });
+
+  it('defines phosphor glow variable', () => {
+    expect(css).toContain('--phosphor-glow');
+  });
+
   it('uses retro pixel fonts', () => {
     expect(css).toContain('VT323');
     expect(css).toContain('Press Start 2P');

@@ -10,18 +10,46 @@
   position: relative;
   width: 100%;
   min-height: 100vh;
-  border-radius: 18px;
-  transform: scale(0.99);
-  filter: blur(0.35px) contrast(1.1) brightness(1.04) saturate(1.1);
-  box-shadow:
-    inset 0 0 120px rgba(0, 0, 0, 0.85),
-    0 0 40px var(--crt-glow);
   overflow: hidden;
 }
 
 .crtContent {
   position: relative;
   z-index: 10;
+  text-shadow:
+    0 0 var(--phosphor-glow) currentColor,
+    0 0 var(--phosphor-glow-strong) currentColor;
+}
+
+.crtContent * {
+  text-shadow: inherit;
+}
+
+.crtFilter {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.crtAfterglow {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  pointer-events: none;
+  background: rgba(5, 10, 5, 0.25);
+  mix-blend-mode: multiply;
+  opacity: var(--phosphor-afterglow);
+}
+
+.crtTracer {
+  position: absolute;
+  inset: 0;
+  z-index: 13;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: var(--phosphor-tracer);
+  backdrop-filter: blur(1px) brightness(1.05);
 }
 
 .crtBloom {
@@ -109,8 +137,48 @@
   animation: noise-shift 0.2s infinite steps(4);
 }
 
+.phosphorWrapper {
+  position: relative;
+  display: inline-block;
+}
+
 .phosphorText {
-  text-shadow: 0 0 6px var(--phosphor-green);
+  position: relative;
+  text-shadow:
+    0 0 var(--phosphor-glow) currentColor,
+    0 0 var(--phosphor-glow-strong) currentColor;
+}
+
+.phosphorTrail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--phosphor-green);
+  opacity: 0.6;
+  filter: blur(0px);
+  text-shadow:
+    0 0 var(--phosphor-glow) currentColor,
+    0 0 var(--phosphor-glow-strong) currentColor;
+  animation: phosphor-persist var(--phosphor-persistence) ease-out forwards;
+  pointer-events: none;
+}
+
+.crtPowerOff {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.crtPowerOff::after {
+  content: '';
+  width: 90%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.9);
+  animation: collapse-horizontal 0.5s ease-in forwards;
 }
 
 @keyframes crt-flicker {
@@ -122,6 +190,17 @@
   }
   100% {
     opacity: 0.02;
+  }
+}
+
+@keyframes phosphor-persist {
+  0% {
+    opacity: 0.7;
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    filter: blur(6px);
   }
 }
 
@@ -140,5 +219,20 @@
   }
   100% {
     transform: translate(0, 0);
+  }
+}
+
+@keyframes collapse-horizontal {
+  0% {
+    transform: scaleX(1) scaleY(200);
+    opacity: 1;
+  }
+  50% {
+    transform: scaleX(1) scaleY(0.02);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(0) scaleY(0.02);
+    opacity: 0;
   }
 }

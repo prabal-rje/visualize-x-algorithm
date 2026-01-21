@@ -8,12 +8,10 @@ Instructions:
 
 ## Stack (Top = next)
 
-### 0. CRT Fidelity Gate
-
+### 0. CRT Fidelity Fixes
+- [ ] Verify pixel/retro fonts are applied across UI (no modern font fallbacks).
 
 ### 1. Phase 1: Foundation
-
-
 ### 2. Phase 2: Configuration Panel
 - [ ] Populate sample tweets from appendix Section C (full dataset).
 - [ ] Implement audience mix sliders (8 audiences from appendix Section B).
@@ -133,8 +131,11 @@ Instructions:
 - [ ] Reduced motion mode disables animations.
 
 ## Completed
-- [x] Ensure UI uses pixel/retro fonts by default (VT323 / Press Start 2P).
-- [x] Match CRT quality to `crt-simulation` reference (scanlines, curvature, RGB split, noise, phosphor persistence).
+- [x] Fix barrel distortion map so the frame isn't vertically shifted.
+- [x] Add phosphor control knob (persistence + glow) to CRT controls.
+- [x] Apply global phosphor glow + tracer afterglow across UI text.
+- [x] Restore phosphor persistence variable + lingering trail effect (~800ms).
+- [x] Replace rounded-corner "curvature" with real barrel distortion lens effect.
 - [x] Implement persona selector (16 personas from appendix Section A).
 - [x] Add persona technicality mapping (explicit list, default mode).
 - [x] Implement marquee with attribution data from appendix (Section F).

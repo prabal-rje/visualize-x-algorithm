@@ -139,25 +139,39 @@ export const CHAPTERS: Chapter[] = [
       },
       {
         id: 'ch2-b',
-        labelSimple: 'Similarity',
-        labelTechnical: 'Vector Search',
+        labelSimple: 'Placement',
+        labelTechnical: 'Vector Placement',
         functions: [
           {
             id: 'ch2-b-1',
             name: 'approximate_nearest_neighbors()',
             file: 'phoenix/ann/approximate_nearest_neighbors.py',
-            summary: 'Finding nearest neighbors in embedding space',
+            summary: 'Placing candidates around the user embedding',
             githubUrl: `${GITHUB_BASE}/phoenix/ann/approximate_nearest_neighbors.py`
           }
         ]
       },
       {
         id: 'ch2-c',
+        labelSimple: 'Similarity',
+        labelTechnical: 'Similarity Map',
+        functions: [
+          {
+            id: 'ch2-c-1',
+            name: 'EmbeddingSpace::project()',
+            file: 'phoenix/ann/embedding_space.py',
+            summary: 'Projecting candidates into a similarity map',
+            githubUrl: `${GITHUB_BASE}/phoenix/ann/embedding_space.py`
+          }
+        ]
+      },
+      {
+        id: 'ch2-d',
         labelSimple: 'Merge',
         labelTechnical: 'Source Merge',
         functions: [
           {
-            id: 'ch2-c-1',
+            id: 'ch2-d-1',
             name: 'PhoenixCandidatePipeline::run()',
             file: 'home-mixer/pipeline/phoenix_candidate_pipeline.rs',
             summary: 'Merging Thunder and Phoenix candidates',

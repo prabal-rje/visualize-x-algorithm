@@ -12,7 +12,7 @@ import TokenizationFlow, { tokenizeSubTokens } from '../visualization/Tokenizati
 import { useViewport } from '../../hooks/useViewport';
 
 type Chapter2SceneProps = {
-  /** Current step (0 = user tower, 1 = similarity, 2 = merging) */
+  /** Current step (0 = user tower, 1 = placement, 2 = similarity, 3 = merging) */
   currentStep: number;
   /** Whether the chapter is currently active */
   isActive: boolean;
@@ -38,14 +38,16 @@ const PHOENIX_POSTS = [
 
 const STEP_NARRATION = [
   'The Two-Tower model encodes your tweet into a 128-dimensional vector—your digital fingerprint of meaning...',
+  'Candidates get placed one by one based on cosine proximity to your embedding...',
   'Your embedding floats in vector space. Posts with similar vectors gravitate toward you...',
   'Thunder brings posts from people you follow. Phoenix discovers content from strangers the AI thinks you\'ll like...'
 ];
 
 const STEP_LABELS = [
   '2A: User Tower Encoding',
-  '2B: Similarity Search',
-  '2C: Merging Sources'
+  '2B: Placement Pass',
+  '2C: Similarity Map',
+  '2D: Merging Sources'
 ];
 
 const ENCODING_STAGES = [
@@ -300,8 +302,31 @@ export default function Chapter2Scene({
         )}
 
         {currentStep === 1 && (
-          <div className={styles.step}>
+          <div className={styles.step} data-testid="placement-stage">
             <div className={styles.stepLabel}>{STEP_LABELS[1]}</div>
+            {isLoading ? (
+              <div className={styles.loading}>Computing similarities...</div>
+            ) : (
+              <>
+                <VectorSpace
+                  userPoint={USER_POINT}
+                  candidates={candidateData}
+                  showSimilarity={false}
+                  label="PLACEMENT PASS"
+                  isActive={isActive}
+                  userTweet={tweetText || 'Your tweet'}
+                />
+                <div className={styles.placementNote}>
+                  First place candidates, then reveal the similarity map.
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
+        {currentStep === 2 && (
+          <div className={styles.step}>
+            <div className={styles.stepLabel}>{STEP_LABELS[2]}</div>
             {isLoading ? (
               <div className={styles.loading}>Computing similarities...</div>
             ) : (
@@ -352,9 +377,9 @@ export default function Chapter2Scene({
           </div>
         )}
 
-        {currentStep === 2 && (
+        {currentStep === 3 && (
           <div className={styles.step}>
-            <div className={styles.stepLabel}>{STEP_LABELS[2]}</div>
+            <div className={styles.stepLabel}>{STEP_LABELS[3]}</div>
             <CandidateStreams
               thunderPosts={THUNDER_POSTS}
               phoenixPosts={PHOENIX_POSTS}

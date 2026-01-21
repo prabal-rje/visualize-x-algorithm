@@ -205,6 +205,14 @@
   background: rgba(0, 20, 0, 0.5);
 }
 
+.placementNote {
+  margin-top: 12px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 176, 0, 0.7);
+}
+
 .functionRef {
   display: flex;
   justify-content: center;
@@ -272,5 +280,40 @@
 
   .stageRail {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .title {
+    font-size: 30px;
+    letter-spacing: 0.18em;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .title {
+    font-size: 20px;
+    letter-spacing: 0.08em;
+  }
+
+  .narration {
+    padding: 8px 16px;
+    font-size: 12px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  .stepLabel {
+    max-width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }

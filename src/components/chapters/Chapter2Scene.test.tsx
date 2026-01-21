@@ -58,32 +58,39 @@ describe('Chapter2Scene', () => {
     });
   });
 
-  it('shows vector space at step 1 after loading', async () => {
+  it('shows placement stage before similarity map', async () => {
     render(<Chapter2Scene {...defaultProps} currentStep={1} />);
     await waitFor(() => {
-      expect(screen.getByTestId('vector-space')).toBeInTheDocument();
+      expect(screen.getByTestId('placement-stage')).toBeInTheDocument();
     });
   });
 
   it('shows a legend label in the gathering step', async () => {
-    render(<Chapter2Scene {...defaultProps} currentStep={1} />);
+    render(<Chapter2Scene {...defaultProps} currentStep={2} />);
     await waitFor(() => {
       expect(screen.getByText(/Legend/i)).toBeInTheDocument();
     });
   });
 
-  it('shows candidate streams at step 2 (merging)', () => {
+  it('shows vector space at step 2 after loading', async () => {
     render(<Chapter2Scene {...defaultProps} currentStep={2} />);
+    await waitFor(() => {
+      expect(screen.getByTestId('vector-space')).toBeInTheDocument();
+    });
+  });
+
+  it('shows candidate streams at step 3 (merging)', () => {
+    render(<Chapter2Scene {...defaultProps} currentStep={3} />);
     expect(screen.getByTestId('candidate-streams')).toBeInTheDocument();
   });
 
-  it('shows Thunder stream label at step 2', () => {
-    render(<Chapter2Scene {...defaultProps} currentStep={2} />);
+  it('shows Thunder stream label at step 3', () => {
+    render(<Chapter2Scene {...defaultProps} currentStep={3} />);
     expect(screen.getByText(/THUNDER/)).toBeInTheDocument();
   });
 
-  it('shows Phoenix stream label at step 2', () => {
-    render(<Chapter2Scene {...defaultProps} currentStep={2} />);
+  it('shows Phoenix stream label at step 3', () => {
+    render(<Chapter2Scene {...defaultProps} currentStep={3} />);
     expect(screen.getByText(/PHOENIX/)).toBeInTheDocument();
   });
 

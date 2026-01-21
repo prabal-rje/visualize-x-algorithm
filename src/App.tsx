@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Chapter0Scene from './components/chapters/Chapter0Scene';
 import Chapter1Scene from './components/chapters/Chapter1Scene';
 import Chapter2Scene from './components/chapters/Chapter2Scene';
 import Chapter3Scene from './components/chapters/Chapter3Scene';
@@ -9,7 +10,6 @@ import { DEFAULT_CRT_CONFIG } from './components/effects/crtConfig';
 import type { CRTConfig } from './components/effects/crtConfig';
 import CRTOverlay from './components/effects/CRTOverlay';
 import ScreenFlicker from './components/effects/ScreenFlicker';
-import ConfigPanel from './components/layout/ConfigPanel';
 import FunctionPanel from './components/layout/FunctionPanel';
 import Marquee from './components/layout/Marquee';
 import Timeline from './components/layout/Timeline';
@@ -70,6 +70,15 @@ function App() {
     };
   }, [simulationStarted, mlStatus]);
 
+  useEffect(() => {
+    if (simulationStarted) {
+      dispatch({ type: 'START' });
+      dispatch({ type: 'JUMP_TO_CHAPTER', chapterIndex: 1 });
+    } else {
+      dispatch({ type: 'RESET' });
+    }
+  }, [dispatch, simulationStarted]);
+
   // Get current function info from simulation position
   const { position } = simulationState;
   const currentFunction = getFunctionAtPosition(
@@ -94,12 +103,12 @@ function App() {
         />
       );
     }
-    return <ConfigPanel />;
+    return null;
   };
 
   const renderChapterScene = () => {
     // Don't render chapters until model is ready
-    if (!simulationStarted || mlStatus !== 'ready') return null;
+    if (mlStatus !== 'ready') return null;
 
     const { chapterIndex, subChapterIndex } = position;
 
@@ -107,6 +116,11 @@ function App() {
       <>
         {chapterIndex === 0 && (
           <ChapterWrapper chapterIndex={0} isActive={true}>
+            <Chapter0Scene currentStep={subChapterIndex} isActive={true} />
+          </ChapterWrapper>
+        )}
+        {chapterIndex === 1 && (
+          <ChapterWrapper chapterIndex={1} isActive={true}>
             <Chapter1Scene
               currentStep={subChapterIndex}
               isActive={true}
@@ -114,23 +128,23 @@ function App() {
             />
           </ChapterWrapper>
         )}
-        {chapterIndex === 1 && (
-          <ChapterWrapper chapterIndex={1} isActive={true}>
-            <Chapter2Scene currentStep={subChapterIndex} isActive={true} />
-          </ChapterWrapper>
-        )}
         {chapterIndex === 2 && (
           <ChapterWrapper chapterIndex={2} isActive={true}>
-            <Chapter3Scene currentStep={subChapterIndex} isActive={true} />
+            <Chapter2Scene currentStep={subChapterIndex} isActive={true} />
           </ChapterWrapper>
         )}
         {chapterIndex === 3 && (
           <ChapterWrapper chapterIndex={3} isActive={true}>
-            <Chapter4Scene currentStep={subChapterIndex} isActive={true} />
+            <Chapter3Scene currentStep={subChapterIndex} isActive={true} />
           </ChapterWrapper>
         )}
         {chapterIndex === 4 && (
           <ChapterWrapper chapterIndex={4} isActive={true}>
+            <Chapter4Scene currentStep={subChapterIndex} isActive={true} />
+          </ChapterWrapper>
+        )}
+        {chapterIndex === 5 && (
+          <ChapterWrapper chapterIndex={5} isActive={true}>
             <Chapter5Scene currentStep={subChapterIndex} isActive={true} />
           </ChapterWrapper>
         )}
@@ -155,10 +169,10 @@ function App() {
         <Marquee />
         <main className={styles.main}>
           <section className={styles.chapterCanvas} data-testid="chapter-canvas">
-            {simulationStarted && mlStatus === 'ready'
+            {mlStatus === 'ready'
               ? renderChapterScene()
               : <div className={styles.placeholder}>
-                  {mlStatus !== 'ready' ? 'Waiting for model to load...' : 'Configure and start simulation'}
+                  Waiting for model to load...
                 </div>
             }
           </section>

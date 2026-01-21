@@ -25,6 +25,56 @@ const GITHUB_BASE = 'https://github.com/xai-org/x-algorithm/blob/main';
 
 export const CHAPTERS: Chapter[] = [
   {
+    id: 'ch0',
+    number: 0,
+    labelSimple: 'Loadout',
+    labelTechnical: 'Mission Prep',
+    subChapters: [
+      {
+        id: 'ch0-a',
+        labelSimple: 'Persona',
+        labelTechnical: 'Persona Select',
+        functions: [
+          {
+            id: 'ch0-a-1',
+            name: 'MissionLoadout::select_persona()',
+            file: 'client/mission_loadout.ts',
+            summary: 'Selecting persona archetype and voice',
+            githubUrl: `${GITHUB_BASE}/client/mission_loadout.ts`
+          }
+        ]
+      },
+      {
+        id: 'ch0-b',
+        labelSimple: 'Audience',
+        labelTechnical: 'Audience Mix',
+        functions: [
+          {
+            id: 'ch0-b-1',
+            name: 'MissionLoadout::set_audience_mix()',
+            file: 'client/mission_loadout.ts',
+            summary: 'Balancing audience types for delivery',
+            githubUrl: `${GITHUB_BASE}/client/mission_loadout.ts`
+          }
+        ]
+      },
+      {
+        id: 'ch0-c',
+        labelSimple: 'Tweet',
+        labelTechnical: 'Draft Input',
+        functions: [
+          {
+            id: 'ch0-c-1',
+            name: 'MissionLoadout::draft_tweet()',
+            file: 'client/mission_loadout.ts',
+            summary: 'Drafting the tweet for simulation',
+            githubUrl: `${GITHUB_BASE}/client/mission_loadout.ts`
+          }
+        ]
+      }
+    ]
+  },
+  {
     id: 'ch1',
     number: 1,
     labelSimple: 'Request',
@@ -124,9 +174,16 @@ export const CHAPTERS: Chapter[] = [
           {
             id: 'ch3-a-1',
             name: 'DropDuplicatesFilter::filter()',
-            file: 'home-mixer/filters/drop_duplicates_filter.rs',
+            file: 'home-mixer/filters/dedup.rs',
             summary: 'Removing duplicate tweets',
-            githubUrl: `${GITHUB_BASE}/home-mixer/filters/drop_duplicates_filter.rs`
+            githubUrl: `${GITHUB_BASE}/home-mixer/filters/dedup.rs`
+          },
+          {
+            id: 'ch3-a-2',
+            name: 'RepostDeduplicationFilter::filter()',
+            file: 'home-mixer/filters/dedup.rs',
+            summary: 'Removing duplicate reposts',
+            githubUrl: `${GITHUB_BASE}/home-mixer/filters/dedup.rs`
           }
         ]
       },
@@ -138,23 +195,65 @@ export const CHAPTERS: Chapter[] = [
           {
             id: 'ch3-b-1',
             name: 'AuthorSocialgraphFilter::filter()',
-            file: 'home-mixer/filters/author_socialgraph_filter.rs',
+            file: 'home-mixer/filters/socialgraph.rs',
             summary: 'Filtering by blocks and mutes',
-            githubUrl: `${GITHUB_BASE}/home-mixer/filters/author_socialgraph_filter.rs`
+            githubUrl: `${GITHUB_BASE}/home-mixer/filters/socialgraph.rs`
+          },
+          {
+            id: 'ch3-b-2',
+            name: 'SelfpostFilter::filter()',
+            file: 'home-mixer/filters/socialgraph.rs',
+            summary: 'Removing your own posts',
+            githubUrl: `${GITHUB_BASE}/home-mixer/filters/socialgraph.rs`
           }
         ]
       },
       {
         id: 'ch3-c',
-        labelSimple: 'Keywords',
-        labelTechnical: 'Muted Keywords',
+        labelSimple: 'Recency',
+        labelTechnical: 'History Filters',
         functions: [
           {
             id: 'ch3-c-1',
+            name: 'AgeFilter::filter()',
+            file: 'home-mixer/filters/history.rs',
+            summary: 'Removing stale posts',
+            githubUrl: `${GITHUB_BASE}/home-mixer/filters/history.rs`
+          },
+          {
+            id: 'ch3-c-2',
+            name: 'PreviouslySeenPostsFilter::filter()',
+            file: 'home-mixer/filters/history.rs',
+            summary: 'Removing already-seen posts',
+            githubUrl: `${GITHUB_BASE}/home-mixer/filters/history.rs`
+          },
+          {
+            id: 'ch3-c-3',
+            name: 'PreviouslyServedPostsFilter::filter()',
+            file: 'home-mixer/filters/history.rs',
+            summary: 'Removing recently served posts',
+            githubUrl: `${GITHUB_BASE}/home-mixer/filters/history.rs`
+          }
+        ]
+      },
+      {
+        id: 'ch3-d',
+        labelSimple: 'Keywords',
+        labelTechnical: 'Content Filtering',
+        functions: [
+          {
+            id: 'ch3-d-1',
             name: 'MutedKeywordFilter::filter()',
-            file: 'home-mixer/filters/muted_keyword_filter.rs',
+            file: 'home-mixer/filters/content.rs',
             summary: 'Filtering muted keywords',
-            githubUrl: `${GITHUB_BASE}/home-mixer/filters/muted_keyword_filter.rs`
+            githubUrl: `${GITHUB_BASE}/home-mixer/filters/content.rs`
+          },
+          {
+            id: 'ch3-d-2',
+            name: 'IneligibleSubscriptionFilter::filter()',
+            file: 'home-mixer/filters/content.rs',
+            summary: 'Removing ineligible subscription content',
+            githubUrl: `${GITHUB_BASE}/home-mixer/filters/content.rs`
           }
         ]
       }
@@ -198,13 +297,20 @@ export const CHAPTERS: Chapter[] = [
             file: 'home-mixer/scorers/weighted_scorer.rs',
             summary: 'Combining scores with weights',
             githubUrl: `${GITHUB_BASE}/home-mixer/scorers/weighted_scorer.rs`
-          },
+          }
+        ]
+      },
+      {
+        id: 'ch4-c',
+        labelSimple: 'Diversity',
+        labelTechnical: 'Author Diversity',
+        functions: [
           {
-            id: 'ch4-b-2',
+            id: 'ch4-c-1',
             name: 'AuthorDiversityScorer::score()',
-            file: 'home-mixer/scorers/author_diversity_scorer.rs',
+            file: 'home-mixer/scorers/diversity.rs',
             summary: 'Penalizing repeated authors',
-            githubUrl: `${GITHUB_BASE}/home-mixer/scorers/author_diversity_scorer.rs`
+            githubUrl: `${GITHUB_BASE}/home-mixer/scorers/diversity.rs`
           }
         ]
       }
@@ -232,15 +338,29 @@ export const CHAPTERS: Chapter[] = [
       },
       {
         id: 'ch5-b',
-        labelSimple: 'Pipeline',
-        labelTechnical: 'Candidate Pipeline',
+        labelSimple: 'Visibility',
+        labelTechnical: 'Visibility Filter',
         functions: [
           {
             id: 'ch5-b-1',
-            name: 'PhoenixCandidatePipeline::run()',
-            file: 'home-mixer/candidate_pipeline/phoenix_candidate_pipeline.rs',
-            summary: 'Orchestrating the full pipeline',
-            githubUrl: `${GITHUB_BASE}/home-mixer/candidate_pipeline/phoenix_candidate_pipeline.rs`
+            name: 'VFFilter::filter()',
+            file: 'home-mixer/filters/visibility.rs',
+            summary: 'Removing spam or unsafe posts',
+            githubUrl: `${GITHUB_BASE}/home-mixer/filters/visibility.rs`
+          }
+        ]
+      },
+      {
+        id: 'ch5-c',
+        labelSimple: 'Deliver',
+        labelTechnical: 'Response Format',
+        functions: [
+          {
+            id: 'ch5-c-1',
+            name: 'format_response()',
+            file: 'home-mixer/server.rs',
+            summary: 'Serializing final timeline payload',
+            githubUrl: `${GITHUB_BASE}/home-mixer/server.rs`
           }
         ]
       }

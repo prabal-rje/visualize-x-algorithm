@@ -28,6 +28,7 @@ describe('Timeline', () => {
           dispatch={mockDispatch}
         />
       );
+      expect(screen.getByText('CH.0')).toBeInTheDocument();
       expect(screen.getByText('CH.1')).toBeInTheDocument();
       expect(screen.getByText('CH.2')).toBeInTheDocument();
       expect(screen.getByText('CH.3')).toBeInTheDocument();
@@ -44,6 +45,7 @@ describe('Timeline', () => {
           dispatch={mockDispatch}
         />
       );
+      expect(screen.getByText('Loadout')).toBeInTheDocument();
       expect(screen.getByText('Request')).toBeInTheDocument();
       expect(screen.getByText('Gather')).toBeInTheDocument();
       expect(screen.getByText('Filter')).toBeInTheDocument();
@@ -60,6 +62,7 @@ describe('Timeline', () => {
           dispatch={mockDispatch}
         />
       );
+      expect(screen.getByText('Mission Prep')).toBeInTheDocument();
       expect(screen.getByText('gRPC Request')).toBeInTheDocument();
       expect(screen.getByText('Thunder/Phoenix')).toBeInTheDocument();
       expect(screen.getByText('Filter Cascade')).toBeInTheDocument();
@@ -240,8 +243,8 @@ describe('Timeline', () => {
           dispatch={mockDispatch}
         />
       );
-      // First function of first chapter
-      expect(screen.getByText(/get_scored_posts/)).toBeInTheDocument();
+      // First function of loadout chapter
+      expect(screen.getByText(/MissionLoadout::select_persona/)).toBeInTheDocument();
     });
 
     it('shows progress indicator', () => {

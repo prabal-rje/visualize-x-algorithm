@@ -45,6 +45,10 @@
   border-color: rgba(180, 100, 255, 0.5);
 }
 
+.chapter[data-chapter='5'] {
+  border-color: rgba(255, 140, 0, 0.5);
+}
+
 /* CRT scanline effect on chapter transition */
 @keyframes chapter-enter {
   0% {

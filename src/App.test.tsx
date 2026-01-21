@@ -48,9 +48,10 @@ describe('App', () => {
     expect(screen.getByTestId('app-shell')).toBeInTheDocument();
   });
 
-  it('shows ConfigPanel when simulation not started', () => {
+  it('shows loadout chapter when simulation not started', () => {
     useMLStore.getState().setReady(); // Skip BIOS loading
     render(<App />);
+    expect(screen.getByTestId('chapter-0-scene')).toBeInTheDocument();
     expect(screen.getByTestId('config-panel')).toBeInTheDocument();
     expect(screen.queryByTestId('mission-report')).not.toBeInTheDocument();
   });
@@ -71,7 +72,7 @@ describe('App', () => {
     expect(screen.queryByTestId('config-panel')).not.toBeInTheDocument();
   });
 
-  it('clicking replay resets to ConfigPanel', () => {
+  it('clicking replay resets to loadout chapter', () => {
     useMLStore.getState().setReady(); // Skip BIOS loading
     useConfigStore.setState({
       simulationStarted: true,
@@ -85,7 +86,7 @@ describe('App', () => {
     render(<App />);
     expect(screen.getByTestId('mission-report')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /run another simulation/i }));
-    expect(screen.getByTestId('config-panel')).toBeInTheDocument();
+    expect(screen.getByTestId('chapter-0-scene')).toBeInTheDocument();
     expect(screen.queryByTestId('mission-report')).not.toBeInTheDocument();
   });
 
@@ -96,10 +97,10 @@ describe('App', () => {
     expect(screen.queryByTestId('config-panel')).not.toBeInTheDocument();
   });
 
-  it('shows ConfigPanel when ML status is ready', () => {
+  it('shows loadout chapter when ML status is ready', () => {
     useMLStore.getState().setReady();
     render(<App />);
-    expect(screen.getByTestId('config-panel')).toBeInTheDocument();
+    expect(screen.getByTestId('chapter-0-scene')).toBeInTheDocument();
     expect(screen.queryByTestId('bios-loading')).not.toBeInTheDocument();
   });
 

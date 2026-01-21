@@ -1,6 +1,6 @@
 /**
  * Embedding service with caching using MiniLM (all-MiniLM-L6-v2).
- * Uses @xenova/transformers for in-browser ML inference.
+ * Uses @xenova/transformers for in-browser ML inference in a Web Worker.
  *
  * MiniLM produces 384-dimensional embeddings. We truncate to 128 dimensions
  * to match X's Phoenix model (emb_size = 128).
@@ -16,20 +16,107 @@ export type EmbedderFn = (
 // X's Phoenix model uses 128-dimensional embeddings
 const EMBEDDING_DIM = 128;
 
+type WorkerRequest =
+  | { id: string; type: 'init' }
+  | {
+      id: string;
+      type: 'embed';
+      text: string;
+      options: { pooling: PoolingType; normalize: boolean };
+    };
+
+type WorkerResponse =
+  | { id: string; type: 'init' }
+  | { id: string; type: 'embed'; data: number[] }
+  | { id: string; type: 'error'; error: string }
+  | { type: 'progress'; progress: number; status: string; id?: string };
+
+type PendingRequest = {
+  resolve: (value: WorkerResponse) => void;
+  reject: (error: Error) => void;
+};
+
 // Module state
-let embedder: EmbedderFn | null = null;
+let embedderOverride: EmbedderFn | null = null;
 let initialized = false;
 let initializationPromise: Promise<void> | null = null; // Allow concurrent callers to wait
+let worker: Worker | null = null;
+let requestCounter = 0;
 const cache = new Map<string, number[]>();
+const pendingRequests = new Map<string, PendingRequest>();
+let progressListeners: Array<(progress: number, status: string) => void> = [];
+
+function handleWorkerMessage(event: MessageEvent<WorkerResponse>): void {
+  const message = event.data;
+  if (message.type === 'progress') {
+    progressListeners.forEach((listener) => listener(message.progress, message.status));
+    return;
+  }
+
+  if (!('id' in message)) {
+    return;
+  }
+
+  const pending = pendingRequests.get(message.id);
+  if (!pending) {
+    return;
+  }
+
+  if (message.type === 'error') {
+    pending.reject(new Error(message.error));
+  } else {
+    pending.resolve(message);
+  }
+  pendingRequests.delete(message.id);
+}
+
+function ensureWorker(): Worker {
+  if (worker) {
+    return worker;
+  }
+
+  worker = new Worker(new URL('./embeddingWorker.ts', import.meta.url), {
+    type: 'module'
+  });
+  worker.onmessage = handleWorkerMessage;
+  worker.onerror = (event) => {
+    const error = new Error(event.message);
+    pendingRequests.forEach(({ reject }) => reject(error));
+    pendingRequests.clear();
+  };
+
+  return worker;
+}
+
+function sendWorkerRequest<T extends WorkerResponse>(
+  message: Omit<WorkerRequest, 'id'>
+): Promise<T> {
+  const workerInstance = ensureWorker();
+  const id = `req-${requestCounter++}`;
+
+  return new Promise((resolve, reject) => {
+    pendingRequests.set(id, {
+      resolve: resolve as PendingRequest['resolve'],
+      reject
+    });
+    workerInstance.postMessage({ ...message, id });
+  });
+}
 
 /**
  * Inject a mock embedder for testing purposes.
  * Pass null to clear and reset to uninitialized state.
  */
 export function setEmbedderForTests(fn: EmbedderFn | null): void {
-  embedder = fn;
+  embedderOverride = fn;
   initialized = fn !== null;
   initializationPromise = null;
+  progressListeners = [];
+  pendingRequests.clear();
+  if (worker) {
+    worker.terminate();
+    worker = null;
+  }
 }
 
 /**
@@ -65,113 +152,57 @@ function truncate(vec: number[], dim: number): number[] {
 
 /**
  * Initialize the embedder with the MiniLM model.
- * Uses dynamic import to avoid SSR issues.
  */
 export async function initializeEmbedder(
   onProgress?: (progress: number, status: string) => void
 ): Promise<void> {
+  if (embedderOverride) {
+    initialized = true;
+    onProgress?.(100, 'Ready');
+    return;
+  }
+
   // If already initialized, just report ready
-  if (initialized && embedder !== null) {
+  if (initialized) {
     onProgress?.(100, 'Ready');
     return;
   }
 
   // If initialization is in progress, wait for it (React Strict Mode calls useEffect twice)
   if (initializationPromise) {
-    console.log('[Embedder] Already initializing, waiting for completion...');
+    if (onProgress) {
+      progressListeners.push(onProgress);
+    }
     await initializationPromise;
     onProgress?.(100, 'Ready');
     return;
   }
 
-  // Start initialization
-  initializationPromise = (async () => {
-    console.log('[Embedder] Starting initialization...');
-    onProgress?.(0, 'Loading transformers library...');
-
-    // Dynamic import to avoid SSR issues
-    const { pipeline, env } = await import('@xenova/transformers');
-    console.log('[Embedder] Transformers library loaded');
-
-    // Disable local model loading - always fetch from Hugging Face
-    // This fixes the issue where the library tries to load from /models/ locally
-    env.allowLocalModels = false;
-    console.log('[Embedder] Configured to fetch models from Hugging Face');
-
-    onProgress?.(10, 'Downloading MiniLM model (22.4 MB)...');
-
-    // Track progress across all files
-    // MiniLM model files: tokenizer.json (~1KB), tokenizer_config.json (~1KB),
-    // config.json (~1KB), model.onnx (~22MB)
-    const fileProgress = new Map<string, { loaded: number; total: number }>();
-
-    console.log('[Embedder] Starting model download...');
-    const extractor = await pipeline(
-      'feature-extraction',
-      'Xenova/all-MiniLM-L6-v2',
-      {
-        progress_callback: (progress: {
-          progress?: number;
-          status?: string;
-          file?: string;
-          loaded?: number;
-          total?: number;
-          name?: string;
-        }) => {
-          console.log('[Embedder] Progress callback:', JSON.stringify(progress));
-
-          const file = progress.file ?? 'unknown';
-          const status = progress.status ?? '';
-
-          // Update per-file progress
-          if (progress.loaded !== undefined && progress.total !== undefined && progress.total > 0) {
-            fileProgress.set(file, { loaded: progress.loaded, total: progress.total });
-          }
-
-          // Calculate aggregate progress across all files
-          let totalLoaded = 0;
-          let totalSize = 0;
-          for (const [, fp] of fileProgress) {
-            totalLoaded += fp.loaded;
-            totalSize += fp.total;
-          }
-
-          // Calculate percentage (10-90% range)
-          const percent = totalSize > 0 ? (totalLoaded / totalSize) : 0;
-          const scaledProgress = 10 + percent * 80;
-
-          // Create status message
-          let statusMsg = 'Loading model...';
-          if (status === 'initiate') {
-            statusMsg = `Initializing ${file}...`;
-          } else if (status === 'download' || status === 'progress') {
-            const mbLoaded = (totalLoaded / (1024 * 1024)).toFixed(1);
-            const mbTotal = (totalSize / (1024 * 1024)).toFixed(1);
-            statusMsg = `Downloading: ${mbLoaded} / ${mbTotal} MB`;
-          } else if (status === 'done') {
-            statusMsg = `Loaded ${file}`;
-          }
-
-          onProgress?.(scaledProgress, statusMsg);
-        },
-      }
-    );
-
-    console.log('[Embedder] Model loaded, initializing...');
-    onProgress?.(95, 'Initializing embedder...');
-
-    // Wrap the pipeline as our embedder function
-    embedder = async (
-      text: string,
-      options?: { pooling: PoolingType; normalize: boolean }
-    ) => {
-      const result = await extractor(text, options);
-      return { data: result.data as Float32Array };
-    };
-
+  if (typeof Worker === 'undefined') {
+    embedderOverride = async () => ({
+      data: new Float32Array(EMBEDDING_DIM).fill(0)
+    });
     initialized = true;
-    console.log('[Embedder] Ready!');
     onProgress?.(100, 'Ready');
+    return;
+  }
+
+  if (onProgress) {
+    progressListeners.push(onProgress);
+  }
+
+  initializationPromise = (async () => {
+    try {
+      await sendWorkerRequest({ type: 'init' });
+      initialized = true;
+      progressListeners.forEach((listener) => listener(100, 'Ready'));
+    } catch (error) {
+      initialized = false;
+      throw error;
+    } finally {
+      progressListeners = [];
+      initializationPromise = null;
+    }
   })();
 
   await initializationPromise;
@@ -183,7 +214,7 @@ export async function initializeEmbedder(
  * to match X's Phoenix model).
  */
 export async function getEmbedding(text: string): Promise<number[]> {
-  if (!initialized || embedder === null) {
+  if (!initialized && !embedderOverride) {
     throw new Error('Embedder not initialized');
   }
 
@@ -194,7 +225,20 @@ export async function getEmbedding(text: string): Promise<number[]> {
   }
 
   // Compute embedding
-  const result = await embedder(text, { pooling: 'mean', normalize: false });
+  let result: { data: Float32Array | number[] };
+  if (embedderOverride) {
+    result = await embedderOverride(text, { pooling: 'mean', normalize: false });
+  } else {
+    const response = await sendWorkerRequest<WorkerResponse>({
+      type: 'embed',
+      text,
+      options: { pooling: 'mean', normalize: false }
+    });
+    if (response.type !== 'embed') {
+      throw new Error('Unexpected worker response');
+    }
+    result = { data: response.data };
+  }
 
   // Convert to array, truncate to 128-dim, then normalize
   const fullEmbedding = Array.from(result.data);

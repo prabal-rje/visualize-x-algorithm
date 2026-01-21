@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/chapter2-scene.module.css';
 import { getEmbedding, isInitialized } from '../../ml/embeddings';
-import { cosine } from '../../ml/similarity';
+import { cosinePreview } from '../../ml/similarity';
 import { generateTweetPool, type TweetCandidate } from '../../ml/tweetPool';
 import { useConfigStore } from '../../stores/config';
 import EmbeddingHeatmap from '../visualization/EmbeddingHeatmap';
@@ -167,7 +167,7 @@ export default function Chapter2Scene({
 
         // Compute similarities using pre-computed pool embeddings
         const similarities = tweetPool.map((tweet) => {
-          const sim = cosine(embedding, tweet.embedding);
+          const sim = cosinePreview(embedding, tweet.embedding);
           return Math.max(0, sim); // Clamp to 0
         });
 

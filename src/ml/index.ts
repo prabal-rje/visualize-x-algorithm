@@ -12,7 +12,7 @@ export {
 } from './embeddings';
 
 // Similarity utilities
-export { cosine, dot, magnitude } from './similarity';
+export { cosine, cosinePreview, dot, magnitude } from './similarity';
 
 // Content classification
 export {

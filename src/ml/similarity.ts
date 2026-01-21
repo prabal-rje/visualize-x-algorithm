@@ -26,6 +26,8 @@ export function magnitude(a: number[]): number {
   return Math.sqrt(dot(a, a));
 }
 
+const PREVIEW_DIMENSIONS = 30;
+
 /**
  * Computes the cosine similarity between two vectors.
  * @param a First vector
@@ -41,4 +43,27 @@ export function cosine(a: number[], b: number[]): number {
   }
 
   return dot(a, b) / (magA * magB);
+}
+
+/**
+ * Computes the cosine similarity using only the first 30 dimensions.
+ * Used for Matryoshka preview similarity.
+ */
+export function cosinePreview(a: number[], b: number[]): number {
+  const dim = Math.min(PREVIEW_DIMENSIONS, a.length, b.length);
+  if (dim === 0) return 0;
+  let dotSum = 0;
+  let magA = 0;
+  let magB = 0;
+  for (let i = 0; i < dim; i++) {
+    const av = a[i];
+    const bv = b[i];
+    dotSum += av * bv;
+    magA += av * av;
+    magB += bv * bv;
+  }
+  if (magA === 0 || magB === 0) {
+    return 0;
+  }
+  return dotSum / (Math.sqrt(magA) * Math.sqrt(magB));
 }

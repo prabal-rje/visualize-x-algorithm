@@ -5,7 +5,7 @@
  */
 
 import { getEmbedding, isInitialized } from './embeddings';
-import { cosine } from './similarity';
+import { cosinePreview } from './similarity';
 
 /**
  * Configuration options for the muted keyword filter.
@@ -154,7 +154,7 @@ export class MutedKeywordFilter {
     let bestMatch: { keyword: string; similarity: number } | null = null;
 
     for (const [keyword, keywordEmbedding] of this.keywordEmbeddings) {
-      const similarity = cosine(textEmbedding, keywordEmbedding);
+      const similarity = cosinePreview(textEmbedding, keywordEmbedding);
 
       if (similarity >= this.semanticThreshold) {
         if (bestMatch === null || similarity > bestMatch.similarity) {

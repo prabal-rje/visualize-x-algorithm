@@ -7,6 +7,7 @@ import {
   getEmbedding,
   getEmbeddings,
 } from './embeddings';
+import { cosinePreview } from './similarity';
 
 describe('embeddings', () => {
   beforeEach(() => {
@@ -141,6 +142,14 @@ describe('embeddings', () => {
       await getEmbedding('cached text');
 
       expect(callCount).toBe(2);
+    });
+  });
+
+  describe('cosinePreview', () => {
+    it('computes similarity using 30 dims for preview', () => {
+      const embedding = Array(128).fill(0.1);
+      const similarity = cosinePreview(embedding, embedding);
+      expect(similarity).toBeGreaterThan(0.9);
     });
   });
 });

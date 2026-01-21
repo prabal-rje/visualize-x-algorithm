@@ -5,7 +5,7 @@
  */
 
 import { getEmbedding } from './embeddings';
-import { cosine } from './similarity';
+import { cosinePreview } from './similarity';
 
 /**
  * Content categories with their concept descriptions.
@@ -68,7 +68,9 @@ export async function classifyContent(text: string): Promise<ClassificationResul
   // Compute similarity to each category
   const categories = CONTENT_CATEGORIES.map((category) => {
     const conceptEmbedding = conceptEmbeddings.get(category.id);
-    const similarity = conceptEmbedding ? cosine(textEmbedding, conceptEmbedding) : 0;
+    const similarity = conceptEmbedding
+      ? cosinePreview(textEmbedding, conceptEmbedding)
+      : 0;
 
     return {
       id: category.id,

@@ -7,19 +7,20 @@ import Timeline from './components/layout/Timeline';
 
 function App() {
   return (
-    <div data-testid="app-shell">
-      <ScreenFlicker />
-      <CRTOverlay />
-      <Marquee />
-      <main>
-        <section>CANVAS PLACEHOLDER</section>
-        <section>
-          <FunctionPanel />
-          <ConfigPanel />
-        </section>
-      </main>
-      <Timeline />
-    </div>
+    <CRTOverlay>
+      <div data-testid="app-shell">
+        <ScreenFlicker />
+        <Marquee />
+        <main>
+          <section>CANVAS PLACEHOLDER</section>
+          <section>
+            <FunctionPanel />
+            <ConfigPanel />
+          </section>
+        </main>
+        <Timeline />
+      </div>
+    </CRTOverlay>
   );
 }
 

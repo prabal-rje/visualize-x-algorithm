@@ -25,5 +25,20 @@
 body {
   background: var(--crt-black);
   color: var(--phosphor-green);
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: 'VT323', 'IBM Plex Mono', monospace;
+  letter-spacing: 0.04em;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Press Start 2P', 'VT323', monospace;
+  letter-spacing: 0.08em;
 }

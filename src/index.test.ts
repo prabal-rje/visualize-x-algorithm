@@ -8,4 +8,9 @@ describe('global css', () => {
     expect(css).toContain('--phosphor-green');
     expect(css).toContain('--crt-black');
   });
+
+  it('uses retro pixel fonts', () => {
+    expect(css).toContain('VT323');
+    expect(css).toContain('Press Start 2P');
+  });
 });

@@ -9,8 +9,7 @@ Instructions:
 ## Stack (Top = next)
 
 ### 0. CRT Fidelity Gate
-- [ ] Match CRT quality to `crt-simulation` reference (scanlines, curvature, RGB split, noise, phosphor persistence).
-- [ ] Ensure UI uses pixel/retro fonts by default (VT323 / Press Start 2P).
+
 
 ### 1. Phase 1: Foundation
 
@@ -134,6 +133,8 @@ Instructions:
 - [ ] Reduced motion mode disables animations.
 
 ## Completed
+- [x] Ensure UI uses pixel/retro fonts by default (VT323 / Press Start 2P).
+- [x] Match CRT quality to `crt-simulation` reference (scanlines, curvature, RGB split, noise, phosphor persistence).
 - [x] Implement persona selector (16 personas from appendix Section A).
 - [x] Add persona technicality mapping (explicit list, default mode).
 - [x] Implement marquee with attribution data from appendix (Section F).

@@ -122,6 +122,10 @@ Instructions:
 - [ ] Reduced motion mode disables animations.
 
 ## Completed
+- [x] Increase persona subtitle + tweet draft text size for readability.
+- [x] Replace shuffle icon with retro double-arrow variant.
+- [x] Add deterministic simulation + Bernoulli MLE helper and store results on begin.
+- [x] Write simulation MLE design + implementation plan docs.
 - [x] Pixelate Expert Mode checkbox checkmark with unicode glyph.
 - [x] Restore the original shuffle icon shape.
 - [x] Split config flow into stepped pages (Persona → Audience → Tweet) with navigation.

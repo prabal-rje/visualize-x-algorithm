@@ -4,6 +4,7 @@ import { AUDIENCES } from '../data/audiences';
 import { PERSONAS } from '../data/personas';
 import { SAMPLE_TWEETS } from '../data/tweets';
 import { simulateEngagement, type SimulationResult } from '../simulation/simulate';
+import { computeRPGStats, type RPGStats } from '../utils/rpgStats';
 import type { Persona } from '../data/personas';
 
 type PersonaId = Persona['id'];
@@ -18,6 +19,7 @@ type ConfigState = {
   audienceMix: AudienceMix;
   simulationStarted: boolean;
   simulationResult: SimulationResult | null;
+  rpgStats: RPGStats | null;
   setExpertMode: (value: boolean) => void;
   setPersonaId: (id: PersonaId) => void;
   setTweetText: (text: string) => void;
@@ -46,6 +48,7 @@ export const useConfigStore = create<ConfigState>()(
       audienceMix: defaultAudienceMix,
       simulationStarted: false,
       simulationResult: null,
+      rpgStats: null,
       setExpertMode: (value) => set({ expertMode: value }),
       setPersonaId: (personaId) => set({ personaId }),
       setTweetText: (text) => set({ tweetText: text, sampleTweetId: null }),
@@ -69,16 +72,20 @@ export const useConfigStore = create<ConfigState>()(
         }));
       },
       beginSimulation: () =>
-        set((state) => ({
-          simulationStarted: true,
-          simulationResult: simulateEngagement({
+        set((state) => {
+          const simulationResult = simulateEngagement({
             personaId: state.personaId,
             tweetText: state.tweetText,
             audienceMix: state.audienceMix
-          })
-        })),
+          });
+          return {
+            simulationStarted: true,
+            simulationResult,
+            rpgStats: computeRPGStats(simulationResult)
+          };
+        }),
       resetSimulation: () =>
-        set({ simulationStarted: false, simulationResult: null })
+        set({ simulationStarted: false, simulationResult: null, rpgStats: null })
     }),
     {
       name: 'x-algorithm-config',

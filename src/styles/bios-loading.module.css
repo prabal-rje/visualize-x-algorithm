@@ -1,0 +1,93 @@
+/* BIOS-style loading screen with CRT aesthetic */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  background: var(--crt-black, #0a0a0a);
+  border: 1px solid var(--phosphor-green, #33ff33);
+  font-family: 'VT323', monospace;
+  font-size: 16px;
+  box-shadow:
+    inset 0 0 30px rgba(51, 255, 51, 0.08),
+    0 0 24px rgba(51, 255, 51, 0.15);
+}
+
+.header {
+  text-align: center;
+}
+
+.title {
+  font-size: 20px;
+  color: var(--phosphor-amber, #ffb000);
+  text-shadow: 0 0 10px rgba(255, 176, 0, 0.5);
+  letter-spacing: 0.1em;
+}
+
+.copyright {
+  color: var(--phosphor-green, #33ff33);
+  opacity: 0.7;
+  font-size: 14px;
+}
+
+.section {
+  margin-top: 8px;
+}
+
+.sectionTitle {
+  color: var(--phosphor-green, #33ff33);
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 6px rgba(51, 255, 51, 0.5);
+}
+
+.divider {
+  color: var(--phosphor-green, #33ff33);
+  opacity: 0.5;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.step {
+  display: flex;
+  justify-content: space-between;
+  color: var(--phosphor-green, #33ff33);
+}
+
+.stepStatus {
+  color: var(--phosphor-amber, #ffb000);
+  font-weight: bold;
+}
+
+.progressSection {
+  margin-top: 8px;
+}
+
+.progressBar {
+  color: var(--phosphor-cyan, #00ffff);
+  font-family: monospace;
+  text-shadow: 0 0 6px rgba(0, 255, 255, 0.5);
+  letter-spacing: 0.05em;
+}
+
+.currentStep {
+  color: var(--phosphor-green, #33ff33);
+  opacity: 0.8;
+  margin-top: 4px;
+}
+
+.footer {
+  margin-top: 16px;
+}
+
+.tip {
+  color: var(--phosphor-amber, #ffb000);
+  opacity: 0.8;
+  text-shadow: 0 0 4px rgba(255, 176, 0, 0.3);
+}

@@ -14,23 +14,8 @@ Instructions:
 ### 2. Phase 2: Configuration Panel
 
 ### 2.5 RPG Experience Layer
-- [ ] Update UI copy to RPG framing (Mission Loadout, Mission Report).
-- [ ] Implement mode-aware FunctionPanel (summary + Learn more gate).
-- [ ] Add mode-aware labels for timeline and chapters.
-- [ ] Compute Reach, Resonance, Momentum from real pipeline outputs.
-- [ ] Add badge tier calculation and Mission Report display.
-- [ ] Add replay prompt after Mission Report.
 
 ### 3. Phase 3: ML Pipeline
-- [ ] Set up `@xenova/transformers` with MiniLM model.
-- [ ] Implement loading state with BIOS-style sequence (appendix Section G.6).
-- [ ] Implement embedding caching system.
-- [ ] Pre-compute concept embeddings on model load.
-- [ ] Implement `classifyContent()` for category detection.
-- [ ] Implement `predictEngagement()` for action probabilities.
-- [ ] Implement `calculateWeightedScore()` for final scores.
-- [ ] Implement semantic `MutedKeywordFilter`.
-- [ ] Generate simulated tweet pool with embeddings.
 
 ### 4. Phase 4: Timeline and Chapter Framework
 - [ ] Implement GSAP timeline with chapter markers.
@@ -122,6 +107,22 @@ Instructions:
 - [ ] Reduced motion mode disables animations.
 
 ## Completed
+- [x] Generate simulated tweet pool with embeddings.
+- [x] Implement semantic `MutedKeywordFilter`.
+- [x] Implement `calculateWeightedScore()` for final scores.
+- [x] Implement `predictEngagement()` for action probabilities.
+- [x] Implement `classifyContent()` for category detection.
+- [x] Pre-compute concept embeddings on model load.
+- [x] Implement embedding caching system.
+- [x] Set up `@xenova/transformers` with MiniLM model.
+- [x] Implement loading state with BIOS-style sequence (appendix Section G.6).
+- [x] Integrate BIOS loading into App.tsx with ML store.
+- [x] Add replay prompt after Mission Report.
+- [x] Add badge tier calculation and Mission Report display.
+- [x] Compute Reach, Resonance, Momentum from real pipeline outputs.
+- [x] Add mode-aware labels for timeline and chapters (with useReducer state).
+- [x] Update UI copy to RPG framing (Mission Loadout, Mission Report).
+- [x] Implement mode-aware FunctionPanel (summary + Learn more gate).
 - [x] Increase persona subtitle + tweet draft text size for readability.
 - [x] Replace shuffle icon with retro double-arrow variant.
 - [x] Add deterministic simulation + Bernoulli MLE helper and store results on begin.

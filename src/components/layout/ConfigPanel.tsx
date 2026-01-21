@@ -44,12 +44,10 @@ export default function ConfigPanel() {
             aria-label="Expert Mode"
             checked={expertMode}
             className={styles.expertCheckbox}
+            data-testid="expert-check"
             onChange={(event) => setExpertMode(event.target.checked)}
             type="checkbox"
           />
-          <span className={styles.expertCheckboxMark} data-testid="expert-check">
-            {expertMode ? '☑' : '☐'}
-          </span>
           Expert Mode
         </label>
         <p className={styles.helper}>

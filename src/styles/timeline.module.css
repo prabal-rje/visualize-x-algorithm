@@ -1,0 +1,150 @@
+/* Timeline container */
+.timeline {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border-top: 1px solid rgba(51, 255, 51, 0.3);
+  background: rgba(10, 10, 10, 0.9);
+}
+
+/* Navigation controls row */
+.controls {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.controlButton {
+  border: 1px solid rgba(51, 255, 51, 0.4);
+  background: rgba(0, 20, 0, 0.6);
+  color: var(--phosphor-green, #33ff33);
+  padding: 8px 16px;
+  font-size: 11px;
+  font-family: inherit;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.controlButton:hover:not(:disabled) {
+  border-color: var(--phosphor-green, #33ff33);
+  box-shadow: 0 0 12px rgba(51, 255, 51, 0.3);
+}
+
+.controlButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Chapter markers row */
+.chapters {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+}
+
+.marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 80px;
+  padding: 8px 12px;
+  border: 1px solid rgba(51, 255, 51, 0.25);
+  background: rgba(0, 20, 0, 0.4);
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.marker:hover {
+  border-color: var(--phosphor-green, #33ff33);
+  box-shadow: 0 0 12px rgba(51, 255, 51, 0.3);
+}
+
+/* Active chapter marker */
+.marker[data-active='true'] {
+  border-color: var(--phosphor-amber, #ffb000);
+  background: rgba(255, 176, 0, 0.1);
+  box-shadow: 0 0 16px rgba(255, 176, 0, 0.3);
+}
+
+/* Visited chapter marker */
+.marker[data-visited='true'] {
+  border-color: rgba(51, 255, 51, 0.5);
+  background: rgba(51, 255, 51, 0.08);
+}
+
+.chapterNumber {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--phosphor-amber, #ffb000);
+}
+
+.marker[data-active='true'] .chapterNumber {
+  text-shadow: 0 0 8px rgba(255, 176, 0, 0.5);
+}
+
+.chapterLabel {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--phosphor-green, #33ff33);
+  white-space: nowrap;
+}
+
+/* Progress indicator */
+.progressContainer {
+  position: relative;
+  height: 20px;
+  background: rgba(0, 20, 0, 0.6);
+  border: 1px solid rgba(51, 255, 51, 0.3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progressBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(51, 255, 51, 0.3) 0%,
+    rgba(51, 255, 51, 0.5) 100%
+  );
+  transition: width 0.3s ease;
+}
+
+.progressText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--phosphor-green, #33ff33);
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+}
+
+/* Current function info */
+.functionInfo {
+  display: grid;
+  gap: 4px;
+  padding: 8px 12px;
+  background: rgba(0, 20, 0, 0.5);
+  border: 1px solid rgba(51, 255, 51, 0.2);
+}
+
+.functionName {
+  font-size: 13px;
+  color: var(--phosphor-cyan, #00ffff);
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+}
+
+.functionSummary {
+  font-size: 11px;
+  color: rgba(51, 255, 51, 0.8);
+  line-height: 1.4;
+}

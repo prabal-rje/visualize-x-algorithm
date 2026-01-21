@@ -26,27 +26,35 @@
 }
 
 .expertCheckbox {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.expertCheckbox:focus-visible + .expertCheckboxMark {
-  outline: 1px solid var(--phosphor-amber);
-  outline-offset: 2px;
-}
-
-.expertCheckboxMark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  appearance: none;
+  -webkit-appearance: none;
   width: 16px;
   height: 16px;
-  font-family: 'Press Start 2P', 'VT323', monospace;
+  background: var(--crt-black, #0a0a0a);
+  border: 2px solid var(--phosphor-green);
+  cursor: pointer;
+  position: relative;
+}
+
+.expertCheckbox:checked {
+  background: var(--crt-black, #0a0a0a);
+  box-shadow: 0 0 8px rgba(51, 255, 51, 0.6);
+}
+
+.expertCheckbox:checked::after {
+  content: '\2713';
+  position: absolute;
+  top: -2px;
+  left: 1px;
   font-size: 14px;
-  line-height: 1;
+  font-weight: bold;
   color: var(--phosphor-green);
-  text-shadow: 0 0 6px rgba(51, 255, 51, 0.6);
+  text-shadow: 0 0 6px rgba(51, 255, 51, 0.8);
+}
+
+.expertCheckbox:focus-visible {
+  outline: 1px solid var(--phosphor-amber);
+  outline-offset: 2px;
 }
 
 .helper {

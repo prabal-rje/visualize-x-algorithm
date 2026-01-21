@@ -1,0 +1,62 @@
+.panel {
+  background: rgba(10, 10, 10, 0.9);
+  border: 1px solid rgba(51, 255, 51, 0.3);
+  border-radius: 4px;
+  padding: 1rem;
+  font-family: 'VT323', 'IBM Plex Mono', monospace;
+}
+
+.summary {
+  color: var(--phosphor-green, #33ff33);
+  font-size: 1.125rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.learnMoreButton {
+  background: transparent;
+  border: 1px solid var(--phosphor-cyan, #00ffff);
+  color: var(--phosphor-cyan, #00ffff);
+  padding: 0.25rem 0.75rem;
+  margin-top: 0.75rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background 0.15s ease;
+}
+
+.learnMoreButton:hover {
+  background: rgba(0, 255, 255, 0.1);
+}
+
+.details {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(51, 255, 51, 0.2);
+}
+
+.functionName {
+  color: var(--phosphor-cyan, #00ffff);
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0 0 0.5rem 0;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.filePath {
+  color: var(--phosphor-green, #33ff33);
+  font-size: 0.875rem;
+  opacity: 0.8;
+  margin: 0 0 0.75rem 0;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.sourceLink {
+  color: var(--phosphor-amber, #ffb000);
+  font-size: 0.875rem;
+  text-decoration: underline;
+  transition: opacity 0.15s ease;
+}
+
+.sourceLink:hover {
+  opacity: 0.8;
+}

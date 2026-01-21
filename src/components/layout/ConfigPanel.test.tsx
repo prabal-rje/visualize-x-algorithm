@@ -97,11 +97,11 @@ describe('ConfigPanel', () => {
     expect(useConfigStore.getState().simulationStarted).toBe(true);
   });
 
-  it('shows a unicode checkmark for expert mode', () => {
+  it('toggles expert mode checkbox', () => {
     render(<ConfigPanel />);
-    const checkmark = screen.getByTestId('expert-check');
-    expect(checkmark).toHaveTextContent('☐');
-    fireEvent.click(screen.getByLabelText('Expert Mode'));
-    expect(checkmark).toHaveTextContent('☑');
+    const checkbox = screen.getByTestId('expert-check') as HTMLInputElement;
+    expect(checkbox.checked).toBe(false);
+    fireEvent.click(checkbox);
+    expect(checkbox.checked).toBe(true);
   });
 });

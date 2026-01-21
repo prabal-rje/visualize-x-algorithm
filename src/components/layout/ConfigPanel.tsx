@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AUDIENCES } from '../../data/audiences';
 import { PERSONAS } from '../../data/personas';
 import { useConfigStore } from '../../stores/config';
@@ -31,7 +31,21 @@ export default function ConfigPanel() {
   const beginSimulation = useConfigStore((state) => state.beginSimulation);
 
   const [step, setStep] = useState<'persona' | 'audience' | 'tweet'>('persona');
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [personaTouched, setPersonaTouched] = useState(false);
+  const [audienceTouched, setAudienceTouched] = useState(false);
+  const toastTimeout = useRef<number | null>(null);
   const remaining = MAX_TWEET_LENGTH - tweetText.length;
+
+  const showDefaultsToast = () => {
+    setToastMessage('Using defaults: AI/ML Researcher persona, balanced audience mix.');
+    if (toastTimeout.current) {
+      window.clearTimeout(toastTimeout.current);
+    }
+    toastTimeout.current = window.setTimeout(() => {
+      setToastMessage(null);
+    }, 2400);
+  };
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -47,8 +61,17 @@ export default function ConfigPanel() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [beginSimulation, step]);
 
+  useEffect(() => {
+    return () => {
+      if (toastTimeout.current) {
+        window.clearTimeout(toastTimeout.current);
+      }
+    };
+  }, []);
+
   return (
     <div className={styles.panel} data-testid="config-panel">
+      {toastMessage && <div className={styles.toast}>{toastMessage}</div>}
       <header className={styles.header}>
         <h2 className={styles.title}>Mission Loadout</h2>
         <label className={styles.expertToggle}>
@@ -79,7 +102,10 @@ export default function ConfigPanel() {
                   persona.id === personaId ? styles.personaActive : styles.persona
                 }
                 aria-pressed={persona.id === personaId}
-                onClick={() => setPersonaId(persona.id)}
+                onClick={() => {
+                  setPersonaId(persona.id);
+                  setPersonaTouched(true);
+                }}
               >
                 <div className={styles.personaHeader}>
                   <span
@@ -102,7 +128,12 @@ export default function ConfigPanel() {
           <div className={styles.stepActions}>
             <button
               className={styles.stepButton}
-              onClick={() => setStep('audience')}
+              onClick={() => {
+                if (!personaTouched) {
+                  showDefaultsToast();
+                }
+                setStep('audience');
+              }}
               type="button"
             >
               Continue to Audience
@@ -123,9 +154,10 @@ export default function ConfigPanel() {
                   data-testid={`audience-slider-${audience.id}`}
                   max={100}
                   min={0}
-                  onChange={(event) =>
-                    setAudienceMixValue(audience.id, Number(event.target.value))
-                  }
+                  onChange={(event) => {
+                    setAudienceMixValue(audience.id, Number(event.target.value));
+                    setAudienceTouched(true);
+                  }}
                   step={5}
                   type="range"
                   value={audienceMix[audience.id] ?? 0}
@@ -146,7 +178,12 @@ export default function ConfigPanel() {
             </button>
             <button
               className={styles.stepButton}
-              onClick={() => setStep('tweet')}
+              onClick={() => {
+                if (!audienceTouched) {
+                  showDefaultsToast();
+                }
+                setStep('tweet');
+              }}
               type="button"
             >
               Continue to Tweet

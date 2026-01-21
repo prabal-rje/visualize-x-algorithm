@@ -89,6 +89,14 @@ describe('ConfigPanel', () => {
     );
   });
 
+  it('shows defaults toast when advancing without explicit choices', () => {
+    render(<ConfigPanel />);
+    fireEvent.click(screen.getByRole('button', { name: /continue to audience/i }));
+    expect(
+      screen.getByText(/Using defaults: AI\/ML Researcher persona/i)
+    ).toBeInTheDocument();
+  });
+
   it('renders persona icons', () => {
     render(<ConfigPanel />);
     expect(screen.getAllByTestId('persona-icon').length).toBeGreaterThan(0);

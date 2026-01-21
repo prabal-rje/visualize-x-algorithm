@@ -7,6 +7,22 @@
   box-shadow: inset 0 0 30px rgba(51, 255, 51, 0.1), 0 0 24px rgba(51, 255, 51, 0.2);
   width: min(100%, 1100px);
   margin: 0 auto;
+  position: relative;
+}
+
+.toast {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 8px 12px;
+  border: 1px solid rgba(51, 255, 51, 0.45);
+  background: rgba(0, 18, 0, 0.95);
+  color: var(--phosphor-amber);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 0 12px rgba(51, 255, 51, 0.2);
+  z-index: 2;
 }
 
 .header {

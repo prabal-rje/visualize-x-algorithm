@@ -25,10 +25,28 @@
   text-transform: uppercase;
 }
 
-.expertToggle input {
+.expertCheckbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.expertCheckbox:focus-visible + .expertCheckboxMark {
+  outline: 1px solid var(--phosphor-amber);
+  outline-offset: 2px;
+}
+
+.expertCheckboxMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 16px;
   height: 16px;
-  accent-color: var(--phosphor-green);
+  font-family: 'Press Start 2P', 'VT323', monospace;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--phosphor-green);
+  text-shadow: 0 0 6px rgba(51, 255, 51, 0.6);
 }
 
 .helper {

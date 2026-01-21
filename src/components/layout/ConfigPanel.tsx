@@ -43,9 +43,13 @@ export default function ConfigPanel() {
           <input
             aria-label="Expert Mode"
             checked={expertMode}
+            className={styles.expertCheckbox}
             onChange={(event) => setExpertMode(event.target.checked)}
             type="checkbox"
           />
+          <span className={styles.expertCheckboxMark} data-testid="expert-check">
+            {expertMode ? '☑' : '☐'}
+          </span>
           Expert Mode
         </label>
         <p className={styles.helper}>
@@ -142,18 +146,13 @@ export default function ConfigPanel() {
               onClick={shuffleSampleTweet}
               type="button"
             >
-              <span
-                className={styles.shuffleIcon}
-                data-testid="shuffle-icon"
-                aria-hidden="true"
-              >
+              <span className={styles.shuffleIcon} aria-hidden="true">
                 <svg viewBox="0 0 20 20" role="presentation">
                   <path
-                    d="M2 6h10m0 0-2-2m2 2-2 2M2 14h10m0 0-2-2m2 2-2 2"
+                    d="M3 5h4l2 2 2-2h6M15 3l2 2-2 2M3 15h4l2-2 2 2h6M15 13l2 2-2 2"
                     fill="none"
                     stroke="currentColor"
                     strokeLinecap="square"
-                    strokeLinejoin="miter"
                     strokeWidth="1.5"
                   />
                 </svg>

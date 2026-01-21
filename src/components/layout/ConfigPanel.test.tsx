@@ -63,7 +63,13 @@ describe('ConfigPanel', () => {
     );
     expect(screen.getByTestId('tweet-counter')).toBeInTheDocument();
     expect(screen.getByTestId('sample-shuffle')).toBeInTheDocument();
-    expect(screen.getByTestId('shuffle-icon')).toBeInTheDocument();
+    const shufflePath = screen
+      .getByTestId('sample-shuffle')
+      .querySelector('path') as SVGPathElement;
+    expect(shufflePath).toHaveAttribute(
+      'd',
+      'M3 5h4l2 2 2-2h6M15 3l2 2-2 2M3 15h4l2-2 2 2h6M15 13l2 2-2 2'
+    );
     expect(screen.getByTestId('begin-simulation')).toBeInTheDocument();
     expect(screen.queryByTestId('sample-select')).not.toBeInTheDocument();
   });
@@ -88,5 +94,13 @@ describe('ConfigPanel', () => {
     fireEvent.click(screen.getByRole('button', { name: /continue to tweet/i }));
     fireEvent.click(screen.getByTestId('begin-simulation'));
     expect(useConfigStore.getState().simulationStarted).toBe(true);
+  });
+
+  it('shows a unicode checkmark for expert mode', () => {
+    render(<ConfigPanel />);
+    const checkmark = screen.getByTestId('expert-check');
+    expect(checkmark).toHaveTextContent('☐');
+    fireEvent.click(screen.getByLabelText('Expert Mode'));
+    expect(checkmark).toHaveTextContent('☑');
   });
 });

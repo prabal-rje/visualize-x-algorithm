@@ -122,6 +122,8 @@ Instructions:
 - [ ] Reduced motion mode disables animations.
 
 ## Completed
+- [x] Pixelate Expert Mode checkbox checkmark with unicode glyph.
+- [x] Restore the original shuffle icon shape.
 - [x] Split config flow into stepped pages (Persona → Audience → Tweet) with navigation.
 - [x] Remove sample tweet dropdown; add prominent shuffle button with icon and prefilled tweet.
 - [x] Restyle Expert Mode checkbox to CRT green (no pink).

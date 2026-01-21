@@ -9,21 +9,51 @@ type Chapter3SceneProps = {
 };
 
 const STEP_NARRATION = [
-  'Before scoring, the filter cascade removes duplicates and noise from the candidate pool...',
-  'Social graph filters block muted or blocked authors and your own posts...',
-  'Content filters catch muted keywords and stale posts before scoring begins...'
+  'First pass: strip duplicates and near-identical reposts to keep the pool clean...',
+  'Social graph filters remove blocked, muted, and self-authored posts...',
+  'Recency and history filters drop stale or already-seen candidates...',
+  'Content filters sweep for muted keywords and ineligible subscriptions...'
 ];
 
 const STEP_LABELS = [
   '3A: Deduplication',
   '3B: Social Graph',
-  '3C: Content Filters'
+  '3C: Recency & History',
+  '3D: Content Filters'
 ];
 
 const FUNCTION_LABELS = [
   'DropDuplicatesFilter::filter()',
   'AuthorSocialgraphFilter::filter()',
+  'AgeFilter::filter()',
   'MutedKeywordFilter::filter()'
+];
+
+const STEP_CALLOUTS = [
+  {
+    title: 'Deduplicate the pool',
+    detail: 'Near-duplicate threads collapse into a single candidate before scoring.',
+    focus: 'DEDUP',
+    userStatus: 'PASS'
+  },
+  {
+    title: 'Honor the social graph',
+    detail: 'Blocked, muted, and self-authored posts get culled early.',
+    focus: 'SOCIAL GRAPH',
+    userStatus: 'PASS'
+  },
+  {
+    title: 'Recency + history sweep',
+    detail: 'Stale or already-seen tweets are removed from the candidate stream.',
+    focus: 'RECENCY',
+    userStatus: 'PASS'
+  },
+  {
+    title: 'Content safety pass',
+    detail: 'Muted keywords and ineligible subscriptions are filtered out.',
+    focus: 'CONTENT FILTERS',
+    userStatus: 'PASS'
+  }
 ];
 
 const GATES = [
@@ -109,11 +139,17 @@ const GATES = [
   }
 ];
 
-const ACTIVE_GATE_BY_STEP = [0, 1, 5];
+const GATES_BY_STEP = [
+  [GATES[0]],
+  [GATES[1], GATES[2]],
+  [GATES[3], GATES[4]],
+  [GATES[5]]
+];
 
 export default function Chapter3Scene({ currentStep, isActive }: Chapter3SceneProps) {
   const tweetText = useConfigStore((state) => state.tweetText);
-  const activeGateIndex = ACTIVE_GATE_BY_STEP[currentStep] ?? 0;
+  const gatesForStep = GATES_BY_STEP[currentStep] || GATES_BY_STEP[0];
+  const callout = STEP_CALLOUTS[currentStep] || STEP_CALLOUTS[0];
 
   return (
     <div
@@ -139,9 +175,25 @@ export default function Chapter3Scene({ currentStep, isActive }: Chapter3ScenePr
 
       <div className={styles.content}>
         <div className={styles.stepLabel}>{STEP_LABELS[currentStep] || STEP_LABELS[0]}</div>
+        <div className={styles.callout} data-testid="filter-callout">
+          <div className={styles.calloutHeader}>
+            <span className={styles.calloutTitle}>{callout.title}</span>
+            <span
+              className={styles.calloutTag}
+              data-status={callout.userStatus.toLowerCase()}
+            >
+              USER TWEET {callout.userStatus}
+            </span>
+          </div>
+          <div className={styles.calloutText}>{callout.detail}</div>
+          <div className={styles.calloutFocus}>
+            <span className={styles.calloutLabel}>FOCUS GATE</span>
+            <span className={styles.calloutValue}>{callout.focus}</span>
+          </div>
+        </div>
         <FilterCascade
-          gates={GATES}
-          activeGateIndex={activeGateIndex}
+          gates={gatesForStep}
+          activeGateIndex={0}
           highlightTweet={tweetText}
           isActive={isActive}
         />

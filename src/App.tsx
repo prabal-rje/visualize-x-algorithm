@@ -105,6 +105,7 @@ function App() {
 
   const mainContent = renderMainContent();
   const showSidePanel = simulationStarted || Boolean(mainContent);
+  const isCompactChapter = position.chapterIndex >= 3;
 
   const renderChapterScene = () => {
     const { chapterIndex, subChapterIndex } = position;
@@ -202,6 +203,7 @@ function App() {
             data-testid="chapter-canvas"
             data-proportion="fixed"
             data-viewport-fit="true"
+            data-compact={isCompactChapter}
           >
             {renderChapterScene()}
           </section>

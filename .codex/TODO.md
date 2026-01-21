@@ -45,11 +45,7 @@ Instructions:
  
 
 #### Phase 4: Chapter 3 Split + Height Control
-- [ ] Split Chapter 3 into 4 sub-steps with explanations.
-- [ ] Add interactive filtering callouts per step (tweet highlights + gate focus).
-- [ ] Set Chapter 3 height to half of Ch1/Ch2.
-- [ ] Update chapter data + tests.
-- [ ] Playwright screenshot + commit.
+ 
 
 #### Phase 5: Chapter 4 Split + Scoring Visuals
 - [ ] Add P(...) estimation flow using embedding model data.
@@ -97,6 +93,11 @@ Instructions:
 ### 11. Design Spec Testing Checklist
 
 ## Completed
+- [x] Split Chapter 3 into 4 sub-steps with explanations.
+- [x] Add interactive filtering callouts per step (tweet highlights + gate focus).
+- [x] Set Chapter 3 height to half of Ch1/Ch2.
+- [x] Update chapter data + tests.
+- [x] Playwright screenshot + commit.
 - [x] Add token-level (sub-token) embedding animation flowing into mean pool.
 - [x] Animate pooled token contributions into 128-d heatmap.
 - [x] Fix vector space hover flicker (overlay or reserved layout).

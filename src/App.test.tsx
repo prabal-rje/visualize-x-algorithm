@@ -75,6 +75,16 @@ describe('App', () => {
     );
   });
 
+  it('marks chapter canvas as compact for chapter 3+', () => {
+    useMLStore.getState().setReady();
+    render(<App />);
+    fireEvent.click(screen.getByTestId('chapter-marker-3'));
+    expect(screen.getByTestId('chapter-canvas')).toHaveAttribute(
+      'data-compact',
+      'true'
+    );
+  });
+
   it('shows loadout chapter when simulation not started', () => {
     useMLStore.getState().setReady(); // Skip BIOS loading
     render(<App />);

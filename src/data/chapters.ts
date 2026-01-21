@@ -211,7 +211,7 @@ export const CHAPTERS: Chapter[] = [
       {
         id: 'ch3-c',
         labelSimple: 'Recency',
-        labelTechnical: 'History Filters',
+        labelTechnical: 'Recency & History',
         functions: [
           {
             id: 'ch3-c-1',
@@ -238,8 +238,8 @@ export const CHAPTERS: Chapter[] = [
       },
       {
         id: 'ch3-d',
-        labelSimple: 'Keywords',
-        labelTechnical: 'Content Filtering',
+        labelSimple: 'Content',
+        labelTechnical: 'Content Filters',
         functions: [
           {
             id: 'ch3-d-1',

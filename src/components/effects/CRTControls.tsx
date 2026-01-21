@@ -46,7 +46,8 @@ export default function CRTControls({ config, onChange }: CRTControlsProps) {
         type="button"
         aria-expanded={isOpen}
         aria-controls="crt-controls-dialog"
-        aria-label="Toggle CRT controls"
+        aria-label="Toggle CRT controls panel"
+        title="Open CRT controls"
       >
         <span className={styles.handleLabel}>CRT CTRL</span>
       </button>

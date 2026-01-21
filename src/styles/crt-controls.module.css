@@ -180,3 +180,16 @@
   border-radius: 2px;
   box-shadow: 0 0 10px var(--phosphor-green);
 }
+
+@media (max-width: 900px) {
+  .shell[data-placement='control-band'] {
+    top: 72px;
+    right: 10px;
+  }
+}
+
+@media (max-width: 720px) {
+  .shell {
+    display: none;
+  }
+}

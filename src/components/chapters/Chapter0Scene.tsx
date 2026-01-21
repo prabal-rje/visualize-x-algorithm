@@ -9,9 +9,9 @@ type Chapter0SceneProps = {
 
 const STEP_LABELS = ['0A: Persona', '0B: Audience', '0C: Tweet Draft'];
 const STEP_NARRATION = [
-  'Choose who you are in this run. The persona sets tone and affinity.',
-  'Blend the audience mix to determine who this message resonates with.',
-  'Draft the tweet that will enter the simulation pipeline.'
+  'You are the protagonist. Choose a persona to define how the algorithm reads your voice.',
+  'Select the crowd you are speaking to. Alignment boosts your odds in the arena.',
+  'Write the tweet you are about to test against the feed.'
 ];
 
 export default function Chapter0Scene({ currentStep, isActive }: Chapter0SceneProps) {

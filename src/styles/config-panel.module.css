@@ -309,6 +309,23 @@
     padding: 16px;
   }
 
+  .persona,
+  .personaActive {
+    padding: 12px;
+  }
+
+  .audienceChip,
+  .audienceChipActive {
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 14px;
+    letter-spacing: 0.08em;
+  }
+
   .personaGrid {
     grid-template-columns: 1fr;
   }
@@ -320,11 +337,6 @@
 
   .audienceList {
     grid-template-columns: 1fr;
-  }
-
-  .audienceChip,
-  .audienceChipActive {
-    min-height: 44px;
   }
 
   .stepActions {

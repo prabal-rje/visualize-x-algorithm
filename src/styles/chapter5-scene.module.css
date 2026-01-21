@@ -469,6 +469,13 @@
   }
 }
 
+@media (min-width: 1100px) {
+  .title {
+    font-size: 30px;
+    letter-spacing: 0.18em;
+  }
+}
+
 @media (max-width: 720px) {
   .container {
     padding: 16px;
@@ -485,5 +492,32 @@
 
   .reachRow {
     grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 14px;
+  }
+
+  .title {
+    font-size: 20px;
+    letter-spacing: 0.08em;
+  }
+
+  .narration {
+    padding: 6px 12px;
+    font-size: 12px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  .stepLabel {
+    max-width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }

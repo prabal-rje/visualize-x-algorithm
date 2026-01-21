@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { AUDIENCES } from '../data/audiences';
 import { SAMPLE_TWEETS } from '../data/tweets';
+import { estimateBernoulliMLE } from '../simulation/mle';
 import { useConfigStore } from './config';
 
 describe('config store', () => {
@@ -34,8 +35,10 @@ describe('config store', () => {
     const { beginSimulation, resetSimulation } = useConfigStore.getState();
     beginSimulation();
     expect(useConfigStore.getState().simulationStarted).toBe(true);
+    expect(useConfigStore.getState().simulationResult).not.toBeNull();
     resetSimulation();
     expect(useConfigStore.getState().simulationStarted).toBe(false);
+    expect(useConfigStore.getState().simulationResult).toBeNull();
   });
 
   it('computes a simulation result on begin', () => {
@@ -49,7 +52,11 @@ describe('config store', () => {
     const result = useConfigStore.getState().simulationResult;
     expect(result).not.toBeNull();
     expect(result?.rates.likeRate).toBeCloseTo(
-      (result?.counts.likes ?? 0) / (result?.counts.impressions ?? 1)
+      estimateBernoulliMLE(
+        result?.counts.likes ?? 0,
+        result?.counts.impressions ?? 0
+      ),
+      6
     );
   });
 });

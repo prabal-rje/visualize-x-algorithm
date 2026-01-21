@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AUDIENCES } from '../../data/audiences';
 import { SAMPLE_TWEETS } from '../../data/tweets';
 import { useConfigStore } from '../../stores/config';
+import styles from '../../styles/config-panel.module.css';
 import ConfigPanel from './ConfigPanel';
 
 describe('ConfigPanel', () => {
@@ -42,6 +43,9 @@ describe('ConfigPanel', () => {
     render(<ConfigPanel />);
     expect(screen.getByLabelText('Expert Mode')).toBeInTheDocument();
     expect(screen.getByText('Tech Founder')).toBeInTheDocument();
+    expect(
+      screen.getByText('Building the future, one pivot at a time')
+    ).toHaveClass(styles.personaSubtitleLarge);
     expect(screen.getByTestId('step-persona')).toBeInTheDocument();
     expect(screen.queryByTestId('step-audience')).not.toBeInTheDocument();
     expect(screen.queryByTestId('step-tweet')).not.toBeInTheDocument();
@@ -54,8 +58,12 @@ describe('ConfigPanel', () => {
     fireEvent.click(screen.getByRole('button', { name: /continue to tweet/i }));
     expect(screen.getByTestId('step-tweet')).toBeInTheDocument();
     expect(screen.getByTestId('tweet-input')).toBeInTheDocument();
+    expect(screen.getByTestId('tweet-input')).toHaveClass(
+      styles.tweetInputLarge
+    );
     expect(screen.getByTestId('tweet-counter')).toBeInTheDocument();
     expect(screen.getByTestId('sample-shuffle')).toBeInTheDocument();
+    expect(screen.getByTestId('shuffle-icon')).toBeInTheDocument();
     expect(screen.getByTestId('begin-simulation')).toBeInTheDocument();
     expect(screen.queryByTestId('sample-select')).not.toBeInTheDocument();
   });

@@ -68,7 +68,11 @@ export default function ConfigPanel() {
                 onClick={() => setPersonaId(persona.id)}
               >
                 <div className={styles.personaName}>{persona.name}</div>
-                <div className={styles.personaSubtitle}>{persona.subtitle}</div>
+                <div
+                  className={`${styles.personaSubtitle} ${styles.personaSubtitleLarge}`}
+                >
+                  {persona.subtitle}
+                </div>
               </button>
             ))}
           </div>
@@ -138,13 +142,18 @@ export default function ConfigPanel() {
               onClick={shuffleSampleTweet}
               type="button"
             >
-              <span className={styles.shuffleIcon} aria-hidden="true">
+              <span
+                className={styles.shuffleIcon}
+                data-testid="shuffle-icon"
+                aria-hidden="true"
+              >
                 <svg viewBox="0 0 20 20" role="presentation">
                   <path
-                    d="M3 5h4l2 2 2-2h6M15 3l2 2-2 2M3 15h4l2-2 2 2h6M15 13l2 2-2 2"
+                    d="M2 6h10m0 0-2-2m2 2-2 2M2 14h10m0 0-2-2m2 2-2 2"
                     fill="none"
                     stroke="currentColor"
                     strokeLinecap="square"
+                    strokeLinejoin="miter"
                     strokeWidth="1.5"
                   />
                 </svg>
@@ -153,7 +162,7 @@ export default function ConfigPanel() {
             </button>
           </div>
           <textarea
-            className={styles.tweetInput}
+            className={`${styles.tweetInput} ${styles.tweetInputLarge}`}
             data-testid="tweet-input"
             maxLength={MAX_TWEET_LENGTH}
             onChange={(event) => setTweetText(event.target.value)}

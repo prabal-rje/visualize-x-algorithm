@@ -18,7 +18,7 @@ const MissionReport = ({
 }: MissionReportProps) => {
   const badge = badgeForPercentile(percentile);
   const formattedResonance = resonance.toFixed(2);
-  const formattedMomentum = `${momentum}%`;
+  const formattedMomentum = `${momentum.toFixed(1)}%`;
 
   return (
     <div className={styles.report} data-testid="mission-report">

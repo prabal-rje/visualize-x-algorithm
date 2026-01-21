@@ -85,15 +85,6 @@ export default function Chapter1Scene({
         )}
       </div>
 
-      {/* Function Panel Reference */}
-      <div className={styles.functionRef}>
-        <span className={styles.funcLabel}>FUNCTION:</span>
-        <code className={styles.funcName}>
-          {currentStep === 0
-            ? 'ScoredPostsService::get_scored_posts()'
-            : 'UserActionSequenceHydrator::hydrate()'}
-        </code>
-      </div>
     </div>
   );
 }

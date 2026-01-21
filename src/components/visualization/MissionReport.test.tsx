@@ -31,6 +31,11 @@ describe('MissionReport', () => {
     expect(screen.getByText('12.5%')).toBeInTheDocument();
   });
 
+  it('rounds momentum to one decimal place', () => {
+    render(<MissionReport {...defaultProps} momentum={13.528678304239403} />);
+    expect(screen.getByText('13.5%')).toBeInTheDocument();
+  });
+
   it('displays correct badge based on percentile', () => {
     // percentile <= 0.1 should show "Signal Adept"
     render(<MissionReport {...defaultProps} percentile={0.05} />);

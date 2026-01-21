@@ -8,6 +8,67 @@ Instructions:
 
 ## Stack (Top = next)
 
+### 0. Immediate: RPG Chapter Revamp & Verification
+
+#### Pre-Start
+ 
+
+
+#### Design & Plan
+ 
+
+
+#### Phase 1: Loadout Chapter + Arena Gating
+ 
+
+
+#### Phase 2: CRT Controls Overlay
+- [ ] Replace side-panel controls with edge handle + in-screen dialog.
+- [ ] Ensure dialog is CRT-native (no traditional UI chrome) and anchored to screen.
+- [ ] Add open/close animations + focus-safe close control.
+- [ ] Update CRT controls tests.
+- [ ] Playwright screenshot + commit.
+
+##### Phase 2.5: Square-ish dimensions
+
+- [ ] Please make sure the simulation area remains of the same proportion throughout ... that's very important ... which might mean fixing the loadout options screens' dimensions too ...
+- [ ] Move progress bar, the chapter buttons, the file name, and the start over /back/pause/next buttons at the top  above the simulation arena ...
+- [ ] Simulation arena should largely fit a regular computers screen without vertical scroll ... across loadout and chapter visualizations/simulations...
+
+#### Phase 3: Embedding + Hover Fix
+- [ ] Add token-level (sub-token) embedding animation flowing into mean pool.
+- [ ] Animate pooled token contributions into 128-d heatmap.
+- [ ] Fix vector space hover flicker (overlay or reserved layout).
+- [ ] Update visualization tests.
+- [ ] Playwright screenshot + commit.
+
+#### Phase 4: Chapter 3 Split + Height Control
+- [ ] Split Chapter 3 into 4 sub-steps with explanations.
+- [ ] Add interactive filtering callouts per step (tweet highlights + gate focus).
+- [ ] Set Chapter 3 height to half of Ch1/Ch2.
+- [ ] Update chapter data + tests.
+- [ ] Playwright screenshot + commit.
+
+#### Phase 5: Chapter 4 Split + Scoring Visuals
+- [ ] Add P(...) estimation flow using embedding model data.
+- [ ] Enhance attention weights interactivity + explanation.
+- [ ] Split Chapter 4 into granular sub-steps + height control.
+- [ ] Update chapter data + tests.
+- [ ] Playwright screenshot + commit.
+
+#### Phase 6: Chapter 5 Split + Delivery Feedback
+- [ ] Add input tweet performance summary (below/med/above avg).
+- [ ] Add reach + audience delivery breakdown.
+- [ ] Add avatar reactions (like/comment/retweet bursts).
+- [ ] Split Chapter 5 into granular sub-steps + height control.
+- [ ] Update chapter data + tests.
+- [ ] Playwright screenshot + commit.
+
+#### Pre-Finish
+- [ ] Run Playwright end-state screenshot + final tests.
+- [ ] Review `git diff`, fix style issues, ensure tests pass.
+- [ ] Move completed tasks to Completed and ensure TODO empty.
+
 ### 0. CRT Fidelity Fixes
 
 ### 1. Phase 1: Foundation
@@ -34,6 +95,25 @@ Instructions:
 ### 11. Design Spec Testing Checklist
 
 ## Completed
+- [x] Verify Chapter 0 loadout steps (persona/audience/tweet) are the only view before simulation.
+- [x] Ensure simulation arena content stays hidden until simulation starts.
+- [x] Re-run chapter/timeline tests if needed.
+- [x] Playwright screenshot + commit.
+- [x] Draft design doc for CRT overlay + embedding animation + chapters 3-5 split + hover fix.
+- [x] Draft implementation plan with TDD steps and phase-by-phase commits.
+- [x] Commit design + plan docs.
+- [x] Capture baseline Playwright screenshot (pre-start).
+- [x] Exclude `.worktrees` from test discovery to avoid cross-worktree runs.
+- [x] Draft design doc for loadout chapter + chapters 3-5 revamp; commit.
+- [x] Draft implementation plan for chapter revamp; commit.
+- [x] Add new chapter data + timeline labels for loadout and expanded steps.
+- [x] Create loadout chapter scene using persona/audience/tweet steps.
+- [x] Render loadout scene in chapter canvas when simulation idle.
+- [x] Sync simulation state on begin/reset to start at chapter 1.
+- [x] Update timeline + chapter tests for new chapter order.
+- [x] Playwright screenshot + commit.
+- [x] Capture baseline Playwright screenshot (pre-start).
+- [x] Confirm relevant design-spec + appendix sections referenced for chapters 0-5.
 - [x] Animate tweet tokenization into pooled 128-d vector.
 - [x] Show hovered vector tweet details in embedding map.
 - [x] Create FilterGate component with pass/fail animations.

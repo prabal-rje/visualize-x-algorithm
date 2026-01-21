@@ -75,6 +75,15 @@ describe('App', () => {
     );
   });
 
+  it('marks chapter canvas as fill-height', () => {
+    useMLStore.getState().setReady();
+    render(<App />);
+    expect(screen.getByTestId('chapter-canvas')).toHaveAttribute(
+      'data-fill-height',
+      'true'
+    );
+  });
+
   it('marks chapter canvas as compact for chapter 3+', () => {
     useMLStore.getState().setReady();
     render(<App />);

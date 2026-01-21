@@ -1,10 +1,12 @@
 .appShell {
   display: grid;
-  gap: 24px;
-  padding: 24px;
-  max-width: 1400px;
+  gap: 16px;
+  padding: 20px;
+  max-width: 1680px;
   margin: 0 auto;
   position: relative;
+  min-height: 100vh;
+  grid-template-rows: auto auto 1fr;
 }
 
 .appShell[data-loading='true'] {
@@ -22,8 +24,9 @@
 .main {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-  gap: 24px;
-  align-items: start;
+  gap: 16px;
+  align-items: stretch;
+  min-height: 0;
 }
 
 .main[data-side-panel='false'] {
@@ -36,19 +39,20 @@
 }
 
 .chapterCanvas {
-  min-height: clamp(360px, 52vh, 520px);
-  height: clamp(360px, 52vh, 520px);
-  max-height: clamp(360px, 52vh, 520px);
+  min-height: 0;
+  height: 100%;
+  max-height: none;
   border: 1px solid rgba(51, 255, 51, 0.2);
   background: rgba(0, 8, 0, 0.6);
   padding: 16px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .chapterCanvas[data-compact='true'] {
-  min-height: clamp(180px, 26vh, 260px);
-  height: clamp(180px, 26vh, 260px);
-  max-height: clamp(180px, 26vh, 260px);
+  min-height: 0;
+  height: 100%;
+  max-height: none;
 }
 
 .sidePanel {
@@ -64,7 +68,7 @@
 
 @media (max-width: 900px) {
   .appShell {
-    padding: 16px;
+    padding: 14px;
   }
 
   .main {
@@ -72,15 +76,10 @@
   }
 
   .chapterCanvas {
-    min-height: clamp(320px, 46vh, 380px);
-    height: clamp(320px, 46vh, 380px);
-    max-height: clamp(320px, 46vh, 380px);
     padding: 12px;
   }
 
   .chapterCanvas[data-compact='true'] {
-    min-height: clamp(160px, 23vh, 190px);
-    height: clamp(160px, 23vh, 190px);
-    max-height: clamp(160px, 23vh, 190px);
+    min-height: 0;
   }
 }

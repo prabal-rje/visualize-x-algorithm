@@ -203,6 +203,7 @@ function App() {
             data-testid="chapter-canvas"
             data-proportion="fixed"
             data-viewport-fit="true"
+            data-fill-height="true"
             data-compact={isCompactChapter}
           >
             {renderChapterScene()}

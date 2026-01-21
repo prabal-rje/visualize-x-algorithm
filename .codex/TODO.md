@@ -9,7 +9,6 @@ Instructions:
 ## Stack (Top = next)
 
 ### 1. Phase 1: Foundation
-- [ ] Initialize Vite + React + TypeScript project.
 - [ ] Configure Tailwind with custom CSS variables from spec (Section 1.2.1).
 - [ ] Implement CRT overlay effects (scanlines, vignette, barrel distortion).
 - [ ] Implement phosphor text component with ghosting.
@@ -147,3 +146,4 @@ Instructions:
 - [x] Add RPG spec artifacts to the repo.
 - [x] Write implementation plan document for full checklist execution.
 - [x] Add coding style guidelines and hooks to `.codex/AGENTS.md`.
+- [x] Initialize Vite + React + TypeScript project.

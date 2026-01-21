@@ -146,3 +146,4 @@ Instructions:
 - [x] Review spec against the implementation brief and append gaps to the stack.
 - [x] Add RPG spec artifacts to the repo.
 - [x] Write implementation plan document for full checklist execution.
+- [x] Add coding style guidelines and hooks to `.codex/AGENTS.md`.

@@ -14,4 +14,9 @@ describe('Chapter4Scene', () => {
     render(<Chapter4Scene currentStep={2} isActive={true} />);
     expect(screen.getByTestId('probability-rack')).toBeInTheDocument();
   });
+
+  it('renders attention bars on step 1', () => {
+    render(<Chapter4Scene currentStep={1} isActive={true} />);
+    expect(screen.getByTestId('attention-bars')).toBeInTheDocument();
+  });
 });

@@ -13,7 +13,7 @@ const STEP_NARRATION = [
   'Phoenix turns your recent actions into context tokens for the ranker...',
   'Attention weights reveal which memories drive the score...',
   'Embedding similarity estimates P(action | tweet, audience)...',
-  'Weighted sums merge those odds into a single ranking score...'
+  'Weighted sums merge those odds into a single ranking score, then diversity penalties adjust it...'
 ];
 
 const STEP_LABELS = [
@@ -41,8 +41,8 @@ const STEP_CALLOUTS = [
   },
   {
     title: 'Weighted score',
-    detail: 'Probabilities combine with action weights for the final score.',
-    formula: 'sum(p * w)'
+    detail: 'Probabilities combine with action weights, then diversity penalties adjust the final score.',
+    formula: 'sum(p * w) - diversity'
   }
 ];
 
@@ -123,17 +123,17 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
     ];
   }, [probs]);
 
-  const probabilityItems = useMemo(
-    () => [
-      { id: 'like', label: 'Like', probability: probs.like },
-      { id: 'repost', label: 'Repost', probability: probs.repost },
-      { id: 'reply', label: 'Reply', probability: probs.reply },
-      { id: 'bookmark', label: 'Bookmark', probability: probs.bookmark },
-      { id: 'click', label: 'Click', probability: probs.click },
-      { id: 'follow', label: 'Follow', probability: probs.like * 0.2 }
-    ],
-    [probs]
-  );
+  const probabilityItems = useMemo(() => {
+    const weightMap = new Map(actions.map((action) => [action.id, action.weight]));
+    return [
+      { id: 'like', label: 'Like', probability: probs.like, weight: weightMap.get('like') },
+      { id: 'repost', label: 'Repost', probability: probs.repost, weight: weightMap.get('repost') },
+      { id: 'reply', label: 'Reply', probability: probs.reply, weight: weightMap.get('reply') },
+      { id: 'bookmark', label: 'Bookmark', probability: probs.bookmark, weight: weightMap.get('bookmark') },
+      { id: 'click', label: 'Click', probability: probs.click, weight: weightMap.get('click') },
+      { id: 'follow', label: 'Follow', probability: probs.like * 0.2, weight: weightMap.get('follow') }
+    ];
+  }, [actions, probs]);
 
   const baseScore = calculateWeightedScore(probs);
   const diversityPenalty = Math.min(0.12, baseScore * 0.12);
@@ -152,7 +152,9 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
     return CONTEXT_TOKENS.map((token) => ({
       id: token.id,
       label: token.text,
-      weight: token.weight
+      weight: token.weight,
+      action: token.action,
+      tokens: token.text.split(' ')
     }));
   }, []);
 
@@ -195,7 +197,11 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
         )}
 
         {currentStep === 1 && (
-          <AttentionMap items={attentionItems} isActive={isActive} />
+          <AttentionMap
+            items={attentionItems}
+            isActive={isActive}
+            sourceTweet={tweetText || 'Your tweet'}
+          />
         )}
 
         {currentStep === 2 && (

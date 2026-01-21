@@ -5,14 +5,21 @@ type AttentionItem = {
   id: string;
   label: string;
   weight: number;
+  action?: string;
+  tokens?: string[];
 };
 
 type AttentionMapProps = {
   items: AttentionItem[];
   isActive?: boolean;
+  sourceTweet?: string;
 };
 
-export default function AttentionMap({ items, isActive = true }: AttentionMapProps) {
+export default function AttentionMap({
+  items,
+  isActive = true,
+  sourceTweet
+}: AttentionMapProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   const defaultFocusId = useMemo(() => {
@@ -21,6 +28,8 @@ export default function AttentionMap({ items, isActive = true }: AttentionMapPro
   }, [items]);
 
   const focusId = activeId ?? defaultFocusId;
+  const focusItem = items.find((item) => item.id === focusId) ?? items[0];
+  const focusTokens = focusItem?.tokens ?? focusItem?.label.split(' ') ?? [];
 
   return (
     <div
@@ -32,8 +41,11 @@ export default function AttentionMap({ items, isActive = true }: AttentionMapPro
         <span>ATTENTION WEIGHTS</span>
         <span className={styles.helper}>Hover to inspect</span>
       </div>
-      <div className={styles.rows}>
-        {items.map((item) => (
+      <div className={styles.rows} data-testid="attention-bars">
+        {items.map((item, index) => {
+          const clamped = Math.min(1, item.weight);
+          const width = isActive ? `${clamped * 100}%` : '0%';
+          return (
           <div
             key={item.id}
             className={styles.row}
@@ -50,13 +62,49 @@ export default function AttentionMap({ items, isActive = true }: AttentionMapPro
             <div className={styles.barTrack}>
               <div
                 className={styles.barFill}
-                style={{ width: `${Math.min(1, item.weight) * 100}%` }}
+                style={{
+                  width,
+                  transitionDelay: `${index * 0.08}s`
+                }}
               />
             </div>
             <span className={styles.weight}>{item.weight.toFixed(2)}</span>
           </div>
-        ))}
+        );
+        })}
       </div>
+
+      {focusItem ? (
+        <div className={styles.detail} data-testid="attention-detail">
+          <div className={styles.detailHeader}>INSPECTED MEMORY</div>
+          <div className={styles.detailRow}>
+            <span className={styles.detailLabel}>Action</span>
+            <span className={styles.detailValue}>
+              {focusItem.action ?? 'engaged'}
+            </span>
+          </div>
+          <div className={styles.detailRow}>
+            <span className={styles.detailLabel}>Weight</span>
+            <span className={styles.detailValue}>{focusItem.weight.toFixed(2)}</span>
+          </div>
+          {sourceTweet ? (
+            <div className={styles.detailTweet}>
+              <span className={styles.detailLabel}>Input tweet</span>
+              <span className={styles.detailTweetText}>{sourceTweet}</span>
+            </div>
+          ) : null}
+          <div className={styles.detailTokens}>
+            <span className={styles.detailLabel}>Top tokens</span>
+            <div className={styles.tokenList}>
+              {focusTokens.slice(0, 6).map((token, index) => (
+                <span key={`${token}-${index}`} className={styles.tokenChip}>
+                  {token}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

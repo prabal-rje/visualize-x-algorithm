@@ -97,4 +97,18 @@ describe('VectorSpace', () => {
     expect(screen.getByTestId('vector-space-hover')).toBeInTheDocument();
     expect(screen.getByText(/Alpha tweet/)).toBeInTheDocument();
   });
+
+  it('shows user tweet details on hover', () => {
+    render(
+      <VectorSpace
+        userPoint={mockUserPoint}
+        userTweet="User tweet text"
+        candidates={mockCandidates}
+      />
+    );
+    const userPoint = screen.getByTestId('vector-space-user');
+    fireEvent.mouseEnter(userPoint);
+    expect(screen.getByTestId('vector-space-hover')).toBeInTheDocument();
+    expect(screen.getByText(/User tweet text/)).toBeInTheDocument();
+  });
 });

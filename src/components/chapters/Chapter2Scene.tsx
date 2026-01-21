@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/chapter2-scene.module.css';
 import { getEmbedding, isInitialized } from '../../ml/embeddings';
 import { cosine } from '../../ml/similarity';
@@ -46,6 +46,29 @@ const STEP_LABELS = [
   '2A: User Tower Encoding',
   '2B: Similarity Search',
   '2C: Merging Sources'
+];
+
+const ENCODING_STAGES = [
+  {
+    id: 'token',
+    label: 'Tokenize',
+    hint: 'Split your tweet into sub-token pieces.'
+  },
+  {
+    id: 'embed',
+    label: 'Token Embeddings',
+    hint: 'Embed each token into a latent vector.'
+  },
+  {
+    id: 'pool',
+    label: 'Pooling',
+    hint: 'Pool token vectors into one signal.'
+  },
+  {
+    id: 'final',
+    label: 'Final Vector',
+    hint: 'Produce the 128-D user embedding.'
+  }
 ];
 
 
@@ -105,11 +128,10 @@ export default function Chapter2Scene({
     text: string;
   }>>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [encodingStage, setEncodingStage] = useState(0);
+  const encodingTimers = useRef<number[]>([]);
   const maxTokens = 12;
-  const tokenCount = Math.min(
-    tokenizeSubTokens(tweetText || 'Hello world').length,
-    maxTokens
-  );
+  const tokenCount = tokenizeSubTokens(tweetText || 'Hello world').length;
 
   // Generate tweet pool once on mount (embeddings pre-computed)
   useEffect(() => {
@@ -176,6 +198,30 @@ export default function Chapter2Scene({
     computeSimilarities();
   }, [tweetText, tweetPool]);
 
+  useEffect(() => {
+    encodingTimers.current.forEach((timer) => window.clearTimeout(timer));
+    encodingTimers.current = [];
+
+    if (!isActive || currentStep !== 0) {
+      setEncodingStage(0);
+      return;
+    }
+
+    setEncodingStage(0);
+    const delays = [0, 450, 1200, 2000];
+    delays.slice(1).forEach((delay, index) => {
+      const timer = window.setTimeout(() => {
+        setEncodingStage(index + 1);
+      }, delay);
+      encodingTimers.current.push(timer);
+    });
+
+    return () => {
+      encodingTimers.current.forEach((timer) => window.clearTimeout(timer));
+      encodingTimers.current = [];
+    };
+  }, [currentStep, isActive, tweetText]);
+
   const USER_POINT = { x: 50, y: 50, label: 'Your Tweet' };
 
   return (
@@ -211,17 +257,43 @@ export default function Chapter2Scene({
               <div className={styles.loading}>Computing embedding...</div>
             ) : (
               <>
-                <TokenizationFlow
-                  tweet={tweetText}
-                  isActive={isActive}
-                  maxTokens={maxTokens}
-                />
-                <EmbeddingHeatmap
-                  embedding={userEmbedding}
-                  label="TWEET EMBEDDING"
-                  isActive={isActive}
-                  tokenCount={tokenCount}
-                />
+                <div className={styles.encodingGrid}>
+                  <div className={styles.stageRail}>
+                    {ENCODING_STAGES.map((stage, index) => (
+                      <div
+                        key={stage.id}
+                        className={styles.stageCard}
+                        data-testid={`${stage.id}-stage`}
+                        data-active={encodingStage === index}
+                        data-complete={encodingStage > index}
+                      >
+                        <span className={styles.stageIndex}>
+                          {index + 1}
+                        </span>
+                        <div className={styles.stageText}>
+                          <div className={styles.stageLabel}>{stage.label}</div>
+                          <div className={styles.stageHint}>{stage.hint}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className={styles.stageContent}>
+                    <TokenizationFlow
+                      tweet={tweetText}
+                      isActive={isActive}
+                      maxTokens={maxTokens}
+                      stage={encodingStage}
+                    />
+                    {encodingStage === 1 && (
+                      <EmbeddingHeatmap
+                        embedding={userEmbedding}
+                        label="TWEET EMBEDDING"
+                        isActive={isActive}
+                        tokenCount={tokenCount}
+                      />
+                    )}
+                  </div>
+                </div>
               </>
             )}
           </div>
@@ -273,6 +345,7 @@ export default function Chapter2Scene({
                   showSimilarity={true}
                   label="EMBEDDING SPACE"
                   isActive={isActive}
+                  userTweet={tweetText || 'Your tweet'}
                 />
               </>
             )}

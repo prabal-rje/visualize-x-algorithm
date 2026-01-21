@@ -2,8 +2,9 @@
   width: 100%;
   padding: 10px 12px;
   border: 1px solid rgba(51, 255, 51, 0.4);
-  background: rgba(0, 15, 0, 0.85);
-  box-shadow: 0 0 16px rgba(51, 255, 51, 0.25);
+  background: rgba(0, 10, 0, 0.96);
+  box-shadow: 0 0 20px rgba(51, 255, 51, 0.35);
+  backdrop-filter: blur(6px);
   display: grid;
   gap: 6px;
 }

@@ -4,6 +4,7 @@ type TokenizationFlowProps = {
   tweet: string;
   isActive?: boolean;
   maxTokens?: number;
+  stage?: number;
 };
 
 function splitWord(word: string, size: number): string[] {
@@ -40,10 +41,12 @@ export function tokenizeSubTokens(text: string): string[] {
 export default function TokenizationFlow({
   tweet,
   isActive = true,
-  maxTokens = 12
+  maxTokens = 12,
+  stage
 }: TokenizationFlowProps) {
   const rawTokens = tokenizeSubTokens(tweet || 'Your tweet here');
-  const tokens = rawTokens.slice(0, maxTokens);
+  const animatedTokens = rawTokens.slice(0, maxTokens);
+  const activeStage = stage ?? 3;
   const hasOverflow = rawTokens.length > maxTokens;
   const vectorPalette = [
     { fill: 'rgba(180, 20, 180, 0.35)', glow: 'rgba(180, 20, 180, 0.25)' },
@@ -59,13 +62,14 @@ export default function TokenizationFlow({
       className={styles.container}
       data-testid="tokenization-flow"
       data-active={isActive}
+      data-stage={activeStage}
     >
       <div className={styles.header}>TOKENIZATION</div>
       <div className={styles.flow}>
         <div className={styles.tokens}>
           <div className={styles.sectionLabel}>TOKENS</div>
-          <div className={styles.tokenList}>
-            {tokens.map((token, index) => (
+          <div className={styles.tokenList} data-overflow={hasOverflow}>
+            {rawTokens.map((token, index) => (
               <span
                 key={`${token}-${index}`}
                 className={styles.token}
@@ -75,7 +79,6 @@ export default function TokenizationFlow({
                 {token}
               </span>
             ))}
-            {hasOverflow && <span className={styles.tokenEllipsis}>…</span>}
           </div>
           <div className={styles.tokenTotal} data-testid="token-total">
             TOTAL TOKENS: {rawTokens.length}
@@ -83,7 +86,7 @@ export default function TokenizationFlow({
         </div>
 
         <div className={styles.tokenStream} aria-hidden="true">
-          {tokens.map((token, index) => (
+          {animatedTokens.map((token, index) => (
             <span
               key={`${token}-ghost-${index}`}
               className={styles.tokenGhost}
@@ -101,7 +104,7 @@ export default function TokenizationFlow({
           <div className={styles.poolCore} />
           <div className={styles.poolRing} />
           <div className={styles.poolPulses} aria-hidden="true">
-            {tokens.map((_, index) => (
+            {animatedTokens.map((_, index) => (
               <span
                 key={`pulse-${index}`}
                 className={styles.poolPulse}

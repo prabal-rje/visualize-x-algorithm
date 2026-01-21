@@ -44,6 +44,13 @@ describe('Chapter2Scene', () => {
     });
   });
 
+  it('shows tokenization stage before pooling', async () => {
+    render(<Chapter2Scene {...defaultProps} currentStep={0} />);
+    await waitFor(() => {
+      expect(screen.getByTestId('token-stage')).toBeInTheDocument();
+    });
+  });
+
   it('labels embedding as tweet embedding', async () => {
     render(<Chapter2Scene {...defaultProps} currentStep={0} />);
     await waitFor(() => {

@@ -36,6 +36,8 @@
   bottom: 12px;
   width: 220px;
   pointer-events: none;
+  z-index: 5;
+  min-height: 96px;
 }
 
 /* Grid lines for depth effect */
@@ -104,6 +106,7 @@
 .candidate {
   cursor: pointer;
   z-index: 1;
+  opacity: 0;
 }
 
 .candidate:hover {
@@ -111,9 +114,11 @@
 }
 
 .candidate .pointDot {
-  width: 10px;
-  height: 10px;
-  transition: all 0.2s ease;
+  width: var(--dot-size, 10px);
+  height: var(--dot-size, 10px);
+  background: rgba(51, 255, 51, var(--dot-alpha, 0.6));
+  box-shadow: 0 0 var(--dot-glow, 8px) rgba(51, 255, 51, var(--dot-alpha, 0.6));
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .candidate:hover .pointDot {
@@ -129,18 +134,15 @@
 
 /* Similarity levels */
 .high .pointDot {
-  background: var(--phosphor-green);
-  box-shadow: 0 0 10px var(--phosphor-green);
+  filter: brightness(1.15);
 }
 
 .medium .pointDot {
-  background: rgba(51, 255, 51, 0.6);
-  box-shadow: 0 0 5px rgba(51, 255, 51, 0.5);
+  filter: brightness(0.9);
 }
 
 .low .pointDot {
-  background: rgba(51, 255, 51, 0.3);
-  box-shadow: none;
+  filter: brightness(0.7);
 }
 
 /* Active state animations */
@@ -150,6 +152,16 @@
 
 .container[data-active='true'] .high {
   animation: attract 3s ease-in-out infinite;
+}
+
+.container[data-active='true'] .candidate .pointDot {
+  animation: place-dot 0.6s ease-out forwards;
+  animation-delay: var(--place-delay, 0s);
+}
+
+.container[data-active='true'] .candidate {
+  animation: candidate-fade 0.6s ease-out forwards;
+  animation-delay: var(--place-delay, 0s);
 }
 
 @keyframes user-pulse {
@@ -170,6 +182,30 @@
   }
 }
 
+@keyframes candidate-fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes place-dot {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 /* Inactive state */
 .container[data-active='false'] {
   opacity: 0.6;
@@ -182,4 +218,8 @@
 
 .container[data-active='false'] .pointDot {
   box-shadow: none;
+}
+
+.container[data-active='false'] .candidate {
+  opacity: 0.6;
 }

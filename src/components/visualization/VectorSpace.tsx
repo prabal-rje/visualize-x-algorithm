@@ -16,6 +16,8 @@ type CandidatePoint = Point & {
 type VectorSpaceProps = {
   /** The user point (center reference) */
   userPoint: Point;
+  /** The user's tweet for hover tooltip */
+  userTweet?: string;
   /** Candidate points with similarity scores */
   candidates: CandidatePoint[];
   /** Whether to show similarity scores */
@@ -34,13 +36,18 @@ function getSimilarityClass(similarity: number): string {
 
 export default function VectorSpace({
   userPoint,
+  userTweet,
   candidates,
   showSimilarity = false,
   label = 'VECTOR SPACE',
   isActive = true
 }: VectorSpaceProps) {
-  const [hovered, setHovered] = useState<CandidatePoint | null>(null);
-  const showHover = hovered && hovered.text;
+  const [hovered, setHovered] = useState<{
+    text: string;
+    similarity: number;
+    label: string;
+  } | null>(null);
+  const showHover = Boolean(hovered?.text);
 
   return (
     <div
@@ -63,7 +70,11 @@ export default function VectorSpace({
         </div>
 
         {/* Candidate points */}
-        {candidates.map((candidate, index) => (
+        {candidates.map((candidate, index) => {
+          const intensity = Math.max(0.15, Math.min(1, candidate.similarity));
+          const dotSize = 6 + intensity * 10;
+          const glowSize = 4 + intensity * 12;
+          return (
           <div
             key={index}
             data-testid="vector-space-candidate"
@@ -71,11 +82,28 @@ export default function VectorSpace({
             style={{
               left: `${candidate.x}%`,
               top: `${candidate.y}%`,
-              animationDelay: `${index * 0.1}s`
+              ['--place-delay' as string]: `${index * 0.1}s`,
+              ['--dot-size' as string]: `${dotSize}px`,
+              ['--dot-glow' as string]: `${glowSize}px`,
+              ['--dot-alpha' as string]: `${0.2 + intensity * 0.8}`
             }}
-            onMouseEnter={() => setHovered(candidate)}
+            onMouseEnter={() => {
+              if (!candidate.text) return;
+              setHovered({
+                text: candidate.text,
+                similarity: candidate.similarity,
+                label: candidate.label
+              });
+            }}
             onMouseLeave={() => setHovered(null)}
-            onFocus={() => setHovered(candidate)}
+            onFocus={() => {
+              if (!candidate.text) return;
+              setHovered({
+                text: candidate.text,
+                similarity: candidate.similarity,
+                label: candidate.label
+              });
+            }}
             onBlur={() => setHovered(null)}
             tabIndex={0}
             title={candidate.text ? `${candidate.text}\n\nSimilarity: ${candidate.similarity.toFixed(3)}` : undefined}
@@ -85,7 +113,8 @@ export default function VectorSpace({
               <span className={styles.similarity}>{candidate.similarity.toFixed(2)}</span>
             )}
           </div>
-        ))}
+        );
+        })}
 
         {/* User point (central reference) */}
         <div
@@ -95,6 +124,25 @@ export default function VectorSpace({
             left: `${userPoint.x}%`,
             top: `${userPoint.y}%`
           }}
+          onMouseEnter={() => {
+            if (!userTweet) return;
+            setHovered({
+              text: userTweet,
+              similarity: 1,
+              label: userPoint.label
+            });
+          }}
+          onMouseLeave={() => setHovered(null)}
+          onFocus={() => {
+            if (!userTweet) return;
+            setHovered({
+              text: userTweet,
+              similarity: 1,
+              label: userPoint.label
+            });
+          }}
+          onBlur={() => setHovered(null)}
+          tabIndex={0}
         >
           <div className={styles.pointDot} />
           <span className={styles.pointLabel}>{userPoint.label}</span>
@@ -102,7 +150,11 @@ export default function VectorSpace({
       </div>
       <div className={styles.hoverSlot} data-testid="vector-space-hover-slot">
         {showHover && hovered?.text ? (
-          <VectorSpaceHover tweet={hovered.text} similarity={hovered.similarity} />
+          <VectorSpaceHover
+            tweet={hovered.text}
+            similarity={hovered.similarity}
+            label={hovered.label === userPoint.label ? 'YOUR TWEET' : hovered.label}
+          />
         ) : null}
       </div>
     </div>

@@ -258,6 +258,19 @@ describe('Timeline', () => {
       expect(screen.getByText('client/mission_loadout.ts')).toBeInTheDocument();
     });
 
+    it('shows user tower function for chapter 2 encoding step', () => {
+      render(
+        <Timeline
+          position={{ chapterIndex: 2, subChapterIndex: 0, functionIndex: 0 }}
+          status="running"
+          dispatch={mockDispatch}
+        />
+      );
+      expect(
+        screen.getByText(/TwoTowerModel\.user_tower\(\)/)
+      ).toBeInTheDocument();
+    });
+
     it('shows progress indicator', () => {
       render(
         <Timeline

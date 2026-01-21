@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import TokenizationFlow from './TokenizationFlow';
+import TokenizationFlow, { tokenizeSubTokens } from './TokenizationFlow';
 
 describe('TokenizationFlow', () => {
   it('shows sub-token chips with pooling pulses', () => {
@@ -21,5 +21,14 @@ describe('TokenizationFlow', () => {
     expect(screen.queryByText(/mean pool/i)).not.toBeInTheDocument();
     const cells = screen.getAllByTestId('token-vector-cell');
     expect(cells[0].style.backgroundColor).toMatch(/rgba/);
+  });
+
+  it('renders the full token list without truncation', () => {
+    const tweet = 'one two three four five six seven eight nine ten eleven twelve thirteen';
+    const expectedTokens = tokenizeSubTokens(tweet);
+    render(<TokenizationFlow tweet={tweet} isActive={true} maxTokens={12} />);
+    const tokens = screen.getAllByTestId('token-chip');
+    expect(tokens).toHaveLength(expectedTokens.length);
+    expect(screen.queryByText('…')).not.toBeInTheDocument();
   });
 });

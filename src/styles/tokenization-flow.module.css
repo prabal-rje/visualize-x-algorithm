@@ -38,6 +38,9 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+  max-height: 96px;
+  overflow-y: auto;
+  padding-right: 4px;
 }
 
 .token {
@@ -46,11 +49,6 @@
   font-size: 12px;
   background: rgba(0, 20, 0, 0.7);
   box-shadow: 0 0 8px rgba(51, 255, 51, 0.2);
-}
-
-.tokenEllipsis {
-  font-size: 14px;
-  color: rgba(255, 176, 0, 0.8);
 }
 
 .tokenTotal {
@@ -66,6 +64,7 @@
   height: 96px;
   display: grid;
   place-items: center;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .poolCore {
@@ -93,6 +92,7 @@
   top: 50%;
   height: 0;
   pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
 .tokenGhost {
@@ -128,6 +128,7 @@
   display: grid;
   gap: 8px;
   justify-items: start;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .vectorGrid {
@@ -157,6 +158,27 @@
 .container[data-active='false'] .vectorCell,
 .container[data-active='false'] .poolRing {
   animation: none;
+}
+
+.container[data-stage='0'] .tokenStream,
+.container[data-stage='0'] .pool,
+.container[data-stage='0'] .vector {
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+}
+
+.container[data-stage='1'] .pool,
+.container[data-stage='1'] .vector {
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+}
+
+.container[data-stage='2'] .vector {
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
 }
 
 @keyframes token-float {

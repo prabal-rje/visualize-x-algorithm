@@ -125,36 +125,43 @@ export const CHAPTERS: Chapter[] = [
     subChapters: [
       {
         id: 'ch2-a',
-        labelSimple: 'Thunder',
-        labelTechnical: 'In-Network Source',
+        labelSimple: 'Encoding',
+        labelTechnical: 'User Tower Encoding',
         functions: [
           {
             id: 'ch2-a-1',
-            name: 'ThunderSource::get_candidates()',
-            file: 'home-mixer/sources/thunder_source.rs',
-            summary: 'Fetching tweets from users you follow',
-            githubUrl: `${GITHUB_BASE}/home-mixer/sources/thunder_source.rs`
+            name: 'TwoTowerModel.user_tower()',
+            file: 'phoenix/recsys_retrieval_model.py',
+            summary: 'Encoding user into embedding vector',
+            githubUrl: `${GITHUB_BASE}/phoenix/recsys_retrieval_model.py`
           }
         ]
       },
       {
         id: 'ch2-b',
-        labelSimple: 'Phoenix',
-        labelTechnical: 'Out-of-Network Source',
+        labelSimple: 'Similarity',
+        labelTechnical: 'Vector Search',
         functions: [
           {
             id: 'ch2-b-1',
-            name: 'TwoTowerModel.user_tower()',
-            file: 'phoenix/recsys_retrieval_model.py',
-            summary: 'Encoding user into embedding vector',
-            githubUrl: `${GITHUB_BASE}/phoenix/recsys_retrieval_model.py`
-          },
+            name: 'approximate_nearest_neighbors()',
+            file: 'phoenix/ann/approximate_nearest_neighbors.py',
+            summary: 'Finding nearest neighbors in embedding space',
+            githubUrl: `${GITHUB_BASE}/phoenix/ann/approximate_nearest_neighbors.py`
+          }
+        ]
+      },
+      {
+        id: 'ch2-c',
+        labelSimple: 'Merge',
+        labelTechnical: 'Source Merge',
+        functions: [
           {
-            id: 'ch2-b-2',
-            name: 'PhoenixSource::get_candidates()',
-            file: 'home-mixer/sources/phoenix_source.rs',
-            summary: 'Discovering tweets outside your network',
-            githubUrl: `${GITHUB_BASE}/home-mixer/sources/phoenix_source.rs`
+            id: 'ch2-c-1',
+            name: 'PhoenixCandidatePipeline::run()',
+            file: 'home-mixer/pipeline/phoenix_candidate_pipeline.rs',
+            summary: 'Merging Thunder and Phoenix candidates',
+            githubUrl: `${GITHUB_BASE}/home-mixer/pipeline/phoenix_candidate_pipeline.rs`
           }
         ]
       }

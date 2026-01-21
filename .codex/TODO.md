@@ -8,6 +8,10 @@ Instructions:
 
 ## Stack (Top = next)
 
+### 0. CRT Fidelity Gate
+- [ ] Match CRT quality to `crt-simulation` reference (scanlines, curvature, RGB split, noise, phosphor persistence).
+- [ ] Ensure UI uses pixel/retro fonts by default (VT323 / Press Start 2P).
+
 ### 1. Phase 1: Foundation
 
 

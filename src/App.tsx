@@ -10,6 +10,7 @@ import Marquee from './components/layout/Marquee';
 import Timeline from './components/layout/Timeline';
 import BIOSLoading from './components/visualization/BIOSLoading';
 import MissionReport from './components/visualization/MissionReport';
+import { getFunctionAtPosition } from './data/chapters';
 import { useSimulationState } from './hooks/useSimulationState';
 import { useConfigStore } from './stores/config';
 import { useMLStore } from './stores/ml';
@@ -21,6 +22,14 @@ function App() {
   const rpgStats = useConfigStore((state) => state.rpgStats);
   const resetSimulation = useConfigStore((state) => state.resetSimulation);
   const mlStatus = useMLStore((state) => state.status);
+
+  // Get current function info from simulation position
+  const { position } = simulationState;
+  const currentFunction = getFunctionAtPosition(
+    position.chapterIndex,
+    position.subChapterIndex,
+    position.functionIndex
+  );
 
   const renderMainContent = () => {
     if (mlStatus === 'loading') {
@@ -48,7 +57,18 @@ function App() {
         <main>
           <section>CANVAS PLACEHOLDER</section>
           <section>
-            <FunctionPanel />
+            <FunctionPanel
+              info={
+                simulationStarted && currentFunction
+                  ? {
+                      name: currentFunction.name,
+                      file: currentFunction.file,
+                      summary: currentFunction.summary,
+                      githubUrl: currentFunction.githubUrl,
+                    }
+                  : undefined
+              }
+            />
             {renderMainContent()}
             <CRTControls config={crtConfig} onChange={setCrtConfig} />
           </section>

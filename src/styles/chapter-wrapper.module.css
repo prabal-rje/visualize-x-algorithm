@@ -1,0 +1,60 @@
+.chapter {
+  position: relative;
+  padding: 20px;
+  background: rgba(0, 10, 0, 0.8);
+  border: 1px solid rgba(51, 255, 51, 0.35);
+  box-shadow: inset 0 0 30px rgba(51, 255, 51, 0.1);
+}
+
+.chapter[data-active='false'] {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.title {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--phosphor-green);
+  text-shadow: 0 0 10px var(--phosphor-green);
+}
+
+.content {
+  position: relative;
+}
+
+/* Chapter-specific accent colors */
+.chapter[data-chapter='0'] {
+  border-color: rgba(51, 255, 51, 0.5);
+}
+
+.chapter[data-chapter='1'] {
+  border-color: rgba(0, 170, 255, 0.5);
+}
+
+.chapter[data-chapter='2'] {
+  border-color: rgba(255, 176, 0, 0.5);
+}
+
+.chapter[data-chapter='3'] {
+  border-color: rgba(255, 100, 100, 0.5);
+}
+
+.chapter[data-chapter='4'] {
+  border-color: rgba(180, 100, 255, 0.5);
+}
+
+/* CRT scanline effect on chapter transition */
+@keyframes chapter-enter {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.chapter[data-active='true'] .content {
+  animation: chapter-enter 0.3s ease-out;
+}

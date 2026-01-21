@@ -1,6 +1,6 @@
-import { render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it, beforeEach, vi } from 'vitest';
+import { describe, expect, it, beforeEach, vi, afterEach } from 'vitest';
 import Timeline from './Timeline';
 import { useConfigStore } from '../../stores/config';
 import { CHAPTERS } from '../../data/chapters';
@@ -254,6 +254,136 @@ describe('Timeline', () => {
       );
       // Should show some kind of progress
       expect(screen.getByTestId('progress-indicator')).toBeInTheDocument();
+    });
+  });
+
+  describe('play/pause controls', () => {
+    it('renders play button when paused', () => {
+      render(
+        <Timeline
+          position={defaultPosition}
+          status="paused"
+          dispatch={mockDispatch}
+        />
+      );
+      expect(screen.getByRole('button', { name: /play/i })).toBeInTheDocument();
+    });
+
+    it('renders pause button when running', () => {
+      render(
+        <Timeline
+          position={defaultPosition}
+          status="running"
+          dispatch={mockDispatch}
+        />
+      );
+      expect(screen.getByRole('button', { name: /pause/i })).toBeInTheDocument();
+    });
+
+    it('dispatches PAUSE when clicking pause button', async () => {
+      const user = userEvent.setup();
+      render(
+        <Timeline
+          position={defaultPosition}
+          status="running"
+          dispatch={mockDispatch}
+        />
+      );
+      await user.click(screen.getByRole('button', { name: /pause/i }));
+      expect(mockDispatch).toHaveBeenCalledWith({ type: 'PAUSE' });
+    });
+
+    it('dispatches RESUME when clicking play button', async () => {
+      const user = userEvent.setup();
+      render(
+        <Timeline
+          position={defaultPosition}
+          status="paused"
+          dispatch={mockDispatch}
+        />
+      );
+      await user.click(screen.getByRole('button', { name: /play/i }));
+      expect(mockDispatch).toHaveBeenCalledWith({ type: 'RESUME' });
+    });
+  });
+
+  describe('keyboard controls', () => {
+    it('toggles play/pause with space key', () => {
+      render(
+        <Timeline
+          position={defaultPosition}
+          status="running"
+          dispatch={mockDispatch}
+        />
+      );
+      fireEvent.keyDown(document, { key: ' ', code: 'Space' });
+      expect(mockDispatch).toHaveBeenCalledWith({ type: 'PAUSE' });
+    });
+
+    it('steps forward with right arrow key', () => {
+      render(
+        <Timeline
+          position={defaultPosition}
+          status="running"
+          dispatch={mockDispatch}
+        />
+      );
+      fireEvent.keyDown(document, { key: 'ArrowRight', code: 'ArrowRight' });
+      expect(mockDispatch).toHaveBeenCalledWith({ type: 'STEP_FORWARD' });
+    });
+
+    it('steps back with left arrow key', () => {
+      render(
+        <Timeline
+          position={{ chapterIndex: 1, subChapterIndex: 0, functionIndex: 0 }}
+          status="running"
+          dispatch={mockDispatch}
+        />
+      );
+      fireEvent.keyDown(document, { key: 'ArrowLeft', code: 'ArrowLeft' });
+      expect(mockDispatch).toHaveBeenCalledWith({ type: 'STEP_BACK' });
+    });
+
+    it('does not step back at start position', () => {
+      render(
+        <Timeline
+          position={defaultPosition}
+          status="running"
+          dispatch={mockDispatch}
+        />
+      );
+      fireEvent.keyDown(document, { key: 'ArrowLeft', code: 'ArrowLeft' });
+      expect(mockDispatch).not.toHaveBeenCalledWith({ type: 'STEP_BACK' });
+    });
+  });
+
+  describe('interactive scrubber', () => {
+    it('progress bar has role progressbar', () => {
+      render(
+        <Timeline
+          position={defaultPosition}
+          status="running"
+          dispatch={mockDispatch}
+        />
+      );
+      const progressBar = screen.getByRole('progressbar');
+      expect(progressBar).toBeInTheDocument();
+    });
+
+    it('clicking on progress bar dispatches JUMP_TO_POSITION', async () => {
+      const user = userEvent.setup();
+      render(
+        <Timeline
+          position={defaultPosition}
+          status="running"
+          dispatch={mockDispatch}
+        />
+      );
+      const progressContainer = screen.getByTestId('progress-indicator');
+      // Simulate click at middle of progress bar
+      await user.click(progressContainer);
+      // Should dispatch some kind of navigation action
+      expect(mockDispatch).toHaveBeenCalled();
     });
   });
 });

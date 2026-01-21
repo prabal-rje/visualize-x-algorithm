@@ -18,13 +18,6 @@ Instructions:
 ### 3. Phase 3: ML Pipeline
 
 ### 4. Phase 4: Timeline and Chapter Framework
-- [ ] Implement GSAP timeline with chapter markers.
-- [ ] Create `useTimeline` hook for play/pause/seek.
-- [ ] Implement timeline scrubber UI component.
-- [ ] Create chapter component wrapper with enter/exit animations.
-- [ ] Implement chapter progress indicators.
-- [ ] Add keyboard controls (space = play/pause, arrows = skip).
-- [ ] Implement current function panel (shows active fn + GitHub link).
 
 ### 5. Phase 5: Chapters 1 and 2
 - [ ] Animate gRPC request visualization (phone -> server).
@@ -107,6 +100,13 @@ Instructions:
 - [ ] Reduced motion mode disables animations.
 
 ## Completed
+- [x] Implement current function panel (shows active fn + GitHub link).
+- [x] Add keyboard controls (space = play/pause, arrows = skip).
+- [x] Implement chapter progress indicators.
+- [x] Create chapter component wrapper with enter/exit animations.
+- [x] Implement interactive timeline scrubber UI component.
+- [x] Create `useAnimationTimer` hook for play/pause/seek.
+- [x] Implement GSAP timeline with chapter markers.
 - [x] Generate simulated tweet pool with embeddings.
 - [x] Implement semantic `MutedKeywordFilter`.
 - [x] Implement `calculateWeightedScore()` for final scores.

@@ -1,3 +1,4 @@
+import { useEffect, useCallback } from 'react';
 import { CHAPTERS, getFunctionAtPosition } from '../../data/chapters';
 import type { SimulationPosition, SimulationAction, SimulationStatus } from '../../hooks/useSimulationState';
 import { useConfigStore } from '../../stores/config';
@@ -33,10 +34,21 @@ function isAtEnd(position: SimulationPosition): boolean {
   );
 }
 
+// Calculate total step count
+function getTotalSteps(): number {
+  let total = 0;
+  for (const chapter of CHAPTERS) {
+    for (const subChapter of chapter.subChapters) {
+      total += subChapter.functions.length;
+    }
+  }
+  return total;
+}
+
 // Calculate linear progress (0-100)
 function calculateProgress(position: SimulationPosition): number {
   let currentStep = 0;
-  let totalSteps = 0;
+  const totalSteps = getTotalSteps();
 
   for (let ci = 0; ci < CHAPTERS.length; ci++) {
     const chapter = CHAPTERS[ci];
@@ -52,12 +64,37 @@ function calculateProgress(position: SimulationPosition): number {
         ) {
           currentStep++;
         }
-        totalSteps++;
       }
     }
   }
 
   return totalSteps > 0 ? Math.round((currentStep / totalSteps) * 100) : 0;
+}
+
+// Convert a progress percentage (0-100) to a SimulationPosition
+function progressToPosition(progressPercent: number): SimulationPosition {
+  const totalSteps = getTotalSteps();
+  const targetStep = Math.round((progressPercent / 100) * totalSteps);
+
+  let stepCount = 0;
+  for (let ci = 0; ci < CHAPTERS.length; ci++) {
+    const chapter = CHAPTERS[ci];
+    for (let si = 0; si < chapter.subChapters.length; si++) {
+      const subChapter = chapter.subChapters[si];
+      for (let fi = 0; fi < subChapter.functions.length; fi++) {
+        if (stepCount >= targetStep) {
+          return { chapterIndex: ci, subChapterIndex: si, functionIndex: fi };
+        }
+        stepCount++;
+      }
+    }
+  }
+
+  // Return last position if we reach here
+  const lastChapterIdx = CHAPTERS.length - 1;
+  const lastSubChapterIdx = CHAPTERS[lastChapterIdx].subChapters.length - 1;
+  const lastFunctionIdx = CHAPTERS[lastChapterIdx].subChapters[lastSubChapterIdx].functions.length - 1;
+  return { chapterIndex: lastChapterIdx, subChapterIndex: lastSubChapterIdx, functionIndex: lastFunctionIdx };
 }
 
 export default function Timeline({ position, status, dispatch }: TimelineProps) {
@@ -70,22 +107,71 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
   const atStart = isAtStart(position);
   const atEnd = isAtEnd(position) || status === 'complete';
   const progress = calculateProgress(position);
+  const isPlaying = status === 'running';
 
-  const handleStepBack = () => {
-    dispatch({ type: 'STEP_BACK' });
-  };
+  const handleStepBack = useCallback(() => {
+    if (!atStart) {
+      dispatch({ type: 'STEP_BACK' });
+    }
+  }, [dispatch, atStart]);
 
-  const handleStepForward = () => {
-    dispatch({ type: 'STEP_FORWARD' });
-  };
+  const handleStepForward = useCallback(() => {
+    if (!atEnd) {
+      dispatch({ type: 'STEP_FORWARD' });
+    }
+  }, [dispatch, atEnd]);
 
-  const handleStartOver = () => {
+  const handleStartOver = useCallback(() => {
     dispatch({ type: 'RESET' });
-  };
+  }, [dispatch]);
 
-  const handleChapterClick = (chapterIndex: number) => {
+  const handleChapterClick = useCallback((chapterIndex: number) => {
     dispatch({ type: 'JUMP_TO_CHAPTER', chapterIndex });
-  };
+  }, [dispatch]);
+
+  const handlePlayPause = useCallback(() => {
+    if (isPlaying) {
+      dispatch({ type: 'PAUSE' });
+    } else {
+      dispatch({ type: 'RESUME' });
+    }
+  }, [dispatch, isPlaying]);
+
+  const handleProgressClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const percentClicked = (clickX / rect.width) * 100;
+    const newPosition = progressToPosition(percentClicked);
+    dispatch({ type: 'JUMP_TO_POSITION', position: newPosition });
+  }, [dispatch]);
+
+  // Keyboard controls
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Ignore if focus is on an input element
+      const target = event.target as HTMLElement | null;
+      const tag = target?.tagName?.toLowerCase();
+      if (tag === 'input' || tag === 'textarea') return;
+
+      switch (event.key) {
+        case ' ':
+          event.preventDefault();
+          handlePlayPause();
+          break;
+        case 'ArrowRight':
+          event.preventDefault();
+          handleStepForward();
+          break;
+        case 'ArrowLeft':
+          event.preventDefault();
+          handleStepBack();
+          break;
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [handlePlayPause, handleStepForward, handleStepBack]);
 
   return (
     <div className={styles.timeline} data-testid="timeline">
@@ -107,6 +193,14 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
           aria-label="Step back"
         >
           &lt;&lt; BACK
+        </button>
+        <button
+          type="button"
+          className={styles.controlButton}
+          onClick={handlePlayPause}
+          aria-label={isPlaying ? 'Pause' : 'Play'}
+        >
+          {isPlaying ? 'PAUSE' : 'PLAY'}
         </button>
         <button
           type="button"
@@ -145,7 +239,17 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       </div>
 
       {/* Progress Indicator */}
-      <div className={styles.progressContainer} data-testid="progress-indicator">
+      <div
+        className={styles.progressContainer}
+        data-testid="progress-indicator"
+        onClick={handleProgressClick}
+        role="progressbar"
+        aria-valuenow={progress}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label="Simulation progress"
+        style={{ cursor: 'pointer' }}
+      >
         <div className={styles.progressBar} style={{ width: `${progress}%` }} />
         <span className={styles.progressText}>{progress}%</span>
       </div>

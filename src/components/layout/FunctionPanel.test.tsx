@@ -77,6 +77,15 @@ describe('FunctionPanel', () => {
       useConfigStore.setState({ expertMode: true });
     });
 
+    it('renders a clickable file link with icon', () => {
+      render(<FunctionPanel info={mockFunctionInfo} />);
+      const link = screen.getByRole('link', {
+        name: /home-mixer\/server\.rs/i
+      });
+      expect(link).toHaveAttribute('href', mockFunctionInfo.githubUrl);
+      expect(screen.getByTestId('function-file-icon')).toBeInTheDocument();
+    });
+
     it('shows technical details by default', () => {
       render(<FunctionPanel info={mockFunctionInfo} />);
       expect(screen.getByText('get_scored_posts()')).toBeInTheDocument();

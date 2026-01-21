@@ -42,12 +42,33 @@
   font-family: 'IBM Plex Mono', monospace;
 }
 
-.filePath {
+.fileLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   color: var(--phosphor-green, #33ff33);
   font-size: 0.875rem;
-  opacity: 0.8;
+  opacity: 0.85;
   margin: 0 0 0.75rem 0;
   font-family: 'IBM Plex Mono', monospace;
+  text-decoration: none;
+}
+
+.fileLink:hover {
+  color: var(--phosphor-amber, #ffb000);
+  text-shadow: 0 0 8px rgba(255, 176, 0, 0.25);
+}
+
+.fileIcon {
+  border: 1px solid rgba(51, 255, 51, 0.5);
+  padding: 2px 4px;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fileText {
+  white-space: nowrap;
 }
 
 .sourceLink {

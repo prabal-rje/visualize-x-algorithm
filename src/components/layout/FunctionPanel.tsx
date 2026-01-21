@@ -41,7 +41,21 @@ export default function FunctionPanel({ info }: FunctionPanelProps) {
       {showDetails && (
         <div className={styles.details}>
           <p className={styles.functionName}>{info.name}</p>
-          <p className={styles.filePath}>{info.file}</p>
+          <a
+            href={info.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.fileLink}
+          >
+            <span
+              className={styles.fileIcon}
+              data-testid="function-file-icon"
+              aria-hidden="true"
+            >
+              {'</>'}
+            </span>
+            <span className={styles.fileText}>{info.file}</span>
+          </a>
           <a
             href={info.githubUrl}
             target="_blank"

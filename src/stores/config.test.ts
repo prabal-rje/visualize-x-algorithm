@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest';
+import { AUDIENCES } from '../data/audiences';
+import { SAMPLE_TWEETS } from '../data/tweets';
 import { useConfigStore } from './config';
 
 describe('config store', () => {
@@ -13,5 +15,26 @@ describe('config store', () => {
     const { setPersonaId } = useConfigStore.getState();
     setPersonaId('tech-founder');
     expect(useConfigStore.getState().personaId).toBe('tech-founder');
+  });
+
+  it('initializes audience mix for all audiences', () => {
+    const { audienceMix } = useConfigStore.getState();
+    expect(Object.keys(audienceMix)).toHaveLength(AUDIENCES.length);
+  });
+
+  it('updates tweet text and sample selection', () => {
+    const { setTweetText, selectSampleTweet } = useConfigStore.getState();
+    setTweetText('hello');
+    expect(useConfigStore.getState().tweetText).toBe('hello');
+    selectSampleTweet(SAMPLE_TWEETS[0].id);
+    expect(useConfigStore.getState().sampleTweetId).toBe(SAMPLE_TWEETS[0].id);
+  });
+
+  it('toggles simulation started', () => {
+    const { beginSimulation, resetSimulation } = useConfigStore.getState();
+    beginSimulation();
+    expect(useConfigStore.getState().simulationStarted).toBe(true);
+    resetSimulation();
+    expect(useConfigStore.getState().simulationStarted).toBe(false);
   });
 });

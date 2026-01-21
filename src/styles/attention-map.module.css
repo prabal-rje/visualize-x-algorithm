@@ -1,0 +1,50 @@
+.container {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid rgba(51, 255, 51, 0.3);
+  background: rgba(0, 12, 0, 0.85);
+}
+
+.header {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(51, 255, 51, 0.7);
+}
+
+.rows {
+  display: grid;
+  gap: 6px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.label {
+  font-size: 11px;
+  color: var(--phosphor-green);
+}
+
+.barTrack {
+  height: 6px;
+  border: 1px solid rgba(51, 255, 51, 0.3);
+  background: rgba(0, 20, 0, 0.6);
+  position: relative;
+}
+
+.barFill {
+  height: 100%;
+  background: linear-gradient(90deg, rgba(51, 255, 51, 0.2), rgba(51, 255, 51, 0.9));
+  box-shadow: 0 0 8px rgba(51, 255, 51, 0.6);
+  transition: width 1s ease;
+}
+
+.weight {
+  font-size: 10px;
+  color: var(--phosphor-amber);
+}

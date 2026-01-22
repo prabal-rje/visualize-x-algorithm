@@ -3,7 +3,7 @@ import { ATTRIBUTION } from '../../data/attribution';
 export default function Marquee() {
   return (
     <nav
-      className="flex h-10 items-center justify-center gap-2 overflow-hidden border-b border-crt-line/40 bg-crt-void/95 font-mono text-[12px] sm:h-11 sm:gap-0 sm:text-[13px]"
+      className="flex h-10 items-center justify-center gap-2 overflow-hidden bg-crt-void/95 font-mono text-[12px] sm:h-11 sm:gap-0 sm:text-[13px]"
       data-testid="marquee"
       data-system="marquee"
       aria-label="Social links"

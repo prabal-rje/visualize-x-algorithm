@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { setEmbedderForTests } from '../../ml/embeddings';
 import { useConfigStore } from '../../stores/config';
@@ -37,60 +37,72 @@ describe('Chapter2Scene', () => {
     expect(screen.getByText(/THE GATHERING/)).toBeInTheDocument();
   });
 
-  it('shows embedding heatmap at step 0 after loading', async () => {
+  it('shows only tokenization visuals at step 0', async () => {
     render(<Chapter2Scene {...defaultProps} currentStep={0} />);
     await waitFor(() => {
-      expect(screen.getByTestId('embedding-heatmap')).toBeInTheDocument();
+      expect(screen.getByTestId('tokenization-flow')).toBeInTheDocument();
     });
+    expect(screen.queryByTestId('embedding-heatmap')).not.toBeInTheDocument();
   });
 
-  it('shows tokenization stage before pooling', async () => {
+  it('shows tokenization stage at step 0', async () => {
     render(<Chapter2Scene {...defaultProps} currentStep={0} />);
     await waitFor(() => {
       expect(screen.getByTestId('token-stage')).toBeInTheDocument();
     });
+    expect(screen.getByTestId('tokenization-flow')).toHaveAttribute('data-stage', '0');
   });
 
-  it('labels embedding as tweet embedding', async () => {
-    render(<Chapter2Scene {...defaultProps} currentStep={0} />);
+  it('shows token embedding heatmap at step 1', async () => {
+    render(<Chapter2Scene {...defaultProps} currentStep={1} />);
     await waitFor(() => {
-      expect(screen.getByText(/TWEET EMBEDDING/)).toBeInTheDocument();
+      expect(screen.getByTestId('embedding-heatmap')).toBeInTheDocument();
+    });
+    expect(
+      within(screen.getByTestId('embedding-heatmap')).getByText(/TOKEN EMBEDDINGS/i)
+    ).toBeInTheDocument();
+  });
+
+  it('shows pooling stage at step 2', async () => {
+    render(<Chapter2Scene {...defaultProps} currentStep={2} />);
+    await waitFor(() => {
+      expect(screen.getByTestId('tokenization-flow')).toHaveAttribute('data-stage', '2');
     });
   });
 
   it('shows placement stage before similarity map', async () => {
-    render(<Chapter2Scene {...defaultProps} currentStep={1} />);
+    render(<Chapter2Scene {...defaultProps} currentStep={3} />);
     await waitFor(() => {
       expect(screen.getByTestId('placement-stage')).toBeInTheDocument();
     });
   });
 
   it('shows a legend label in the gathering step', async () => {
-    render(<Chapter2Scene {...defaultProps} currentStep={2} />);
+    render(<Chapter2Scene {...defaultProps} currentStep={4} />);
     await waitFor(() => {
       expect(screen.getByText(/Legend/i)).toBeInTheDocument();
     });
   });
 
   it('shows vector space at step 2 after loading', async () => {
-    render(<Chapter2Scene {...defaultProps} currentStep={2} />);
+    render(<Chapter2Scene {...defaultProps} currentStep={4} />);
     await waitFor(() => {
       expect(screen.getByTestId('vector-space')).toBeInTheDocument();
     });
   });
 
-  it('shows candidate streams at step 3 (merging)', () => {
-    render(<Chapter2Scene {...defaultProps} currentStep={3} />);
+  it('shows candidate streams at step 5 (merging)', () => {
+    render(<Chapter2Scene {...defaultProps} currentStep={5} />);
     expect(screen.getByTestId('candidate-streams')).toBeInTheDocument();
   });
 
-  it('shows Thunder stream label at step 3', () => {
-    render(<Chapter2Scene {...defaultProps} currentStep={3} />);
+  it('shows Thunder stream label at step 5', () => {
+    render(<Chapter2Scene {...defaultProps} currentStep={5} />);
     expect(screen.getByText(/THUNDER/)).toBeInTheDocument();
   });
 
-  it('shows Phoenix stream label at step 3', () => {
-    render(<Chapter2Scene {...defaultProps} currentStep={3} />);
+  it('shows Phoenix stream label at step 5', () => {
+    render(<Chapter2Scene {...defaultProps} currentStep={5} />);
     expect(screen.getByText(/PHOENIX/)).toBeInTheDocument();
   });
 

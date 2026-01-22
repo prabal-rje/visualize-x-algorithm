@@ -26,7 +26,7 @@ Instructions:
  
 
 ##### Phase 2.75: Changes to "The Gathering"
-
+ 
  
 
 
@@ -78,6 +78,10 @@ Instructions:
 
 ## Completed
 - [x] Move completed tasks to Completed.
+- [x] Chrome MCP viewport/zoom verification for Ch.2 encoding split (tokenize/embedding/pooling).
+- [x] Split Chapter 2 encoding into tokenize/embedding/pooling sub-chapters with per-step visuals.
+- [x] Update Chapter 2 chapter data, narration, and tests for new sub-chapter flow.
+- [x] Capture Chrome MCP screenshots for the new split steps (multi-viewport + zoom).
 
 ### Feedback Fixes: Arena + Marquee + Stack
 

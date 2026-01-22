@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from '../../styles/chapter2-scene.module.css';
 import { getEmbedding, isInitialized } from '../../ml/embeddings';
 import { cosinePreview } from '../../ml/similarity';
@@ -12,7 +12,7 @@ import TokenizationFlow, { tokenizeSubTokens } from '../visualization/Tokenizati
 import { useViewport } from '../../hooks/useViewport';
 
 type Chapter2SceneProps = {
-  /** Current step (0 = user tower, 1 = placement, 2 = similarity, 3 = merging) */
+  /** Current step (0 = tokenize, 1 = embeddings, 2 = pooling, 3 = placement, 4 = similarity, 5 = merging) */
   currentStep: number;
   /** Whether the chapter is currently active */
   isActive: boolean;
@@ -21,7 +21,7 @@ type Chapter2SceneProps = {
 // Number of candidate tweets to generate for vector space visualization
 const CANDIDATE_COUNT = 12;
 
-// Sample posts for Thunder and Phoenix streams (shown in step 2)
+// Sample posts for Thunder and Phoenix streams (shown in final step)
 const THUNDER_POSTS = [
   { id: 't1', preview: '@friend: Just shipped a new feature!' },
   { id: 't2', preview: '@colleague: Great article on AI safety' },
@@ -37,17 +37,21 @@ const PHOENIX_POSTS = [
 ];
 
 const STEP_NARRATION = [
-  'The Two-Tower model encodes your tweet into a 128-dimensional vector—your digital fingerprint of meaning...',
+  'Split your tweet into sub-token pieces so the model can digest each fragment...',
+  'Each token becomes a dense vector that captures its semantic meaning...',
+  'Pool token vectors into a single 128-dimensional tweet embedding...',
   'Candidates get placed one by one based on cosine proximity to your embedding...',
   'Your embedding floats in vector space. Posts with similar vectors gravitate toward you...',
   'Thunder brings posts from people you follow. Phoenix discovers content from strangers the AI thinks you\'ll like...'
 ];
 
 const STEP_LABELS = [
-  '2A: User Tower Encoding',
-  '2B: Placement Pass',
-  '2C: Similarity Map',
-  '2D: Merging Sources'
+  '2A: Tokenize Tweet',
+  '2B: Token Embeddings',
+  '2C: Pooling',
+  '2D: Placement Pass',
+  '2E: Similarity Map',
+  '2F: Merging Sources'
 ];
 
 const ENCODING_STAGES = [
@@ -65,11 +69,6 @@ const ENCODING_STAGES = [
     id: 'pool',
     label: 'Pooling',
     hint: 'Pool token vectors into one signal.'
-  },
-  {
-    id: 'final',
-    label: 'Final Vector',
-    hint: 'Produce the 128-D user embedding.'
   }
 ];
 
@@ -130,10 +129,13 @@ export default function Chapter2Scene({
     text: string;
   }>>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [encodingStage, setEncodingStage] = useState(0);
-  const encodingTimers = useRef<number[]>([]);
   const maxTokens = 12;
   const tokenCount = tokenizeSubTokens(tweetText || 'Hello world').length;
+  const showEncodingSteps = currentStep <= 2;
+  const encodingStage = Math.min(currentStep, 2);
+  const showEmbeddingHeatmap = currentStep === 1 || currentStep === 2;
+  const heatmapLabel =
+    currentStep === 1 ? 'TOKEN EMBEDDINGS' : 'POOLED TWEET EMBEDDING';
 
   // Generate tweet pool once on mount (embeddings pre-computed)
   useEffect(() => {
@@ -200,30 +202,6 @@ export default function Chapter2Scene({
     computeSimilarities();
   }, [tweetText, tweetPool]);
 
-  useEffect(() => {
-    encodingTimers.current.forEach((timer) => window.clearTimeout(timer));
-    encodingTimers.current = [];
-
-    if (!isActive || currentStep !== 0) {
-      setEncodingStage(0);
-      return;
-    }
-
-    setEncodingStage(0);
-    const delays = [0, 450, 1200, 2000];
-    delays.slice(1).forEach((delay, index) => {
-      const timer = window.setTimeout(() => {
-        setEncodingStage(index + 1);
-      }, delay);
-      encodingTimers.current.push(timer);
-    });
-
-    return () => {
-      encodingTimers.current.forEach((timer) => window.clearTimeout(timer));
-      encodingTimers.current = [];
-    };
-  }, [currentStep, isActive, tweetText]);
-
   const USER_POINT = { x: 50, y: 50, label: 'Your Tweet' };
 
   return (
@@ -252,9 +230,9 @@ export default function Chapter2Scene({
 
       {/* Step Content */}
       <div className={styles.content}>
-        {currentStep === 0 && (
+        {showEncodingSteps && (
           <div className={styles.step}>
-            <div className={styles.stepLabel}>{STEP_LABELS[0]}</div>
+            <div className={styles.stepLabel}>{STEP_LABELS[currentStep]}</div>
             {isLoading ? (
               <div className={styles.loading}>Computing embedding...</div>
             ) : (
@@ -286,12 +264,12 @@ export default function Chapter2Scene({
                       maxTokens={maxTokens}
                       stage={encodingStage}
                     />
-                    {encodingStage === 1 && (
+                    {showEmbeddingHeatmap && (
                       <EmbeddingHeatmap
                         embedding={userEmbedding}
-                        label="TWEET EMBEDDING"
+                        label={heatmapLabel}
                         isActive={isActive}
-                        tokenCount={tokenCount}
+                        tokenCount={currentStep === 2 ? tokenCount : 0}
                       />
                     )}
                   </div>
@@ -301,9 +279,9 @@ export default function Chapter2Scene({
           </div>
         )}
 
-        {currentStep === 1 && (
+        {currentStep === 3 && (
           <div className={styles.step} data-testid="placement-stage">
-            <div className={styles.stepLabel}>{STEP_LABELS[1]}</div>
+            <div className={styles.stepLabel}>{STEP_LABELS[currentStep]}</div>
             {isLoading ? (
               <div className={styles.loading}>Computing similarities...</div>
             ) : (
@@ -324,9 +302,9 @@ export default function Chapter2Scene({
           </div>
         )}
 
-        {currentStep === 2 && (
+        {currentStep === 4 && (
           <div className={styles.step}>
-            <div className={styles.stepLabel}>{STEP_LABELS[2]}</div>
+            <div className={styles.stepLabel}>{STEP_LABELS[currentStep]}</div>
             {isLoading ? (
               <div className={styles.loading}>Computing similarities...</div>
             ) : (
@@ -377,9 +355,9 @@ export default function Chapter2Scene({
           </div>
         )}
 
-        {currentStep === 3 && (
+        {currentStep === 5 && (
           <div className={styles.step}>
-            <div className={styles.stepLabel}>{STEP_LABELS[3]}</div>
+            <div className={styles.stepLabel}>{STEP_LABELS[currentStep]}</div>
             <CandidateStreams
               thunderPosts={THUNDER_POSTS}
               phoenixPosts={PHOENIX_POSTS}

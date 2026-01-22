@@ -125,25 +125,53 @@ export const CHAPTERS: Chapter[] = [
     subChapters: [
       {
         id: 'ch2-a',
-        labelSimple: 'Encoding',
-        labelTechnical: 'User Tower Encoding',
+        labelSimple: 'Tokenize',
+        labelTechnical: 'Tokenize Tweet',
         functions: [
           {
             id: 'ch2-a-1',
-            name: 'TwoTowerModel.user_tower()',
+            name: 'TwoTowerModel.tokenize()',
             file: 'phoenix/recsys_retrieval_model.py',
-            summary: 'Encoding user into embedding vector',
+            summary: 'Splitting the tweet into sub-token pieces',
             githubUrl: `${GITHUB_BASE}/phoenix/recsys_retrieval_model.py`
           }
         ]
       },
       {
         id: 'ch2-b',
+        labelSimple: 'Embeddings',
+        labelTechnical: 'Token Embeddings',
+        functions: [
+          {
+            id: 'ch2-b-1',
+            name: 'TwoTowerModel.embed_tokens()',
+            file: 'phoenix/recsys_retrieval_model.py',
+            summary: 'Embedding each token into latent vectors',
+            githubUrl: `${GITHUB_BASE}/phoenix/recsys_retrieval_model.py`
+          }
+        ]
+      },
+      {
+        id: 'ch2-c',
+        labelSimple: 'Pooling',
+        labelTechnical: 'Token Pooling',
+        functions: [
+          {
+            id: 'ch2-c-1',
+            name: 'TwoTowerModel.pool_tokens()',
+            file: 'phoenix/recsys_retrieval_model.py',
+            summary: 'Pooling token vectors into a single embedding',
+            githubUrl: `${GITHUB_BASE}/phoenix/recsys_retrieval_model.py`
+          }
+        ]
+      },
+      {
+        id: 'ch2-d',
         labelSimple: 'Placement',
         labelTechnical: 'Vector Placement',
         functions: [
           {
-            id: 'ch2-b-1',
+            id: 'ch2-d-1',
             name: 'approximate_nearest_neighbors()',
             file: 'phoenix/ann/approximate_nearest_neighbors.py',
             summary: 'Placing candidates around the user embedding',
@@ -152,12 +180,12 @@ export const CHAPTERS: Chapter[] = [
         ]
       },
       {
-        id: 'ch2-c',
+        id: 'ch2-e',
         labelSimple: 'Similarity',
         labelTechnical: 'Similarity Map',
         functions: [
           {
-            id: 'ch2-c-1',
+            id: 'ch2-e-1',
             name: 'EmbeddingSpace::project()',
             file: 'phoenix/ann/embedding_space.py',
             summary: 'Projecting candidates into a similarity map',
@@ -166,12 +194,12 @@ export const CHAPTERS: Chapter[] = [
         ]
       },
       {
-        id: 'ch2-d',
+        id: 'ch2-f',
         labelSimple: 'Merge',
         labelTechnical: 'Source Merge',
         functions: [
           {
-            id: 'ch2-d-1',
+            id: 'ch2-f-1',
             name: 'PhoenixCandidatePipeline::run()',
             file: 'home-mixer/pipeline/phoenix_candidate_pipeline.rs',
             summary: 'Merging Thunder and Phoenix candidates',

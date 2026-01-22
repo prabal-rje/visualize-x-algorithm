@@ -192,21 +192,57 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       </span>
     ));
 
+  // Navigation buttons component for reuse
+  const NavButtons = ({ className = '' }: { className?: string }) => (
+    <div className={`flex gap-2 ${className}`}>
+      <button
+        type="button"
+        className="crt-button px-3 py-2 text-lg sm:px-4 sm:text-xl"
+        onClick={handleStartOver}
+        aria-label="Start over"
+      >
+        ↺
+      </button>
+      <button
+        type="button"
+        className="crt-button px-3 py-2 text-lg sm:px-4 sm:text-xl"
+        onClick={handleStepBack}
+        disabled={atStart}
+        aria-label="Step back"
+      >
+        ⏮
+      </button>
+      <button
+        type="button"
+        className="crt-button px-3 py-2 text-lg sm:px-4 sm:text-xl"
+        onClick={handlePlayPause}
+        aria-label={isPlaying ? 'Pause' : 'Play'}
+      >
+        {isPlaying ? '⏸' : '▶'}
+      </button>
+      <button
+        type="button"
+        className="crt-button px-3 py-2 text-lg sm:px-4 sm:text-xl"
+        onClick={handleStepForward}
+        disabled={atEnd}
+        aria-label="Step forward"
+      >
+        ⏭
+      </button>
+    </div>
+  );
+
   return (
     <div
       className="grid gap-3 border-t border-crt-line/35 bg-crt-void/90 p-panel"
       data-testid="timeline"
       data-system="timeline"
     >
-      {functionStack.length > 0 && currentFunction && (
-        <div
-          className="grid gap-2 border border-crt-line/25 bg-crt-panel-deep/70 p-panel-sm max-sm:flex max-sm:items-center max-sm:justify-center max-sm:gap-0 max-sm:p-2"
-          data-testid="function-stack"
-          data-mode={stackVariant}
-        >
-          {/* Mobile: just file link */}
+      {/* Mobile: File link + Nav buttons stacked */}
+      <div className="flex flex-col gap-3 sm:hidden">
+        {currentFunction && (
           <a
-            className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.1em] text-crt-amber/90 transition hover:text-crt-ink sm:hidden"
+            className="inline-flex items-center justify-center gap-2 text-xs uppercase tracking-wider text-crt-amber/90 transition hover:text-crt-ink"
             href={`${sourceBaseUrl}${currentFunction.file}`}
             rel="noreferrer"
             target="_blank"
@@ -214,79 +250,58 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
             <span aria-hidden="true">📄</span>
             <span>{currentFunction.file}</span>
           </a>
+        )}
+        <NavButtons className="justify-center" />
+      </div>
 
-          {/* Desktop: full function stack */}
-          <div className="hidden sm:flex sm:items-baseline sm:justify-between sm:gap-2">
-            <span className="text-[10px] uppercase tracking-[0.2em] text-crt-ink/70">
-              FUNCTION STACK
-            </span>
-            <a
-              className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.12em] text-crt-amber/85 underline decoration-crt-amber/60 underline-offset-4 transition hover:text-crt-ink"
-              data-testid="function-file-link"
-              href={`${sourceBaseUrl}${currentFunction.file}`}
-              rel="noreferrer"
-              target="_blank"
-            >
-              <span aria-hidden="true">🔗</span>
-              <span>{currentFunction.file}</span>
-            </a>
-          </div>
-          <div className="hidden overflow-x-auto sm:block" data-mode={stackVariant}>
-            <div
-              className="flex w-max gap-6 data-[mode=stack]:flex-col data-[mode=stack]:gap-2"
-              data-mode={stackVariant}
-              data-testid="function-stack-track"
-            >
-              <div
-                className="flex items-center gap-4 whitespace-nowrap data-[mode=stack]:flex-col data-[mode=stack]:items-start data-[mode=stack]:gap-1"
-                data-mode={stackVariant}
-              >
-                {renderStackItems('primary')}
+      {/* Desktop/Tablet: Nav buttons left, Function slideshow right */}
+      <div className="hidden sm:flex sm:items-stretch sm:gap-4" data-testid="function-stack">
+        {/* Left: Nav buttons */}
+        <NavButtons className="shrink-0" />
+
+        {/* Right: Function slideshow */}
+        {functionStack.length > 0 && currentFunction && (
+          <div className="flex min-w-0 flex-1 items-center gap-4 border-l border-crt-line/25 pl-4">
+            {/* Current function display */}
+            <div className="min-w-0 flex-1">
+              <div className="flex items-baseline gap-3">
+                <span className="shrink-0 font-mono text-sm text-crt-cyan text-glow-cyan">
+                  {currentFunction.name}
+                </span>
+                {functionStack.length > 1 && (
+                  <span className="shrink-0 text-xs text-crt-ink/50">
+                    {position.functionIndex + 1} of {functionStack.length}
+                  </span>
+                )}
+                <a
+                  className="ml-auto shrink-0 text-xs text-crt-amber/70 transition hover:text-crt-amber"
+                  href={`${sourceBaseUrl}${currentFunction.file}`}
+                  rel="noreferrer"
+                  target="_blank"
+                  aria-label="View source"
+                >
+                  🔗
+                </a>
               </div>
+              <div className="mt-1 truncate text-xs text-crt-ink/60">
+                {currentFunction.summary}
+              </div>
+              {/* Function stack dots indicator */}
+              {functionStack.length > 1 && (
+                <div className="mt-2 flex gap-1.5">
+                  {functionStack.map((fn, idx) => (
+                    <span
+                      key={fn.id}
+                      className="h-1.5 w-1.5 rounded-full transition-colors data-[active=true]:bg-crt-cyan data-[active=false]:bg-crt-ink/30"
+                      data-active={idx === position.functionIndex}
+                      title={fn.name}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-          <div className="hidden text-[11px] text-crt-ink/70 sm:block">
-            {currentFunction.summary}
-          </div>
-        </div>
-      )}
-
-      {/* Navigation Controls */}
-      <div className="flex justify-center gap-2 max-sm:gap-1">
-        <button
-          type="button"
-          className="crt-button flex-1 px-4 py-2 text-[20px] max-sm:px-2 max-sm:py-2 max-sm:text-[18px]"
-          onClick={handleStartOver}
-          aria-label="Start over"
-        >
-          ↺
-        </button>
-        <button
-          type="button"
-          className="crt-button flex-1 px-4 py-2 text-[20px] max-sm:px-2 max-sm:py-2 max-sm:text-[18px]"
-          onClick={handleStepBack}
-          disabled={atStart}
-          aria-label="Step back"
-        >
-          ⏮
-        </button>
-        <button
-          type="button"
-          className="crt-button flex-1 px-4 py-2 text-[20px] max-sm:px-2 max-sm:py-2 max-sm:text-[18px]"
-          onClick={handlePlayPause}
-          aria-label={isPlaying ? 'Pause' : 'Play'}
-        >
-          {isPlaying ? '⏸' : '▶'}
-        </button>
-        <button
-          type="button"
-          className="crt-button flex-1 px-4 py-2 text-[20px] max-sm:px-2 max-sm:py-2 max-sm:text-[18px]"
-          onClick={handleStepForward}
-          disabled={atEnd}
-          aria-label="Step forward"
-        >
-          ⏭
-        </button>
+        )}
       </div>
 
       {/* Chapter Markers - hidden on mobile, use progress bar instead */}

@@ -255,7 +255,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       <div className="flex justify-center gap-2 max-sm:gap-1">
         <button
           type="button"
-          className="crt-button flex-1 px-4 py-2 text-[16px] max-sm:px-2 max-sm:py-1.5 max-sm:text-[12px]"
+          className="crt-button flex-1 px-4 py-2 text-[20px] max-sm:px-2 max-sm:py-2 max-sm:text-[18px]"
           onClick={handleStartOver}
           aria-label="Start over"
         >
@@ -263,7 +263,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
         </button>
         <button
           type="button"
-          className="crt-button flex-1 px-4 py-2 text-[16px] max-sm:px-2 max-sm:py-1.5 max-sm:text-[12px]"
+          className="crt-button flex-1 px-4 py-2 text-[20px] max-sm:px-2 max-sm:py-2 max-sm:text-[18px]"
           onClick={handleStepBack}
           disabled={atStart}
           aria-label="Step back"
@@ -272,7 +272,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
         </button>
         <button
           type="button"
-          className="crt-button flex-1 px-4 py-2 text-[16px] max-sm:px-2 max-sm:py-1.5 max-sm:text-[12px]"
+          className="crt-button flex-1 px-4 py-2 text-[20px] max-sm:px-2 max-sm:py-2 max-sm:text-[18px]"
           onClick={handlePlayPause}
           aria-label={isPlaying ? 'Pause' : 'Play'}
         >
@@ -280,7 +280,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
         </button>
         <button
           type="button"
-          className="crt-button flex-1 px-4 py-2 text-[16px] max-sm:px-2 max-sm:py-1.5 max-sm:text-[12px]"
+          className="crt-button flex-1 px-4 py-2 text-[20px] max-sm:px-2 max-sm:py-2 max-sm:text-[18px]"
           onClick={handleStepForward}
           disabled={atEnd}
           aria-label="Step forward"
@@ -316,9 +316,6 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
             );
           })}
         </div>
-        <span className="absolute right-2 top-[-14px] hidden text-[9px] uppercase tracking-[0.2em] text-crt-amber/70 max-lg:inline-flex max-xs:right-1 max-xs:top-[-12px] max-xs:text-[8px]" aria-hidden="true">
-          Swipe for more →
-        </span>
       </div>
 
       {/* Progress Indicator */}

@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import type { CRTConfig } from './crtConfig';
 import styles from '../../styles/crt-controls.module.css';
 import { useAudioStore } from '../../stores/audio';
@@ -24,6 +24,23 @@ export default function CRTControls({ config, onChange }: CRTControlsProps) {
   const audioMuted = useAudioStore((state) => state.muted);
   const toggleAudio = useAudioStore((state) => state.toggleMute);
 
+  // Keyboard shortcut: Ctrl+Shift+C to toggle CRT controls
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 'c') {
+        event.preventDefault();
+        setIsOpen((prev) => !prev);
+      }
+      // Also close on Escape
+      if (event.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
+
   const handleAudioToggle = () => {
     const wasMuted = useAudioStore.getState().muted;
     toggleAudio();
@@ -39,15 +56,16 @@ export default function CRTControls({ config, onChange }: CRTControlsProps) {
       data-open={isOpen}
       data-placement="control-band"
     >
+      {/* Hidden button - use Ctrl+Shift+C to toggle */}
       <button
-        className={styles.handle}
+        className={`${styles.handle} sr-only`}
         data-testid="crt-controls-handle"
         onClick={() => setIsOpen((prev) => !prev)}
         type="button"
         aria-expanded={isOpen}
         aria-controls="crt-controls-dialog"
-        aria-label="Toggle CRT controls panel"
-        title="Open CRT controls"
+        aria-label="Toggle CRT controls panel (Ctrl+Shift+C)"
+        title="Open CRT controls (Ctrl+Shift+C)"
       >
         <span className={styles.handleLabel}>CRT CTRL</span>
       </button>

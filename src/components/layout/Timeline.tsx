@@ -234,21 +234,21 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
 
   return (
     <div
-      className="grid gap-3 border-t border-crt-line/35 bg-crt-void/90 p-panel"
+      className="grid gap-3 border-t border-crt-line/35 bg-crt-void/70 p-panel"
       data-testid="timeline"
       data-system="timeline"
     >
-      {/* Mobile: File link + Nav buttons stacked */}
+      {/* Mobile: Function name as link + Nav buttons stacked */}
       <div className="flex flex-col gap-3 sm:hidden">
         {currentFunction && (
           <a
-            className="inline-flex items-center justify-center gap-2 text-xs uppercase tracking-wider text-crt-amber/90 transition hover:text-crt-ink"
+            className="inline-flex items-center justify-center gap-2 text-xs text-crt-cyan transition hover:text-crt-ink"
             href={`${sourceBaseUrl}${currentFunction.file}`}
             rel="noreferrer"
             target="_blank"
           >
-            <span aria-hidden="true">📄</span>
-            <span>{currentFunction.file}</span>
+            <span className="font-mono">{currentFunction.name}</span>
+            <span aria-hidden="true">🔗</span>
           </a>
         )}
         <NavButtons className="justify-center" />
@@ -278,18 +278,17 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
                   href={`${sourceBaseUrl}${currentFunction.file}`}
                   rel="noreferrer"
                   target="_blank"
-                  aria-label="View source"
                 >
-                  🔗
+                  📄 {currentFunction.file}
                 </a>
               </div>
               <div className="mt-1 truncate text-xs text-crt-ink/60">
                 {currentFunction.summary}
               </div>
-              {/* Function stack dots indicator */}
-              {functionStack.length > 1 && (
-                <div className="mt-2 flex gap-1.5">
-                  {functionStack.map((fn, idx) => (
+              {/* Function stack dots indicator - fixed height to prevent layout shift */}
+              <div className="mt-2 flex h-1.5 gap-1.5">
+                {functionStack.length > 1 &&
+                  functionStack.map((fn, idx) => (
                     <span
                       key={fn.id}
                       className="h-1.5 w-1.5 rounded-full transition-colors data-[active=true]:bg-crt-cyan data-[active=false]:bg-crt-ink/30"
@@ -297,8 +296,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
                       title={fn.name}
                     />
                   ))}
-                </div>
-              )}
+              </div>
             </div>
           </div>
         )}

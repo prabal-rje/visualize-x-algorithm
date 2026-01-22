@@ -175,7 +175,7 @@ function App() {
           className="relative grid min-h-0 items-stretch gap-shell grid-cols-1"
         >
           <section
-            className="relative min-h-0 h-full overflow-x-hidden overflow-y-auto rounded-panel border border-transparent bg-crt-void/90 p-panel text-crt-ink shadow-[inset_0_0_40px_rgba(0,20,0,0.35)]"
+            className="relative min-h-0 h-full overflow-x-hidden overflow-y-auto rounded-panel border border-transparent bg-crt-void/70 p-panel text-crt-ink shadow-[inset_0_0_40px_rgba(0,20,0,0.35)]"
             data-testid="chapter-canvas"
             data-proportion="fixed"
             data-viewport-fit="true"

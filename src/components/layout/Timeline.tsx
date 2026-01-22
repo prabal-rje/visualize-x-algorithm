@@ -143,8 +143,6 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
     }
   }, [dispatch, isPlaying]);
 
-  const playLabel = isPlaying ? 'PAUSE' : 'PLAY';
-  const playIcon = isPlaying ? '||' : '>';
 
   const handleProgressClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -246,52 +244,40 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       )}
 
       {/* Navigation Controls */}
-      <div className="flex justify-center gap-2 max-md:flex-wrap max-sm:flex-col max-sm:items-stretch">
+      <div className="flex justify-center gap-2">
         <button
           type="button"
-          className="crt-button px-4 py-3 text-[11px] tracking-[0.12em] max-md:px-3 max-md:py-2 max-md:text-[10px] max-md:tracking-[0.08em] max-xs:px-2 max-xs:py-2 max-xs:text-[9px] max-xs:tracking-[0.04em]"
+          className="crt-button flex-1 px-4 py-3 text-[16px] max-sm:px-3 max-sm:py-2 max-sm:text-[14px]"
           onClick={handleStartOver}
           aria-label="Start over"
         >
-          <span className="hidden text-[12px] tracking-[0.08em]" aria-hidden="true">
-            RST
-          </span>
-          <span>START OVER</span>
+          ↺
         </button>
         <button
           type="button"
-          className="crt-button px-4 py-3 text-[11px] tracking-[0.12em] max-md:px-3 max-md:py-2 max-md:text-[10px] max-md:tracking-[0.08em] max-xs:px-2 max-xs:py-2 max-xs:text-[9px] max-xs:tracking-[0.04em]"
+          className="crt-button flex-1 px-4 py-3 text-[16px] max-sm:px-3 max-sm:py-2 max-sm:text-[14px]"
           onClick={handleStepBack}
           disabled={atStart}
           aria-label="Step back"
         >
-          <span className="hidden text-[12px] tracking-[0.08em]" aria-hidden="true">
-            &lt;&lt;
-          </span>
-          <span>&lt;&lt; BACK</span>
+          ⏮
         </button>
         <button
           type="button"
-          className="crt-button px-4 py-3 text-[11px] tracking-[0.12em] max-md:px-3 max-md:py-2 max-md:text-[10px] max-md:tracking-[0.08em] max-xs:px-2 max-xs:py-2 max-xs:text-[9px] max-xs:tracking-[0.04em]"
+          className="crt-button flex-1 px-4 py-3 text-[16px] max-sm:px-3 max-sm:py-2 max-sm:text-[14px]"
           onClick={handlePlayPause}
           aria-label={isPlaying ? 'Pause' : 'Play'}
         >
-          <span className="hidden text-[12px] tracking-[0.08em]" aria-hidden="true">
-            {playIcon}
-          </span>
-          <span>{playLabel}</span>
+          {isPlaying ? '⏸' : '▶'}
         </button>
         <button
           type="button"
-          className="crt-button px-4 py-3 text-[11px] tracking-[0.12em] max-md:px-3 max-md:py-2 max-md:text-[10px] max-md:tracking-[0.08em] max-xs:px-2 max-xs:py-2 max-xs:text-[9px] max-xs:tracking-[0.04em]"
+          className="crt-button flex-1 px-4 py-3 text-[16px] max-sm:px-3 max-sm:py-2 max-sm:text-[14px]"
           onClick={handleStepForward}
           disabled={atEnd}
           aria-label="Step forward"
         >
-          <span className="hidden text-[12px] tracking-[0.08em]" aria-hidden="true">
-            &gt;&gt;
-          </span>
-          <span>NEXT &gt;&gt;</span>
+          ⏭
         </button>
       </div>
 

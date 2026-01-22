@@ -244,10 +244,10 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       )}
 
       {/* Navigation Controls */}
-      <div className="flex justify-center gap-2">
+      <div className="flex justify-center gap-2 max-sm:gap-1">
         <button
           type="button"
-          className="crt-button flex-1 px-4 py-3 text-[16px] max-sm:px-3 max-sm:py-2 max-sm:text-[14px]"
+          className="crt-button flex-1 px-4 py-2 text-[16px] max-sm:px-2 max-sm:py-1.5 max-sm:text-[12px]"
           onClick={handleStartOver}
           aria-label="Start over"
         >
@@ -255,7 +255,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
         </button>
         <button
           type="button"
-          className="crt-button flex-1 px-4 py-3 text-[16px] max-sm:px-3 max-sm:py-2 max-sm:text-[14px]"
+          className="crt-button flex-1 px-4 py-2 text-[16px] max-sm:px-2 max-sm:py-1.5 max-sm:text-[12px]"
           onClick={handleStepBack}
           disabled={atStart}
           aria-label="Step back"
@@ -264,7 +264,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
         </button>
         <button
           type="button"
-          className="crt-button flex-1 px-4 py-3 text-[16px] max-sm:px-3 max-sm:py-2 max-sm:text-[14px]"
+          className="crt-button flex-1 px-4 py-2 text-[16px] max-sm:px-2 max-sm:py-1.5 max-sm:text-[12px]"
           onClick={handlePlayPause}
           aria-label={isPlaying ? 'Pause' : 'Play'}
         >
@@ -272,7 +272,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
         </button>
         <button
           type="button"
-          className="crt-button flex-1 px-4 py-3 text-[16px] max-sm:px-3 max-sm:py-2 max-sm:text-[14px]"
+          className="crt-button flex-1 px-4 py-2 text-[16px] max-sm:px-2 max-sm:py-1.5 max-sm:text-[12px]"
           onClick={handleStepForward}
           disabled={atEnd}
           aria-label="Step forward"
@@ -281,8 +281,8 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
         </button>
       </div>
 
-      {/* Chapter Markers */}
-      <div className="relative max-lg:before:absolute max-lg:before:inset-y-0 max-lg:before:left-0 max-lg:before:w-8 max-lg:before:bg-[linear-gradient(90deg,rgba(10,10,10,0.9)_0%,rgba(10,10,10,0)_100%)] max-lg:before:pointer-events-none max-lg:after:absolute max-lg:after:inset-y-0 max-lg:after:right-0 max-lg:after:w-8 max-lg:after:bg-[linear-gradient(270deg,rgba(10,10,10,0.9)_0%,rgba(10,10,10,0)_100%)] max-lg:after:pointer-events-none">
+      {/* Chapter Markers - hidden on mobile, use progress bar instead */}
+      <div className="relative max-sm:hidden max-lg:before:absolute max-lg:before:inset-y-0 max-lg:before:left-0 max-lg:before:w-8 max-lg:before:bg-[linear-gradient(90deg,rgba(10,10,10,0.9)_0%,rgba(10,10,10,0)_100%)] max-lg:before:pointer-events-none max-lg:after:absolute max-lg:after:inset-y-0 max-lg:after:right-0 max-lg:after:w-8 max-lg:after:bg-[linear-gradient(270deg,rgba(10,10,10,0.9)_0%,rgba(10,10,10,0)_100%)] max-lg:after:pointer-events-none">
         <div className="flex gap-1 overflow-x-auto snap-x snap-mandatory">
           {CHAPTERS.map((chapter, index) => {
             const isActive = index === position.chapterIndex;

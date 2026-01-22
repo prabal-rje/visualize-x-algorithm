@@ -10,6 +10,21 @@
   position: relative;
 }
 
+@media (max-width: 560px) {
+  .panel {
+    padding: 0 4px;
+    gap: 16px;
+  }
+
+  .section {
+    gap: 8px;
+  }
+
+  .sectionTitle {
+    text-align: center;
+  }
+}
+
 .toast {
   position: absolute;
   top: 12px;
@@ -84,6 +99,8 @@
 .section {
   display: grid;
   gap: 10px;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .sectionTitle {
@@ -166,6 +183,8 @@
   gap: 10px;
   grid-template-columns: auto 1fr;
   align-items: center;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .shuffleButton {
@@ -198,6 +217,8 @@
 }
 
 .tweetInput {
+  width: 100%;
+  box-sizing: border-box;
   min-height: 90px;
   background: rgba(0, 0, 0, 0.7);
   border: 1px solid rgba(51, 255, 51, 0.35);
@@ -257,10 +278,13 @@
   justify-content: flex-end;
   gap: 12px;
   flex-wrap: wrap;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .stepButton,
 .stepButtonGhost {
+  box-sizing: border-box;
   border: 1px solid var(--phosphor-amber);
   color: var(--phosphor-amber);
   background: transparent;
@@ -283,6 +307,7 @@
 }
 
 .beginButton {
+  box-sizing: border-box;
   border: 1px solid var(--phosphor-green);
   background: rgba(0, 20, 0, 0.6);
   color: var(--phosphor-green);
@@ -323,7 +348,7 @@
 
   .audienceChip,
   .audienceChipActive {
-    min-height: 44px;
+    padding: 10px 12px;
   }
 }
 
@@ -340,13 +365,84 @@
     letter-spacing: 0.08em;
   }
 
+  .personaCarouselWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
   .personaGrid {
-    grid-template-columns: 1fr;
+    display: flex;
+    gap: 10px;
+    overflow: hidden;
+    flex: 1;
+    padding: 4px 0;
   }
 
   .persona,
   .personaActive {
-    min-height: auto;
+    min-height: 0;
+    min-width: 0;
+    width: 100%;
+    flex-shrink: 0;
+    padding: 12px 14px;
+    gap: 6px;
+  }
+
+  .personaIcon {
+    min-width: 0;
+    min-height: 0;
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+  }
+
+  .personaName {
+    font-size: 14px;
+  }
+
+  .personaSubtitleLarge {
+    font-size: 12px;
+    min-height: 0;
+    -webkit-line-clamp: 1;
+  }
+
+  .carouselArrow {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--phosphor-green);
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s, text-shadow 0.2s;
+  }
+
+  .carouselArrow:hover {
+    opacity: 1;
+    text-shadow: 0 0 10px var(--phosphor-green);
+  }
+
+  .carouselArrowLeft {
+    /* left arrow */
+  }
+
+  .carouselArrowRight {
+    /* right arrow */
+  }
+
+  .carouselCounter {
+    text-align: center;
+    font-size: 11px;
+    color: rgba(51, 255, 51, 0.6);
+    letter-spacing: 0.1em;
+    margin-top: 4px;
   }
 
   .audienceList {
@@ -363,7 +459,7 @@
   .beginButton {
     width: 100%;
     text-align: center;
-    min-height: 44px;
+    padding: 10px 12px;
   }
 
   .toast {
@@ -400,10 +496,10 @@
   }
 
   .personaIcon {
-    min-width: 26px;
-    min-height: 26px;
-    font-size: 10px;
-    letter-spacing: 0.08em;
+    width: 22px;
+    height: 22px;
+    font-size: 9px;
+    letter-spacing: 0.06em;
   }
 
   .personaHeader {

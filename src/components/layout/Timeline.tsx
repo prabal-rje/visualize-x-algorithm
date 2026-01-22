@@ -1,8 +1,8 @@
 import { useEffect, useCallback } from 'react';
+import { ExternalLink, FileCode } from 'lucide-react';
 import { CHAPTERS, getFunctionAtPosition } from '../../data/chapters';
 import type { SimulationPosition, SimulationAction, SimulationStatus } from '../../hooks/useSimulationState';
 import { useConfigStore } from '../../stores/config';
-import { useViewport } from '../../hooks/useViewport';
 
 type TimelineProps = {
   position: SimulationPosition;
@@ -99,7 +99,6 @@ function progressToPosition(progressPercent: number): SimulationPosition {
 
 export default function Timeline({ position, status, dispatch }: TimelineProps) {
   const expertMode = useConfigStore((state) => state.expertMode);
-  const { isMobile } = useViewport();
   const sourceBaseUrl = 'https://github.com/xai-org/x-algorithm/blob/main/';
   const currentFunction = getFunctionAtPosition(
     position.chapterIndex,
@@ -113,7 +112,6 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
   const atEnd = isAtEnd(position) || status === 'complete';
   const progress = calculateProgress(position);
   const isPlaying = status === 'running';
-  const stackVariant = isMobile ? 'stack' : 'marquee';
 
   const handleStepBack = useCallback(() => {
     if (!atStart) {
@@ -180,18 +178,6 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [handlePlayPause, handleStepForward, handleStepBack]);
 
-  const renderStackItems = (keyPrefix: string) =>
-    functionStack.map((fn, index) => (
-      <span
-        key={`${keyPrefix}-${fn.id}`}
-        className="relative pr-4 text-[12px] text-crt-ink/80 text-glow-green after:absolute after:right-[2px] after:text-crt-ink/45 after:content-['\\2192'] last:after:content-[''] data-[active=true]:text-crt-cyan data-[active=true]:text-glow-cyan data-[mode=stack]:pr-0 data-[mode=stack]:after:content-['']"
-        data-active={index === position.functionIndex}
-        data-mode={stackVariant}
-      >
-        {fn.name}
-      </span>
-    ));
-
   // Navigation buttons component for reuse - square buttons
   const NavButtons = ({ className = '' }: { className?: string }) => (
     <div className={`flex gap-2 ${className}`}>
@@ -234,7 +220,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
 
   return (
     <div
-      className="grid gap-3 border-t border-crt-line/35 bg-crt-void/70 p-panel max-sm:px-0"
+      className="grid gap-3 border-t border-crt-line/35 bg-crt-void/70 p-panel max-sm:border-t-0 max-sm:px-3"
       data-testid="timeline"
       data-system="timeline"
     >
@@ -248,7 +234,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
             target="_blank"
           >
             <span className="font-mono">{currentFunction.name}</span>
-            <span aria-hidden="true">🔗</span>
+            <ExternalLink size={12} aria-hidden="true" />
           </a>
         )}
         <NavButtons className="justify-center" />
@@ -274,12 +260,13 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
                   </span>
                 )}
                 <a
-                  className="ml-auto shrink-0 text-xs text-crt-amber/70 transition hover:text-crt-amber"
+                  className="ml-auto shrink-0 inline-flex items-center gap-1.5 text-xs text-crt-amber/70 transition hover:text-crt-amber"
                   href={`${sourceBaseUrl}${currentFunction.file}`}
                   rel="noreferrer"
                   target="_blank"
                 >
-                  📄 {currentFunction.file}
+                  <FileCode size={14} aria-hidden="true" />
+                  <span>{currentFunction.file}</span>
                 </a>
               </div>
               <div className="mt-1 truncate text-xs text-crt-ink/60">

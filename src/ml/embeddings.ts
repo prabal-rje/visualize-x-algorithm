@@ -25,6 +25,9 @@ type WorkerRequest =
       options: { pooling: PoolingType; normalize: boolean };
     };
 
+// Distributive Omit for union types (standard Omit doesn't distribute over unions)
+type DistributiveOmit<T, K extends keyof T> = T extends unknown ? Omit<T, K> : never;
+
 type WorkerResponse =
   | { id: string; type: 'init' }
   | { id: string; type: 'embed'; data: number[] }
@@ -89,7 +92,7 @@ function ensureWorker(): Worker {
 }
 
 function sendWorkerRequest<T extends WorkerResponse>(
-  message: Omit<WorkerRequest, 'id'>
+  message: DistributiveOmit<WorkerRequest, 'id'>
 ): Promise<T> {
   const workerInstance = ensureWorker();
   const id = `req-${requestCounter++}`;

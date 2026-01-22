@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import styles from '../../styles/scoring-context.module.css';
 
 type ContextToken = {
@@ -16,7 +17,7 @@ export default function ScoringContextTokens({
   tokens,
   isActive = true
 }: ScoringContextTokensProps) {
-  const iconMap: Record<string, JSX.Element> = {
+  const iconMap: Record<string, ReactNode> = {
     liked: (
       <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
         <path

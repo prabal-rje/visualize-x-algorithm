@@ -1,5 +1,5 @@
 .container {
-  height: 24px;
+  height: 44px;
   overflow: hidden;
   background: var(--crt-dark);
   border-bottom: 1px solid var(--phosphor-green);
@@ -53,15 +53,15 @@
 
 /* Ensure links have adequate touch targets */
 .link {
-  min-height: 24px;
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
-  padding: 0 4px;
+  padding: 10px 8px;
 }
 
 @media (max-width: 400px) {
   .container {
-    height: 22px;
+    height: 40px;
   }
 
   .trackGroup {

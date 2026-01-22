@@ -116,6 +116,13 @@
   box-shadow: 0 0 14px rgba(255, 176, 0, 0.4);
 }
 
+.persona:hover {
+  border-color: rgba(51, 255, 51, 0.6);
+  box-shadow: 0 0 12px rgba(51, 255, 51, 0.3);
+  transform: translateY(-2px);
+  cursor: pointer;
+}
+
 .personaName {
   font-size: 16px;
 }
@@ -133,11 +140,11 @@
   min-width: 30px;
   min-height: 30px;
   border: 1px solid rgba(51, 255, 51, 0.45);
-  color: var(--phosphor-amber, #ffb000);
+  color: rgba(51, 255, 51, 0.85);
   font-size: 12px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  box-shadow: inset 0 0 10px rgba(255, 176, 0, 0.15);
+  box-shadow: inset 0 0 10px rgba(51, 255, 51, 0.15);
 }
 
 .personaSubtitle {
@@ -317,6 +324,13 @@
   .audienceChip,
   .audienceChipActive {
     min-height: 44px;
+  }
+}
+
+/* Tablet: 2-column grid for better balance */
+@media (min-width: 601px) and (max-width: 959px) {
+  .personaGrid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

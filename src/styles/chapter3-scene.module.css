@@ -14,7 +14,7 @@
   display: block;
   font-family: var(--font-mono);
   font-size: 12px;
-  color: rgba(51, 255, 51, 0.6);
+  color: rgba(51, 255, 51, 0.75);
   letter-spacing: 0.2em;
   margin-bottom: 8px;
 }
@@ -217,10 +217,7 @@
   .narration {
     padding: 8px 16px;
     font-size: 12px;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
+    line-height: 1.5;
   }
 
   .stepLabel {

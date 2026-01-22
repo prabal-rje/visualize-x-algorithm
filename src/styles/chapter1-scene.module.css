@@ -69,6 +69,102 @@
   gap: 16px;
 }
 
+.mobileContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mobileStep {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mobileVizFrame {
+  align-self: center;
+  width: 100%;
+  max-width: 320px;
+  padding: 8px;
+  border: 1px solid rgba(51, 255, 51, 0.25);
+  background: rgba(0, 12, 0, 0.6);
+}
+
+.mobileGrid {
+  display: grid;
+  gap: 12px;
+}
+
+.mobileCard {
+  border: 1px solid rgba(51, 255, 51, 0.25);
+  background: rgba(0, 12, 0, 0.65);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobileCardTitle {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: rgba(51, 255, 51, 0.8);
+  text-transform: uppercase;
+}
+
+.mobileList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mobileListItem {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--phosphor-green);
+}
+
+.mobileListLabel {
+  text-transform: capitalize;
+}
+
+.mobileListMeta {
+  color: rgba(51, 255, 51, 0.7);
+}
+
+.mobileFeatures {
+  display: grid;
+  gap: 6px;
+}
+
+.mobileFeatureRow {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--phosphor-green);
+}
+
+.mobileFeatureLabel {
+  color: rgba(51, 255, 51, 0.7);
+}
+
+.mobileFeatureValue {
+  color: var(--phosphor-green);
+}
+
+.mobileNote {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-align: center;
+  color: rgba(51, 255, 51, 0.75);
+}
+
 .stepLabel {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -150,5 +246,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .mobileVizFrame {
+    padding: 6px;
+  }
+
+  .mobileCard {
+    padding: 10px;
   }
 }

@@ -223,6 +223,7 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
       score: Math.max(0.06, userScore - 0.18)
     }
   ];
+  const mobileCandidates = [...topCandidates].sort((a, b) => b.score - a.score);
 
   return (
     <div
@@ -246,140 +247,222 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
         />
       </div>
 
-      <div className={styles.content}>
-        <div className={styles.stepLabel}>
-          {STEP_LABELS[currentStep] || STEP_LABELS[0]}
-        </div>
+      {isMobile ? (
+        <div className={styles.mobileContent}>
+          <div className={styles.stepLabel}>
+            {STEP_LABELS[currentStep] || STEP_LABELS[0]}
+          </div>
 
-        {currentStep === 0 && (
-          <TopKSelector candidates={topCandidates} topK={3} isActive={isActive} />
-        )}
-
-        {currentStep === 1 && (
-          <div className={styles.reachPanel} data-testid="audience-reach">
-            <div className={styles.reachHeader}>REACH FORECAST</div>
-            <div className={styles.reachTotal}>
-              Total Impressions: {impressions.toLocaleString()}
-            </div>
-            <div className={styles.reachRows}>
-              {topReachRows.map((row) => (
-                <div key={row.id} className={styles.reachRow}>
-                  <span className={styles.reachLabel}>{row.label}</span>
-                  <div className={styles.reachBar}>
-                    <div
-                      className={styles.reachFill}
-                      style={{ width: `${row.share}%` }}
-                    />
+          {currentStep === 0 && (
+            <div className={styles.mobilePanel}>
+              {mobileCandidates.map((candidate, index) => (
+                <div
+                  key={candidate.id}
+                  className={styles.mobileRow}
+                  data-highlight={candidate.isUser ? 'true' : 'false'}
+                >
+                  <span className={styles.mobileRank}>{index + 1}</span>
+                  <div className={styles.mobileRowContent}>
+                    <span className={styles.mobileLabel}>{candidate.label}</span>
+                    <span className={styles.mobilePreview}>{candidate.preview}</span>
                   </div>
-                  <span className={styles.reachValue}>{row.count}</span>
+                  <span className={styles.mobileValue}>{candidate.score.toFixed(2)}</span>
                 </div>
               ))}
             </div>
-            <div className={styles.reachNote}>
-              Estimated from embedding similarity + audience mix.
-            </div>
-          </div>
-        )}
+          )}
 
-        {currentStep === 2 && (
-          <div className={styles.reactionPanel} data-testid="reaction-burst">
-            <div className={styles.reactionHeader}>AUDIENCE REACTIONS</div>
-            <div className={styles.avatarGrid}>
-              {avatarItems.map((avatar, index) => (
-                <div
-                  key={avatar.id}
-                  className={styles.avatar}
-                  data-reaction={avatar.reaction}
-                  style={{ '--index': index } as CSSProperties}
-                  aria-label={`Audience member ${avatar.label}`}
-                >
-                  <Avatar
-                    size={34}
-                    name={avatar.label}
-                    variant="beam"
-                    colors={AVATAR_COLORS}
-                    className={styles.avatarSvg}
-                  />
-                  <span
-                    className={styles.avatarBurst}
-                    data-reaction={avatar.reaction}
-                    style={{ animationDelay: `${index * 0.18}s` }}
-                    aria-hidden="true"
-                  >
-                    {REACTION_ICONS[avatar.reaction]}
+          {currentStep === 1 && (
+            <div className={styles.mobilePanel} data-testid="audience-reach">
+              <div className={styles.mobilePanelHeader}>REACH FORECAST</div>
+              <div className={styles.mobileSummaryRow}>
+                <span>Total Impressions</span>
+                <span>{impressions.toLocaleString()}</span>
+              </div>
+              {topReachRows.map((row) => (
+                <div key={row.id} className={styles.mobileSummaryRow}>
+                  <span>{row.label}</span>
+                  <span>{row.share.toFixed(0)}%</span>
+                </div>
+              ))}
+              <div className={styles.mobileNote}>
+                Estimated from embedding similarity + audience mix.
+              </div>
+            </div>
+          )}
+
+          {currentStep === 2 && (
+            <div className={styles.mobilePanel} data-testid="reaction-burst">
+              <div className={styles.mobilePanelHeader}>AUDIENCE REACTIONS</div>
+              {stats.map((stat) => (
+                <div key={stat.id} className={styles.mobileSummaryRow}>
+                  <span>{stat.label}</span>
+                  <span>
+                    {stat.actual.toLocaleString()} / {stat.predicted.toLocaleString()}
                   </span>
                 </div>
               ))}
+              <div className={styles.mobileNote}>
+                Predicted vs actual burst counts.
+              </div>
             </div>
-            {bursts.map((burst) => (
-              <span
-                key={burst.id}
-                className={styles.burst}
-                data-reaction={burst.reaction}
-                style={{
-                  left: burst.left,
-                  top: burst.top,
-                  animationDelay: `${burst.delay}s`
-                }}
-                aria-hidden="true"
-              >
-                {REACTION_ICONS[burst.reaction]}
-              </span>
-            ))}
-            <div className={styles.reactionNote}>
-              Burst timing estimated from embedding similarity + persona fit.
-            </div>
-          </div>
-        )}
+          )}
 
-        {currentStep === 3 && (
-          <div className={styles.reportGrid}>
-            <div
-              className={styles.summaryPanel}
-              data-testid="delivery-summary"
-              data-active={isActive}
-            >
-              <div className={styles.summaryHeader}>
-                <span className={styles.summaryTitle}>PERFORMANCE SUMMARY</span>
-                <span
-                  className={styles.summaryBadge}
-                  data-tier={performanceKey}
-                >
-                  {performanceTier}
-                </span>
-              </div>
-              <div
-                className={styles.summaryRow}
-                data-reveal="true"
-                style={{ '--delay': '0.08s' } as CSSProperties}
-              >
+          {currentStep === 3 && (
+            <div className={styles.mobilePanel}>
+              <div className={styles.mobilePanelHeader}>PERFORMANCE SUMMARY</div>
+              <div className={styles.mobileSummaryRow}>
                 <span>Reach</span>
-                <span>{impressions.toLocaleString()} impressions</span>
+                <span>{impressions.toLocaleString()}</span>
               </div>
-              <div
-                className={styles.summaryRow}
-                data-reveal="true"
-                style={{ '--delay': '0.16s' } as CSSProperties}
-              >
+              <div className={styles.mobileSummaryRow}>
                 <span>Alignment</span>
                 <span>{alignmentLabel}</span>
               </div>
-              <div
-                className={styles.summaryNote}
-                data-reveal="true"
-                style={{ '--delay': '0.24s' } as CSSProperties}
-              >
-                {alignmentNote}
+              <div className={styles.mobileSummaryRow}>
+                <span>Tier</span>
+                <span>{performanceTier}</span>
+              </div>
+              <div className={styles.mobileNote}>{alignmentNote}</div>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className={styles.content}>
+          <div className={styles.stepLabel}>
+            {STEP_LABELS[currentStep] || STEP_LABELS[0]}
+          </div>
+
+          {currentStep === 0 && (
+            <TopKSelector candidates={topCandidates} topK={3} isActive={isActive} />
+          )}
+
+          {currentStep === 1 && (
+            <div className={styles.reachPanel} data-testid="audience-reach">
+              <div className={styles.reachHeader}>REACH FORECAST</div>
+              <div className={styles.reachTotal}>
+                Total Impressions: {impressions.toLocaleString()}
+              </div>
+              <div className={styles.reachRows}>
+                {topReachRows.map((row) => (
+                  <div key={row.id} className={styles.reachRow}>
+                    <span className={styles.reachLabel}>{row.label}</span>
+                    <div className={styles.reachBar}>
+                      <div
+                        className={styles.reachFill}
+                        style={{ width: `${row.share}%` }}
+                      />
+                    </div>
+                    <span className={styles.reachValue}>{row.count}</span>
+                  </div>
+                ))}
+              </div>
+              <div className={styles.reachNote}>
+                Estimated from embedding similarity + audience mix.
               </div>
             </div>
-            <EngagementCascade
-              stats={stats}
-              isActive={isActive}
-              nodeCount={isMobile ? 10 : 14}
-            />
-          </div>
-        )}
-      </div>
+          )}
+
+          {currentStep === 2 && (
+            <div className={styles.reactionPanel} data-testid="reaction-burst">
+              <div className={styles.reactionHeader}>AUDIENCE REACTIONS</div>
+              <div className={styles.avatarGrid}>
+                {avatarItems.map((avatar, index) => (
+                  <div
+                    key={avatar.id}
+                    className={styles.avatar}
+                    data-reaction={avatar.reaction}
+                    style={{ '--index': index } as CSSProperties}
+                    aria-label={`Audience member ${avatar.label}`}
+                  >
+                    <Avatar
+                      size={34}
+                      name={avatar.label}
+                      variant="beam"
+                      colors={AVATAR_COLORS}
+                      className={styles.avatarSvg}
+                    />
+                    <span
+                      className={styles.avatarBurst}
+                      data-reaction={avatar.reaction}
+                      style={{ animationDelay: `${index * 0.18}s` }}
+                      aria-hidden="true"
+                    >
+                      {REACTION_ICONS[avatar.reaction]}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              {bursts.map((burst) => (
+                <span
+                  key={burst.id}
+                  className={styles.burst}
+                  data-reaction={burst.reaction}
+                  style={{
+                    left: burst.left,
+                    top: burst.top,
+                    animationDelay: `${burst.delay}s`
+                  }}
+                  aria-hidden="true"
+                >
+                  {REACTION_ICONS[burst.reaction]}
+                </span>
+              ))}
+              <div className={styles.reactionNote}>
+                Burst timing estimated from embedding similarity + persona fit.
+              </div>
+            </div>
+          )}
+
+          {currentStep === 3 && (
+            <div className={styles.reportGrid}>
+              <div
+                className={styles.summaryPanel}
+                data-testid="delivery-summary"
+                data-active={isActive}
+              >
+                <div className={styles.summaryHeader}>
+                  <span className={styles.summaryTitle}>PERFORMANCE SUMMARY</span>
+                  <span
+                    className={styles.summaryBadge}
+                    data-tier={performanceKey}
+                  >
+                    {performanceTier}
+                  </span>
+                </div>
+                <div
+                  className={styles.summaryRow}
+                  data-reveal="true"
+                  style={{ '--delay': '0.08s' } as CSSProperties}
+                >
+                  <span>Reach</span>
+                  <span>{impressions.toLocaleString()} impressions</span>
+                </div>
+                <div
+                  className={styles.summaryRow}
+                  data-reveal="true"
+                  style={{ '--delay': '0.16s' } as CSSProperties}
+                >
+                  <span>Alignment</span>
+                  <span>{alignmentLabel}</span>
+                </div>
+                <div
+                  className={styles.summaryNote}
+                  data-reveal="true"
+                  style={{ '--delay': '0.24s' } as CSSProperties}
+                >
+                  {alignmentNote}
+                </div>
+              </div>
+              <EngagementCascade
+                stats={stats}
+                isActive={isActive}
+                nodeCount={isMobile ? 10 : 14}
+              />
+            </div>
+          )}
+        </div>
+      )}
 
     </div>
   );

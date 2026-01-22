@@ -62,6 +62,72 @@
   gap: 12px;
 }
 
+.mobileContent {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+}
+
+.mobileGateList {
+  width: min(560px, 100%);
+  display: grid;
+  gap: 10px;
+}
+
+.mobileGateCard {
+  border: 1px solid rgba(51, 255, 51, 0.25);
+  background: rgba(0, 12, 0, 0.65);
+  padding: 10px;
+  display: grid;
+  gap: 6px;
+  font-family: var(--font-mono);
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mobileGateCard[data-active='true'] {
+  border-color: rgba(51, 255, 51, 0.6);
+  box-shadow: 0 0 12px rgba(51, 255, 51, 0.25);
+}
+
+.mobileGateHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: rgba(51, 255, 51, 0.9);
+  letter-spacing: 0.08em;
+}
+
+.mobileGateMeta {
+  font-size: 10px;
+  color: rgba(51, 255, 51, 0.6);
+}
+
+.mobileGateCounts {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: rgba(51, 255, 51, 0.75);
+}
+
+.mobileGateSamples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mobileGateSample {
+  padding: 2px 6px;
+  border: 1px solid rgba(51, 255, 51, 0.2);
+  font-size: 10px;
+  color: rgba(51, 255, 51, 0.8);
+  background: rgba(0, 20, 0, 0.5);
+}
+
+.mobileGateSample[data-status='fail'] {
+  border-color: rgba(255, 92, 92, 0.6);
+  color: rgba(255, 138, 138, 0.9);
+}
+
 .stepLabel {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -225,6 +291,15 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .calloutHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .mobileGateHeader {
+    font-size: 10px;
   }
 }
 

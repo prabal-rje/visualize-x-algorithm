@@ -40,6 +40,8 @@ export default function BIOSLoading() {
   }, [startTime]);
 
   const progressPercent = Math.round(progress * 100);
+  const progressBlocks = Math.round(progressPercent / 10);
+  const progressBar = `${'█'.repeat(progressBlocks)}${'░'.repeat(10 - progressBlocks)}`;
 
   const getStepStatus = (index: number) => {
     const stepProgress = (index + 1) / INIT_STEPS.length;
@@ -68,6 +70,7 @@ export default function BIOSLoading() {
           >
             @prabal_
           </a>
+          <span className="sr-only">(c) 2026 @prabal_</span>
         </div>
       </header>
 
@@ -103,7 +106,7 @@ export default function BIOSLoading() {
               style={{ width: `${progressPercent}%` }}
             />
             <span className="absolute inset-0 flex items-center justify-center font-mono text-xs tracking-wider text-crt-cyan text-glow-cyan">
-              {progressPercent}%
+              {progressBar} {progressPercent}%
             </span>
           </div>
           <div className="shrink-0 font-mono text-crt-amber text-glow-amber" data-testid="elapsed-timer">

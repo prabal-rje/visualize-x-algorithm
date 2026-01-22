@@ -8,6 +8,7 @@ import EngagementScoreboard from '../visualization/EngagementScoreboard';
 import ProbabilityRack from '../visualization/ProbabilityRack';
 import ScoringContextTokens from '../visualization/ScoringContextTokens';
 import TypewriterText from '../visualization/TypewriterText';
+import { useViewport } from '../../hooks/useViewport';
 
 const STEP_NARRATION = [
   'Phoenix turns your recent actions into context tokens for the ranker...',
@@ -71,6 +72,7 @@ type Chapter4SceneProps = {
 export default function Chapter4Scene({ currentStep, isActive }: Chapter4SceneProps) {
   const tweetText = useConfigStore((state) => state.tweetText);
   const audienceMix = useConfigStore((state) => state.audienceMix);
+  const { isMobile } = useViewport();
   const [probs, setProbs] = useState(DEFAULT_PROBS);
 
   useEffect(() => {
@@ -152,6 +154,9 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
   }, []);
 
   const callout = STEP_CALLOUTS[currentStep] || STEP_CALLOUTS[0];
+  const topAttention = [...attentionItems]
+    .sort((a, b) => b.weight - a.weight)
+    .slice(0, 4);
 
   return (
     <div
@@ -175,42 +180,114 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
         />
       </div>
 
-      <div className={styles.content}>
-        <div className={styles.stepLabel}>{STEP_LABELS[currentStep] || STEP_LABELS[0]}</div>
-        <div className={styles.callout}>
-          <div className={styles.calloutHeader}>
-            <span className={styles.calloutTitle}>{callout.title}</span>
-            <span className={styles.calloutFormula}>{callout.formula}</span>
+      {isMobile ? (
+        <div className={styles.mobileContent}>
+          <div className={styles.stepLabel}>{STEP_LABELS[currentStep] || STEP_LABELS[0]}</div>
+          <div className={styles.callout}>
+            <div className={styles.calloutHeader}>
+              <span className={styles.calloutTitle}>{callout.title}</span>
+              <span className={styles.calloutFormula}>{callout.formula}</span>
+            </div>
+            <div className={styles.calloutText}>{callout.detail}</div>
           </div>
-          <div className={styles.calloutText}>{callout.detail}</div>
+
+          {currentStep === 0 && (
+            <div className={styles.mobilePanel}>
+              {CONTEXT_TOKENS.map((token) => (
+                <div key={token.id} className={styles.mobileRow}>
+                  <span className={styles.mobileLabel}>{token.text}</span>
+                  <span className={styles.mobileMeta}>{token.action}</span>
+                  <span className={styles.mobileValue}>{token.weight.toFixed(2)}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {currentStep === 1 && (
+            <div className={styles.mobilePanel}>
+              {topAttention.map((item) => (
+                <div key={item.id} className={styles.mobileRow}>
+                  <span className={styles.mobileLabel}>{item.label}</span>
+                  <span className={styles.mobileMeta}>{item.action}</span>
+                  <span className={styles.mobileValue}>{item.weight.toFixed(2)}</span>
+                </div>
+              ))}
+              <div className={styles.mobileNote}>Top weighted memories steer the score.</div>
+            </div>
+          )}
+
+          {currentStep === 2 && (
+            <div className={styles.mobilePanel}>
+              {probabilityItems.map((item) => (
+                <div key={item.id} className={styles.mobileRow}>
+                  <span className={styles.mobileLabel}>{item.label}</span>
+                  <span className={styles.mobileMeta}>P</span>
+                  <span className={styles.mobileValue}>{Math.round(item.probability * 100)}%</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {currentStep === 3 && (
+            <div className={styles.mobilePanel}>
+              <div className={styles.mobileSummary}>
+                <span>Final Score</span>
+                <span>{finalScore.toFixed(2)}</span>
+              </div>
+              <div className={styles.mobileSummary}>
+                <span>Diversity Penalty</span>
+                <span>-{diversityPenalty.toFixed(2)}</span>
+              </div>
+              <div className={styles.mobileRankings}>
+                {rankings.map((rank) => (
+                  <div key={rank.id} className={styles.mobileRow}>
+                    <span className={styles.mobileLabel}>{rank.label}</span>
+                    <span className={styles.mobileMeta}>Score</span>
+                    <span className={styles.mobileValue}>{rank.score.toFixed(2)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
+      ) : (
+        <div className={styles.content}>
+          <div className={styles.stepLabel}>{STEP_LABELS[currentStep] || STEP_LABELS[0]}</div>
+          <div className={styles.callout}>
+            <div className={styles.calloutHeader}>
+              <span className={styles.calloutTitle}>{callout.title}</span>
+              <span className={styles.calloutFormula}>{callout.formula}</span>
+            </div>
+            <div className={styles.calloutText}>{callout.detail}</div>
+          </div>
 
-        {currentStep === 0 && (
-          <ScoringContextTokens tokens={CONTEXT_TOKENS} isActive={isActive} />
-        )}
+          {currentStep === 0 && (
+            <ScoringContextTokens tokens={CONTEXT_TOKENS} isActive={isActive} />
+          )}
 
-        {currentStep === 1 && (
-          <AttentionMap
-            items={attentionItems}
-            isActive={isActive}
-            sourceTweet={tweetText || 'Your tweet'}
-          />
-        )}
+          {currentStep === 1 && (
+            <AttentionMap
+              items={attentionItems}
+              isActive={isActive}
+              sourceTweet={tweetText || 'Your tweet'}
+            />
+          )}
 
-        {currentStep === 2 && (
-          <ProbabilityRack items={probabilityItems} isActive={isActive} />
-        )}
+          {currentStep === 2 && (
+            <ProbabilityRack items={probabilityItems} isActive={isActive} />
+          )}
 
-        {currentStep === 3 && (
-          <EngagementScoreboard
-            actions={actions}
-            finalScore={finalScore}
-            diversityPenalty={diversityPenalty}
-            rankings={rankings}
-            isActive={isActive}
-          />
-        )}
-      </div>
+          {currentStep === 3 && (
+            <EngagementScoreboard
+              actions={actions}
+              finalScore={finalScore}
+              diversityPenalty={diversityPenalty}
+              rankings={rankings}
+              isActive={isActive}
+            />
+          )}
+        </div>
+      )}
 
     </div>
   );

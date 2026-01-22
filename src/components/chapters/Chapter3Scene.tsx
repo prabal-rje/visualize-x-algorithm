@@ -3,6 +3,7 @@ import styles from '../../styles/chapter3-scene.module.css';
 import { useConfigStore } from '../../stores/config';
 import FilterCascade from '../visualization/FilterCascade';
 import TypewriterText from '../visualization/TypewriterText';
+import { useViewport } from '../../hooks/useViewport';
 
 type Chapter3SceneProps = {
   currentStep: number;
@@ -133,6 +134,7 @@ const GATES_BY_STEP = [
 
 export default function Chapter3Scene({ currentStep, isActive }: Chapter3SceneProps) {
   const tweetText = useConfigStore((state) => state.tweetText);
+  const { isMobile } = useViewport();
   const gatesForStep = GATES_BY_STEP[currentStep] || GATES_BY_STEP[0];
   const callout = STEP_CALLOUTS[currentStep] || STEP_CALLOUTS[0];
   const [activeGateIndex, setActiveGateIndex] = useState(0);
@@ -172,31 +174,83 @@ export default function Chapter3Scene({ currentStep, isActive }: Chapter3ScenePr
         />
       </div>
 
-      <div className={styles.content}>
-        <div className={styles.stepLabel}>{STEP_LABELS[currentStep] || STEP_LABELS[0]}</div>
-        <div className={styles.callout} data-testid="filter-callout">
-          <div className={styles.calloutHeader}>
-            <span className={styles.calloutTitle}>{callout.title}</span>
-            <span
-              className={styles.calloutTag}
-              data-status={callout.userStatus.toLowerCase()}
-            >
-              USER TWEET {callout.userStatus}
-            </span>
+      {isMobile ? (
+        <div className={styles.mobileContent}>
+          <div className={styles.stepLabel}>{STEP_LABELS[currentStep] || STEP_LABELS[0]}</div>
+          <div className={styles.callout} data-testid="filter-callout">
+            <div className={styles.calloutHeader}>
+              <span className={styles.calloutTitle}>{callout.title}</span>
+              <span
+                className={styles.calloutTag}
+                data-status={callout.userStatus.toLowerCase()}
+              >
+                USER TWEET {callout.userStatus}
+              </span>
+            </div>
+            <div className={styles.calloutText}>{callout.detail}</div>
+            <div className={styles.calloutFocus}>
+              <span className={styles.calloutLabel}>FOCUS GATE</span>
+              <span className={styles.calloutValue}>{callout.focus}</span>
+            </div>
           </div>
-          <div className={styles.calloutText}>{callout.detail}</div>
-          <div className={styles.calloutFocus}>
-            <span className={styles.calloutLabel}>FOCUS GATE</span>
-            <span className={styles.calloutValue}>{callout.focus}</span>
+          <div className={styles.mobileGateList}>
+            {gatesForStep.map((gate, index) => (
+              <div
+                key={gate.id}
+                className={styles.mobileGateCard}
+                data-active={index === activeGateIndex}
+              >
+                <div className={styles.mobileGateHeader}>
+                  <span>{gate.label}</span>
+                  <span>{gate.totalPass}/{gate.totalIn}</span>
+                </div>
+                <div className={styles.mobileGateMeta}>{gate.functionName}</div>
+                <div className={styles.mobileGateCounts}>
+                  <span>Pass {gate.totalPass}</span>
+                  <span>Fail {gate.totalFail}</span>
+                </div>
+                <div className={styles.mobileGateSamples}>
+                  {gate.tweets.slice(0, 2).map((tweet) => (
+                    <span
+                      key={tweet.id}
+                      className={styles.mobileGateSample}
+                      data-status={tweet.status}
+                    >
+                      {tweet.text}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-        <FilterCascade
-          gates={gatesForStep}
-          activeGateIndex={activeGateIndex}
-          highlightTweet={tweetText}
-          isActive={isActive}
-        />
-      </div>
+      ) : (
+        <div className={styles.content}>
+          <div className={styles.stepLabel}>{STEP_LABELS[currentStep] || STEP_LABELS[0]}</div>
+          <div className={styles.callout} data-testid="filter-callout">
+            <div className={styles.calloutHeader}>
+              <span className={styles.calloutTitle}>{callout.title}</span>
+              <span
+                className={styles.calloutTag}
+                data-status={callout.userStatus.toLowerCase()}
+              >
+                USER TWEET {callout.userStatus}
+              </span>
+            </div>
+            <div className={styles.calloutText}>{callout.detail}</div>
+            <div className={styles.calloutFocus}>
+              <span className={styles.calloutLabel}>FOCUS GATE</span>
+              <span className={styles.calloutValue}>{callout.focus}</span>
+            </div>
+          </div>
+          <FilterCascade
+            gates={gatesForStep}
+            activeGateIndex={activeGateIndex}
+            highlightTweet={tweetText}
+            isActive={isActive}
+          />
+        </div>
+      )}
 
     </div>
   );

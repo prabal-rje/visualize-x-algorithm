@@ -83,6 +83,35 @@ Instructions:
 - [x] Update Chapter 2 chapter data, narration, and tests for new sub-chapter flow.
 - [x] Capture Chrome MCP screenshots for the new split steps (multi-viewport + zoom).
 
+### 0. Immediate: RPG Chapter Revamp & Verification
+
+#### Phase 2.9: Fix Loading BIOS Screen
+- [x] Stack the marquee above the BIOS loader on the loading screen.
+- [x] Capture BIOS loading screen reference screenshot.
+
+### 0. Mobile Chapter Variants (Chapters 1-5)
+
+#### Pre-Start
+- [x] Capture baseline Chrome MCP screenshots (desktop + mobile).
+- [x] Review chapter layouts + mobile requirements.
+
+#### Design & Plan
+- [x] Draft mobile layout plan (include narration tweaks; omit Two-Tower line).
+
+#### Implementation
+- [x] Chapter 1 mobile layout and content.
+- [x] Chapter 2 mobile layout (simplified encoding, placement, similarity, streams).
+- [x] Chapter 3 mobile layout (filter summaries + gate focus).
+- [x] Chapter 4 mobile layout (tokens, attention, probabilities, score).
+- [x] Chapter 5 mobile layout (top-K, reach, reactions, report).
+
+#### Verification
+- [x] Capture Chrome MCP screenshots (desktop + mobile sizes/zooms).
+- [x] Run targeted tests.
+
+#### Pre-Finish
+- [x] Update `.codex/TODO.md` and move completed tasks.
+
 ### Feedback Fixes: Arena + Marquee + Stack
 
 #### Pre-Start

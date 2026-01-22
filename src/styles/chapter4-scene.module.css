@@ -61,6 +61,63 @@
   gap: 12px;
 }
 
+.mobileContent {
+  display: grid;
+  gap: 12px;
+}
+
+.mobilePanel {
+  border: 1px solid rgba(51, 255, 51, 0.25);
+  background: rgba(0, 12, 0, 0.65);
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.mobileRow {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--phosphor-green);
+}
+
+.mobileLabel {
+  color: rgba(51, 255, 51, 0.9);
+}
+
+.mobileMeta {
+  color: rgba(51, 255, 51, 0.6);
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.mobileValue {
+  color: rgba(255, 176, 0, 0.9);
+}
+
+.mobileNote {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-align: center;
+  color: rgba(51, 255, 51, 0.7);
+}
+
+.mobileSummary {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(51, 255, 51, 0.85);
+}
+
+.mobileRankings {
+  display: grid;
+  gap: 6px;
+}
+
 .stepLabel {
   justify-self: center;
   font-family: var(--font-mono);
@@ -181,5 +238,14 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .calloutHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .mobileRow {
+    grid-template-columns: 1fr auto;
   }
 }

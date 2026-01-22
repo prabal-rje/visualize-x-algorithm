@@ -136,7 +136,7 @@ function App() {
       >
         <div
           data-testid="app-shell"
-          className="relative flex min-h-screen items-center justify-center bg-crt-void bg-crt-veil p-4 max-sm:p-0"
+          className="relative flex min-h-screen flex-col bg-crt-void bg-crt-veil"
           data-loading="true"
           data-mobile={isMobile}
           data-reduced-motion={prefersReducedMotion}
@@ -144,9 +144,12 @@ function App() {
           data-system="shell"
         >
           <ScreenFlicker />
-          {/* Mobile: rotate 90deg for widescreen BIOS effect */}
-          <div className="px-4 max-sm:fixed max-sm:top-1/2 max-sm:left-1/2 max-sm:-translate-x-1/2 max-sm:-translate-y-1/2 max-sm:rotate-90 max-sm:w-[min(100vh,100vw)] max-sm:px-6">
-            <BIOSLoading />
+          <Marquee />
+          <div className="flex flex-1 items-center justify-center p-4 max-sm:p-0">
+            {/* Mobile: rotate 90deg for widescreen BIOS effect */}
+            <div className="px-4 max-sm:fixed max-sm:top-1/2 max-sm:left-1/2 max-sm:-translate-x-1/2 max-sm:-translate-y-1/2 max-sm:rotate-90 max-sm:w-[min(100vh,100vw)] max-sm:px-6">
+              <BIOSLoading />
+            </div>
           </div>
         </div>
       </CRTOverlay>
@@ -180,7 +183,7 @@ function App() {
           className="relative grid min-h-0 items-stretch gap-shell grid-cols-1"
         >
           <section
-            className="relative min-h-0 h-full overflow-x-hidden overflow-y-auto rounded-panel border border-transparent bg-crt-void/70 p-panel max-sm:px-0 text-crt-ink shadow-[inset_0_0_40px_rgba(0,20,0,0.35)]"
+            className="relative min-h-0 h-full overflow-x-hidden overflow-y-auto rounded-panel border border-transparent bg-crt-void/90 p-panel max-sm:px-0 text-crt-ink shadow-[inset_0_0_40px_rgba(0,20,0,0.35)]"
             data-testid="chapter-canvas"
             data-proportion="fixed"
             data-viewport-fit="true"

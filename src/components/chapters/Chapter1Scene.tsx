@@ -2,6 +2,7 @@ import styles from '../../styles/chapter1-scene.module.css';
 import RequestVisualization from '../visualization/RequestVisualization';
 import DataStream from '../visualization/DataStream';
 import TypewriterText from '../visualization/TypewriterText';
+import { useViewport } from '../../hooks/useViewport';
 
 type Chapter1SceneProps = {
   /** Current step within the chapter (0 = gRPC call, 1 = hydration) */
@@ -35,11 +36,21 @@ const STEP_NARRATION = [
   'The server hydrates your query with engagement history and user features...'
 ];
 
+const FEATURE_SUMMARY = [
+  { label: 'Following', value: USER_FEATURES.followingCount.toLocaleString() },
+  { label: 'Followers', value: USER_FEATURES.followerCount.toLocaleString() },
+  { label: 'Account Age', value: `${USER_FEATURES.accountAgeDays}d` },
+  { label: 'Verified', value: USER_FEATURES.verified ? 'Yes' : 'No' },
+  { label: 'Premium', value: USER_FEATURES.premium ? 'Yes' : 'No' }
+];
+
 export default function Chapter1Scene({
   currentStep,
   isActive,
   userId
 }: Chapter1SceneProps) {
+  const { isMobile } = useViewport();
+
   return (
     <div
       className={styles.container}
@@ -65,25 +76,74 @@ export default function Chapter1Scene({
       </div>
 
       {/* Step Content */}
-      <div className={styles.content}>
-        {currentStep === 0 && (
-          <div className={styles.step}>
-            <div className={styles.stepLabel}>1A: The gRPC Call</div>
-            <RequestVisualization isActive={isActive} userId={userId} />
-          </div>
-        )}
+      {isMobile ? (
+        <div className={styles.mobileContent}>
+          {currentStep === 0 && (
+            <div className={styles.mobileStep}>
+              <div className={styles.stepLabel}>1A: The gRPC Call</div>
+              <div className={styles.mobileVizFrame}>
+                <RequestVisualization isActive={isActive} userId={userId} />
+              </div>
+              <div className={styles.mobileNote}>
+                One request wakes the recommendation stack.
+              </div>
+            </div>
+          )}
 
-        {currentStep === 1 && (
-          <div className={styles.step}>
-            <div className={styles.stepLabel}>1B: Query Hydration</div>
-            <DataStream
-              engagementHistory={ENGAGEMENT_HISTORY}
-              userFeatures={USER_FEATURES}
-              isActive={isActive}
-            />
-          </div>
-        )}
-      </div>
+          {currentStep === 1 && (
+            <div className={styles.mobileStep}>
+              <div className={styles.stepLabel}>1B: Query Hydration</div>
+              <div className={styles.mobileGrid}>
+                <div className={styles.mobileCard}>
+                  <div className={styles.mobileCardTitle}>Engagement History</div>
+                  <ul className={styles.mobileList}>
+                    {ENGAGEMENT_HISTORY.map((item) => (
+                      <li key={item.tweetId} className={styles.mobileListItem}>
+                        <span className={styles.mobileListLabel}>{item.action}</span>
+                        <span className={styles.mobileListMeta}>{item.timeAgo}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className={styles.mobileCard}>
+                  <div className={styles.mobileCardTitle}>User Features</div>
+                  <div className={styles.mobileFeatures}>
+                    {FEATURE_SUMMARY.map((feature) => (
+                      <div key={feature.label} className={styles.mobileFeatureRow}>
+                        <span className={styles.mobileFeatureLabel}>{feature.label}</span>
+                        <span className={styles.mobileFeatureValue}>{feature.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className={styles.mobileNote}>
+                History + metadata become the hydration payload.
+              </div>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className={styles.content}>
+          {currentStep === 0 && (
+            <div className={styles.step}>
+              <div className={styles.stepLabel}>1A: The gRPC Call</div>
+              <RequestVisualization isActive={isActive} userId={userId} />
+            </div>
+          )}
+
+          {currentStep === 1 && (
+            <div className={styles.step}>
+              <div className={styles.stepLabel}>1B: Query Hydration</div>
+              <DataStream
+                engagementHistory={ENGAGEMENT_HISTORY}
+                userFeatures={USER_FEATURES}
+                isActive={isActive}
+              />
+            </div>
+          )}
+        </div>
+      )}
 
     </div>
   );

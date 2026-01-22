@@ -3,6 +3,7 @@ import { ExternalLink, FileCode } from 'lucide-react';
 import { CHAPTERS, getFunctionAtPosition } from '../../data/chapters';
 import type { SimulationPosition, SimulationAction, SimulationStatus } from '../../hooks/useSimulationState';
 import { useConfigStore } from '../../stores/config';
+import { useViewport } from '../../hooks/useViewport';
 
 type TimelineProps = {
   position: SimulationPosition;
@@ -99,6 +100,7 @@ function progressToPosition(progressPercent: number): SimulationPosition {
 
 export default function Timeline({ position, status, dispatch }: TimelineProps) {
   const expertMode = useConfigStore((state) => state.expertMode);
+  const { isMobile } = useViewport();
   const sourceBaseUrl = 'https://github.com/xai-org/x-algorithm/blob/main/';
   const currentFunction = getFunctionAtPosition(
     position.chapterIndex,
@@ -224,70 +226,71 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       data-testid="timeline"
       data-system="timeline"
     >
-      {/* Mobile: Function name as link + Nav buttons stacked */}
-      <div className="flex flex-col gap-3 sm:hidden">
-        {currentFunction && (
-          <a
-            className="inline-flex items-center justify-center gap-2 text-xs text-crt-ink transition hover:text-crt-amber"
-            href={`${sourceBaseUrl}${currentFunction.file}`}
-            rel="noreferrer"
-            target="_blank"
-          >
-            <span className="font-mono">{currentFunction.name}</span>
-            <ExternalLink size={12} aria-hidden="true" />
-          </a>
-        )}
-        <NavButtons className="justify-center" />
-      </div>
+      {isMobile ? (
+        <div className="flex flex-col gap-3">
+          {currentFunction && (
+            <a
+              className="inline-flex items-center justify-center gap-2 text-xs text-crt-ink transition hover:text-crt-amber"
+              href={`${sourceBaseUrl}${currentFunction.file}`}
+              rel="noreferrer"
+              target="_blank"
+              data-testid="function-file-link"
+            >
+              <span className="font-mono">{currentFunction.name}</span>
+              <ExternalLink size={12} aria-hidden="true" />
+            </a>
+          )}
+          <NavButtons className="justify-center" />
+        </div>
+      ) : (
+        <div className="flex items-center gap-4" data-testid="function-stack">
+          <NavButtons className="shrink-0 self-center" />
 
-      {/* Desktop/Tablet: Nav buttons left, Function slideshow right */}
-      <div className="hidden sm:flex sm:items-center sm:gap-4" data-testid="function-stack">
-        {/* Left: Nav buttons */}
-        <NavButtons className="shrink-0 self-center" />
-
-        {/* Right: Function slideshow */}
-        {functionStack.length > 0 && currentFunction && (
-          <div className="flex min-w-0 flex-1 items-center gap-4 border-l border-crt-line/25 pl-4">
-            {/* Current function display */}
-            <div className="min-w-0 flex-1">
-              <div className="flex items-baseline gap-3">
-                <span className="shrink-0 font-mono text-sm text-crt-cyan text-glow-cyan">
-                  {currentFunction.name}
-                </span>
-                {functionStack.length > 1 && (
-                  <span className="shrink-0 text-xs text-crt-ink/50">
-                    {position.functionIndex + 1} of {functionStack.length}
+          {functionStack.length > 0 && currentFunction && (
+            <div
+              className="flex min-w-0 flex-1 items-center gap-4 border-l border-crt-line/25 pl-4"
+              data-testid="function-stack-track"
+            >
+              <div className="min-w-0 flex-1">
+                <div className="flex items-baseline gap-3">
+                  <span className="shrink-0 font-mono text-sm text-crt-cyan text-glow-cyan">
+                    {currentFunction.name}
                   </span>
-                )}
-                <a
-                  className="ml-auto shrink-0 inline-flex items-center gap-1.5 text-xs text-crt-amber/70 transition hover:text-crt-amber"
-                  href={`${sourceBaseUrl}${currentFunction.file}`}
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  <FileCode size={14} aria-hidden="true" />
-                  <span>{currentFunction.file}</span>
-                </a>
-              </div>
-              <div className="mt-1 truncate text-xs text-crt-ink/60">
-                {currentFunction.summary}
-              </div>
-              {/* Function stack dots indicator - fixed height to prevent layout shift */}
-              <div className="mt-2 flex h-1.5 gap-1.5">
-                {functionStack.length > 1 &&
-                  functionStack.map((fn, idx) => (
-                    <span
-                      key={fn.id}
-                      className="h-1.5 w-1.5 rounded-full transition-colors data-[active=true]:bg-crt-cyan data-[active=false]:bg-crt-ink/30"
-                      data-active={idx === position.functionIndex}
-                      title={fn.name}
-                    />
-                  ))}
+                  {functionStack.length > 1 && (
+                    <span className="shrink-0 text-xs text-crt-ink/50">
+                      {position.functionIndex + 1} of {functionStack.length}
+                    </span>
+                  )}
+                  <a
+                    className="ml-auto shrink-0 inline-flex items-center gap-1.5 text-xs text-crt-amber/70 transition hover:text-crt-amber"
+                    href={`${sourceBaseUrl}${currentFunction.file}`}
+                    rel="noreferrer"
+                    target="_blank"
+                    data-testid="function-file-link"
+                  >
+                    <FileCode size={14} aria-hidden="true" />
+                    <span>{currentFunction.file}</span>
+                  </a>
+                </div>
+                <div className="mt-1 truncate text-xs text-crt-ink/60">
+                  {currentFunction.summary}
+                </div>
+                <div className="mt-2 flex h-1.5 gap-1.5">
+                  {functionStack.length > 1 &&
+                    functionStack.map((fn, idx) => (
+                      <span
+                        key={fn.id}
+                        className="h-1.5 w-1.5 rounded-full transition-colors data-[active=true]:bg-crt-cyan data-[active=false]:bg-crt-ink/30"
+                        data-active={idx === position.functionIndex}
+                        title={fn.name}
+                      />
+                    ))}
+                </div>
               </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
 
       {/* Chapter Markers - hidden on mobile, use progress bar instead */}
       <div className="relative max-sm:hidden max-lg:before:absolute max-lg:before:inset-y-0 max-lg:before:left-0 max-lg:before:w-8 max-lg:before:bg-[linear-gradient(90deg,rgba(10,10,10,0.9)_0%,rgba(10,10,10,0)_100%)] max-lg:before:pointer-events-none max-lg:after:absolute max-lg:after:inset-y-0 max-lg:after:right-0 max-lg:after:w-8 max-lg:after:bg-[linear-gradient(270deg,rgba(10,10,10,0.9)_0%,rgba(10,10,10,0)_100%)] max-lg:after:pointer-events-none">

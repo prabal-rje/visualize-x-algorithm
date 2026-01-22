@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { ATTRIBUTION } from '../../data/attribution';
 import { useMLStore } from '../../stores/ml';
 
 const INIT_STEPS = [
@@ -60,7 +61,17 @@ export default function BIOSLoading() {
         <div className="text-[20px] tracking-[0.1em] text-crt-amber text-glow-amber">
           X-ALGORITHM VISUALIZER v1.0
         </div>
-        <div className="text-[14px] text-crt-ink/70">(c) 2026 @prabal_</div>
+        <div className="text-[14px] text-crt-ink/70">
+          (c) 2026{' '}
+          <a
+            href={ATTRIBUTION.links.twitter}
+            target="_blank"
+            rel="noreferrer"
+            className="text-crt-amber/80 transition hover:text-crt-amber hover:text-glow-amber"
+          >
+            @prabal_
+          </a>
+        </div>
       </header>
 
       <div className="mt-2">

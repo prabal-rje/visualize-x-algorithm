@@ -139,9 +139,9 @@ function App() {
           data-system="shell"
         >
           <ScreenFlicker />
-          {/* Mobile: rotate 90deg to force widescreen BIOS */}
-          <div className="w-full max-w-2xl max-sm:fixed max-sm:inset-0 max-sm:flex max-sm:items-center max-sm:justify-center max-sm:rotate-90 max-sm:origin-center max-sm:w-screen max-sm:h-screen max-sm:max-w-none">
-            <div className="w-full max-sm:w-[100vh] max-sm:px-4">
+          {/* Mobile: rotate 90deg to force widescreen BIOS - swap w/h so rotated fits viewport */}
+          <div className="max-w-2xl max-sm:fixed max-sm:top-1/2 max-sm:left-1/2 max-sm:-translate-x-1/2 max-sm:-translate-y-1/2 max-sm:flex max-sm:items-center max-sm:justify-center max-sm:rotate-90 max-sm:w-[100vh] max-sm:h-[100vw] max-sm:max-w-none">
+            <div className="max-sm:w-full max-sm:max-w-[calc(100vh-32px)] max-sm:px-4">
               <BIOSLoading />
             </div>
           </div>

@@ -197,7 +197,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
     <div className={`flex gap-2 ${className}`}>
       <button
         type="button"
-        className="crt-button flex h-10 w-10 items-center justify-center text-lg sm:h-11 sm:w-11 sm:text-xl"
+        className="crt-button !h-10 !w-10 !min-w-0 shrink-0 text-lg sm:!h-11 sm:!w-11 sm:text-xl"
         onClick={handleStartOver}
         aria-label="Start over"
       >
@@ -205,7 +205,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       </button>
       <button
         type="button"
-        className="crt-button flex h-10 w-10 items-center justify-center text-lg sm:h-11 sm:w-11 sm:text-xl"
+        className="crt-button !h-10 !w-10 !min-w-0 shrink-0 text-lg sm:!h-11 sm:!w-11 sm:text-xl"
         onClick={handleStepBack}
         disabled={atStart}
         aria-label="Step back"
@@ -214,7 +214,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       </button>
       <button
         type="button"
-        className="crt-button flex h-10 w-10 items-center justify-center text-lg sm:h-11 sm:w-11 sm:text-xl"
+        className="crt-button !h-10 !w-10 !min-w-0 shrink-0 text-lg sm:!h-11 sm:!w-11 sm:text-xl"
         onClick={handlePlayPause}
         aria-label={isPlaying ? 'Pause' : 'Play'}
       >
@@ -222,7 +222,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       </button>
       <button
         type="button"
-        className="crt-button flex h-10 w-10 items-center justify-center text-lg sm:h-11 sm:w-11 sm:text-xl"
+        className="crt-button !h-10 !w-10 !min-w-0 shrink-0 text-lg sm:!h-11 sm:!w-11 sm:text-xl"
         onClick={handleStepForward}
         disabled={atEnd}
         aria-label="Step forward"
@@ -234,7 +234,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
 
   return (
     <div
-      className="grid gap-3 border-t border-crt-line/35 bg-crt-void/70 p-panel"
+      className="grid gap-3 border-t border-crt-line/35 bg-crt-void/70 p-panel max-sm:px-0"
       data-testid="timeline"
       data-system="timeline"
     >

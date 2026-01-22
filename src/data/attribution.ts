@@ -18,6 +18,8 @@ export const ATTRIBUTION = {
   links: {
     github: 'https://github.com/prabal_/x-algorithm-visualizer',
     twitter: 'https://twitter.com/prabal_',
+    linkedin: 'https://linkedin.com/in/prabal1997',
+    home: 'https://prabal.ca',
     sourceRepo: 'https://github.com/xai-org/x-algorithm'
   }
 } as const;

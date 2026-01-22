@@ -198,30 +198,40 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       data-testid="timeline"
       data-system="timeline"
     >
-      {functionStack.length > 0 && (
+      {functionStack.length > 0 && currentFunction && (
         <div
-          className="grid gap-2 border border-crt-line/25 bg-crt-panel-deep/70 p-panel-sm"
+          className="grid gap-2 border border-crt-line/25 bg-crt-panel-deep/70 p-panel-sm max-sm:flex max-sm:items-center max-sm:justify-center max-sm:gap-0 max-sm:p-2"
           data-testid="function-stack"
           data-mode={stackVariant}
         >
-          <div className="flex items-baseline justify-between gap-2">
+          {/* Mobile: just file link */}
+          <a
+            className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.1em] text-crt-amber/90 transition hover:text-crt-ink sm:hidden"
+            href={`${sourceBaseUrl}${currentFunction.file}`}
+            rel="noreferrer"
+            target="_blank"
+          >
+            <span aria-hidden="true">📄</span>
+            <span>{currentFunction.file}</span>
+          </a>
+
+          {/* Desktop: full function stack */}
+          <div className="hidden sm:flex sm:items-baseline sm:justify-between sm:gap-2">
             <span className="text-[10px] uppercase tracking-[0.2em] text-crt-ink/70">
               FUNCTION STACK
             </span>
-            {currentFunction && (
-              <a
-                className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.12em] text-crt-amber/85 underline decoration-crt-amber/60 underline-offset-4 transition hover:text-crt-ink"
-                data-testid="function-file-link"
-                href={`${sourceBaseUrl}${currentFunction.file}`}
-                rel="noreferrer"
-                target="_blank"
-              >
-                <span aria-hidden="true">🔗</span>
-                <span>{currentFunction.file}</span>
-              </a>
-            )}
+            <a
+              className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.12em] text-crt-amber/85 underline decoration-crt-amber/60 underline-offset-4 transition hover:text-crt-ink"
+              data-testid="function-file-link"
+              href={`${sourceBaseUrl}${currentFunction.file}`}
+              rel="noreferrer"
+              target="_blank"
+            >
+              <span aria-hidden="true">🔗</span>
+              <span>{currentFunction.file}</span>
+            </a>
           </div>
-          <div className="overflow-x-auto" data-mode={stackVariant}>
+          <div className="hidden overflow-x-auto sm:block" data-mode={stackVariant}>
             <div
               className="flex w-max gap-6 data-[mode=stack]:flex-col data-[mode=stack]:gap-2"
               data-mode={stackVariant}
@@ -235,11 +245,9 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
               </div>
             </div>
           </div>
-          {currentFunction && (
-            <div className="text-[11px] text-crt-ink/70">
-              {currentFunction.summary}
-            </div>
-          )}
+          <div className="hidden text-[11px] text-crt-ink/70 sm:block">
+            {currentFunction.summary}
+          </div>
         </div>
       )}
 

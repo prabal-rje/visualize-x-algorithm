@@ -131,7 +131,7 @@ function App() {
       >
         <div
           data-testid="app-shell"
-          className="ds-shell relative min-h-screen grid-rows-[auto_auto_1fr] bg-crt-void bg-crt-veil data-[loading=true]:min-h-[min(100vh,100dvh)] data-[loading=true]:grid-rows-[auto_1fr]"
+          className="relative flex min-h-screen items-center justify-center bg-crt-void bg-crt-veil p-4 max-sm:p-2"
           data-loading="true"
           data-mobile={isMobile}
           data-reduced-motion={prefersReducedMotion}
@@ -139,8 +139,7 @@ function App() {
           data-system="shell"
         >
           <ScreenFlicker />
-          <Marquee />
-          <div className="flex min-h-[clamp(320px,60vh,640px)] items-center justify-center">
+          <div className="w-full max-w-2xl max-sm:max-w-none">
             <BIOSLoading />
           </div>
         </div>

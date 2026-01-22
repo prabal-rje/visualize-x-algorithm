@@ -1,41 +1,99 @@
 import { ATTRIBUTION } from '../../data/attribution';
 
 export default function Marquee() {
-  const content = (
-    <>
-      <a
-        className="inline-flex min-h-[44px] items-center px-2 py-2 text-crt-amber underline transition-colors hover:text-crt-ink hover:text-glow-amber"
-        data-testid="marquee-github"
-        href={ATTRIBUTION.links.github}
-        rel="noreferrer"
-        target="_blank"
-      >
-        STAR THIS PROJECT ON GITHUB
-      </a>
-      <span className="text-crt-ink">|</span>
-      <a
-        className="inline-flex min-h-[44px] items-center px-2 py-2 text-crt-amber underline transition-colors hover:text-crt-ink hover:text-glow-amber"
-        data-testid="marquee-twitter"
-        href={ATTRIBUTION.links.twitter}
-        rel="noreferrer"
-        target="_blank"
-      >
-        FOLLOW {ATTRIBUTION.creator.twitterHandle}
-      </a>
-    </>
-  );
-
   return (
-    <div
-      className="h-11 overflow-hidden border-b border-crt-line/40 bg-crt-void/95 max-xs:h-10"
+    <nav
+      className="flex h-10 items-center justify-center gap-2 overflow-hidden border-b border-crt-line/40 bg-crt-void/95 font-mono text-[12px] sm:h-11 sm:gap-0 sm:text-[13px]"
       data-testid="marquee"
       data-system="marquee"
+      aria-label="Social links"
     >
-      <div className="inline-flex w-max items-center font-mono text-[14px] text-crt-ink animate-marquee motion-reduce:animate-none max-xs:text-[12px]">
-        <div className="inline-flex items-center gap-4 whitespace-nowrap pr-8 max-xs:gap-3 max-xs:pr-6" data-testid="marquee-track">
-          {content}
-        </div>
+      {/* Mobile: static icons, no separators */}
+      <div className="flex items-center gap-3 sm:hidden">
+        <a
+          className="inline-flex items-center gap-1.5 px-1 py-2 text-crt-amber transition-colors hover:text-crt-ink"
+          href={ATTRIBUTION.links.github}
+          rel="noreferrer"
+          target="_blank"
+          aria-label="See project on GitHub"
+        >
+          <span aria-hidden="true">⌘</span>
+          <span>GitHub</span>
+        </a>
+        <a
+          className="inline-flex items-center gap-1.5 px-1 py-2 text-crt-amber transition-colors hover:text-crt-ink"
+          href={ATTRIBUTION.links.twitter}
+          rel="noreferrer"
+          target="_blank"
+          aria-label="Follow on Twitter"
+        >
+          <span aria-hidden="true">𝕏</span>
+          <span>@prabal_</span>
+        </a>
+        <a
+          className="inline-flex items-center gap-1.5 px-1 py-2 text-crt-amber transition-colors hover:text-crt-ink"
+          href={ATTRIBUTION.links.linkedin}
+          rel="noreferrer"
+          target="_blank"
+          aria-label="Connect on LinkedIn"
+        >
+          <span aria-hidden="true">in</span>
+        </a>
+        <a
+          className="inline-flex items-center gap-1.5 px-1 py-2 text-crt-amber transition-colors hover:text-crt-ink"
+          href={ATTRIBUTION.links.home}
+          rel="noreferrer"
+          target="_blank"
+          aria-label="Visit prabal.ca"
+        >
+          <span aria-hidden="true">🏠</span>
+        </a>
       </div>
-    </div>
+
+      {/* Desktop: equidistant with dot separators */}
+      <div className="hidden items-center sm:flex">
+        <a
+          className="inline-flex items-center gap-2 px-4 py-2 text-crt-amber transition-colors hover:text-crt-ink hover:text-glow-amber"
+          data-testid="marquee-github"
+          href={ATTRIBUTION.links.github}
+          rel="noreferrer"
+          target="_blank"
+        >
+          <span aria-hidden="true">⌘</span>
+          <span>See on GitHub</span>
+        </a>
+        <span className="text-crt-ink/50">•</span>
+        <a
+          className="inline-flex items-center gap-2 px-4 py-2 text-crt-amber transition-colors hover:text-crt-ink hover:text-glow-amber"
+          data-testid="marquee-twitter"
+          href={ATTRIBUTION.links.twitter}
+          rel="noreferrer"
+          target="_blank"
+        >
+          <span aria-hidden="true">𝕏</span>
+          <span>@prabal_</span>
+        </a>
+        <span className="text-crt-ink/50">•</span>
+        <a
+          className="inline-flex items-center gap-2 px-4 py-2 text-crt-amber transition-colors hover:text-crt-ink hover:text-glow-amber"
+          href={ATTRIBUTION.links.linkedin}
+          rel="noreferrer"
+          target="_blank"
+        >
+          <span aria-hidden="true">in</span>
+          <span>LinkedIn</span>
+        </a>
+        <span className="text-crt-ink/50">•</span>
+        <a
+          className="inline-flex items-center gap-2 px-4 py-2 text-crt-amber transition-colors hover:text-crt-ink hover:text-glow-amber"
+          href={ATTRIBUTION.links.home}
+          rel="noreferrer"
+          target="_blank"
+        >
+          <span aria-hidden="true">🏠</span>
+          <span>prabal.ca</span>
+        </a>
+      </div>
+    </nav>
   );
 }

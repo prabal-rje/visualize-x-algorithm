@@ -116,7 +116,7 @@ export default function ConfigPanel() {
   };
 
   return (
-    <div className={styles.panel} data-testid="config-panel">
+    <div className={styles.panel} data-testid="config-panel" data-surface="bare">
       {toastMessage && <div className={styles.toast}>{toastMessage}</div>}
       <header className={styles.header} />
 

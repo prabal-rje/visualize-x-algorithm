@@ -3,7 +3,6 @@ import { CHAPTERS, getFunctionAtPosition } from '../../data/chapters';
 import type { SimulationPosition, SimulationAction, SimulationStatus } from '../../hooks/useSimulationState';
 import { useConfigStore } from '../../stores/config';
 import { useViewport } from '../../hooks/useViewport';
-import styles from '../../styles/timeline.module.css';
 
 type TimelineProps = {
   position: SimulationPosition;
@@ -101,6 +100,7 @@ function progressToPosition(progressPercent: number): SimulationPosition {
 export default function Timeline({ position, status, dispatch }: TimelineProps) {
   const expertMode = useConfigStore((state) => state.expertMode);
   const { isMobile } = useViewport();
+  const sourceBaseUrl = 'https://github.com/xai-org/x-algorithm/blob/main/';
   const currentFunction = getFunctionAtPosition(
     position.chapterIndex,
     position.subChapterIndex,
@@ -186,46 +186,59 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
     functionStack.map((fn, index) => (
       <span
         key={`${keyPrefix}-${fn.id}`}
-        className={styles.functionStackItem}
+        className="relative pr-4 text-[12px] text-crt-ink/80 text-glow-green after:absolute after:right-[2px] after:text-crt-ink/45 after:content-['\\2192'] last:after:content-[''] data-[active=true]:text-crt-cyan data-[active=true]:text-glow-cyan data-[mode=stack]:pr-0 data-[mode=stack]:after:content-['']"
         data-active={index === position.functionIndex}
+        data-mode={stackVariant}
       >
         {fn.name}
       </span>
     ));
 
   return (
-    <div className={styles.timeline} data-testid="timeline">
+    <div
+      className="grid gap-3 border-t border-crt-line/35 bg-crt-void/90 p-panel"
+      data-testid="timeline"
+      data-system="timeline"
+    >
       {functionStack.length > 0 && (
         <div
-          className={styles.functionStack}
+          className="grid gap-2 border border-crt-line/25 bg-crt-panel-deep/70 p-panel-sm"
           data-testid="function-stack"
           data-mode={stackVariant}
         >
-          <div className={styles.functionStackHeader}>
-            <span className={styles.functionStackLabel}>FUNCTION STACK</span>
+          <div className="flex items-baseline justify-between gap-2">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-crt-ink/70">
+              FUNCTION STACK
+            </span>
             {currentFunction && (
-              <span className={styles.functionStackFile}>
-                {currentFunction.file}
-              </span>
+              <a
+                className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.12em] text-crt-amber/85 underline decoration-crt-amber/60 underline-offset-4 transition hover:text-crt-ink"
+                data-testid="function-file-link"
+                href={`${sourceBaseUrl}${currentFunction.file}`}
+                rel="noreferrer"
+                target="_blank"
+              >
+                <span aria-hidden="true">🔗</span>
+                <span>{currentFunction.file}</span>
+              </a>
             )}
           </div>
-          <div className={styles.functionStackTrack} data-mode={stackVariant}>
-            <div className={styles.functionStackScroller} data-mode={stackVariant}>
-              <div className={styles.functionStackRow}>
+          <div className="overflow-x-auto" data-mode={stackVariant}>
+            <div
+              className="flex w-max gap-6 data-[mode=stack]:flex-col data-[mode=stack]:gap-2"
+              data-mode={stackVariant}
+              data-testid="function-stack-track"
+            >
+              <div
+                className="flex items-center gap-4 whitespace-nowrap data-[mode=stack]:flex-col data-[mode=stack]:items-start data-[mode=stack]:gap-1"
+                data-mode={stackVariant}
+              >
                 {renderStackItems('primary')}
               </div>
-              {!isMobile && (
-                <div
-                  className={styles.functionStackRow}
-                  aria-hidden="true"
-                >
-                  {renderStackItems('clone')}
-                </div>
-              )}
             </div>
           </div>
           {currentFunction && (
-            <div className={styles.functionStackSummary}>
+            <div className="text-[11px] text-crt-ink/70">
               {currentFunction.summary}
             </div>
           )}
@@ -233,58 +246,58 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       )}
 
       {/* Navigation Controls */}
-      <div className={styles.controls}>
+      <div className="flex justify-center gap-2 max-md:flex-wrap max-sm:flex-col max-sm:items-stretch">
         <button
           type="button"
-          className={styles.controlButton}
+          className="crt-button px-4 py-3 text-[11px] tracking-[0.12em] max-md:px-3 max-md:py-2 max-md:text-[10px] max-md:tracking-[0.08em] max-xs:px-2 max-xs:py-2 max-xs:text-[9px] max-xs:tracking-[0.04em]"
           onClick={handleStartOver}
           aria-label="Start over"
         >
-          <span className={styles.controlIcon} aria-hidden="true">
+          <span className="hidden text-[12px] tracking-[0.08em]" aria-hidden="true">
             RST
           </span>
-          <span className={styles.controlLabel}>START OVER</span>
+          <span>START OVER</span>
         </button>
         <button
           type="button"
-          className={styles.controlButton}
+          className="crt-button px-4 py-3 text-[11px] tracking-[0.12em] max-md:px-3 max-md:py-2 max-md:text-[10px] max-md:tracking-[0.08em] max-xs:px-2 max-xs:py-2 max-xs:text-[9px] max-xs:tracking-[0.04em]"
           onClick={handleStepBack}
           disabled={atStart}
           aria-label="Step back"
         >
-          <span className={styles.controlIcon} aria-hidden="true">
+          <span className="hidden text-[12px] tracking-[0.08em]" aria-hidden="true">
             &lt;&lt;
           </span>
-          <span className={styles.controlLabel}>&lt;&lt; BACK</span>
+          <span>&lt;&lt; BACK</span>
         </button>
         <button
           type="button"
-          className={styles.controlButton}
+          className="crt-button px-4 py-3 text-[11px] tracking-[0.12em] max-md:px-3 max-md:py-2 max-md:text-[10px] max-md:tracking-[0.08em] max-xs:px-2 max-xs:py-2 max-xs:text-[9px] max-xs:tracking-[0.04em]"
           onClick={handlePlayPause}
           aria-label={isPlaying ? 'Pause' : 'Play'}
         >
-          <span className={styles.controlIcon} aria-hidden="true">
+          <span className="hidden text-[12px] tracking-[0.08em]" aria-hidden="true">
             {playIcon}
           </span>
-          <span className={styles.controlLabel}>{playLabel}</span>
+          <span>{playLabel}</span>
         </button>
         <button
           type="button"
-          className={styles.controlButton}
+          className="crt-button px-4 py-3 text-[11px] tracking-[0.12em] max-md:px-3 max-md:py-2 max-md:text-[10px] max-md:tracking-[0.08em] max-xs:px-2 max-xs:py-2 max-xs:text-[9px] max-xs:tracking-[0.04em]"
           onClick={handleStepForward}
           disabled={atEnd}
           aria-label="Step forward"
         >
-          <span className={styles.controlIcon} aria-hidden="true">
+          <span className="hidden text-[12px] tracking-[0.08em]" aria-hidden="true">
             &gt;&gt;
           </span>
-          <span className={styles.controlLabel}>NEXT &gt;&gt;</span>
+          <span>NEXT &gt;&gt;</span>
         </button>
       </div>
 
       {/* Chapter Markers */}
-      <div className={styles.chaptersWrap}>
-        <div className={styles.chapters}>
+      <div className="relative max-lg:before:absolute max-lg:before:inset-y-0 max-lg:before:left-0 max-lg:before:w-8 max-lg:before:bg-[linear-gradient(90deg,rgba(10,10,10,0.9)_0%,rgba(10,10,10,0)_100%)] max-lg:before:pointer-events-none max-lg:after:absolute max-lg:after:inset-y-0 max-lg:after:right-0 max-lg:after:w-8 max-lg:after:bg-[linear-gradient(270deg,rgba(10,10,10,0.9)_0%,rgba(10,10,10,0)_100%)] max-lg:after:pointer-events-none">
+        <div className="flex gap-1 overflow-x-auto snap-x snap-mandatory">
           {CHAPTERS.map((chapter, index) => {
             const isActive = index === position.chapterIndex;
             const isVisited = index < position.chapterIndex;
@@ -293,32 +306,38 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
               <button
                 key={chapter.id}
                 type="button"
-                className={styles.marker}
+                className="flex min-w-[80px] flex-1 snap-center cursor-pointer flex-col items-center gap-1 border border-crt-line/25 bg-crt-panel-strong/40 px-3 py-2 transition hover:border-crt-ink hover:shadow-crt data-[active=true]:border-crt-amber data-[active=true]:bg-[rgba(255,176,0,0.1)] data-[active=true]:shadow-amber data-[visited=true]:border-crt-line/50 data-[visited=true]:bg-crt-ink/10 max-xs:min-w-[60px] max-xs:px-2 max-xs:py-2"
                 data-testid={`chapter-marker-${index}`}
                 data-active={isActive}
                 data-visited={isVisited}
                 onClick={() => handleChapterClick(index)}
               >
-                <span className={styles.chapterNumber}>CH.{chapter.number}</span>
-                <span className={styles.chapterLabel}>
+                <span className="text-[10px] tracking-[0.15em] text-crt-amber max-xs:text-[9px] max-xs:tracking-[0.08em]">
+                  CH.{chapter.number}
+                </span>
+                <span className="max-w-[110px] overflow-hidden text-ellipsis whitespace-nowrap text-[11px] uppercase tracking-[0.08em] text-crt-ink max-sm:max-w-[90px] max-xs:max-w-[70px] max-xs:text-[9px] max-xs:tracking-[0.04em]">
                   {expertMode ? chapter.labelTechnical : chapter.labelSimple}
                 </span>
               </button>
             );
           })}
         </div>
-        <span className={styles.scrollHint} aria-hidden="true">
+        <span className="absolute right-2 top-[-14px] hidden text-[9px] uppercase tracking-[0.2em] text-crt-amber/70 max-lg:inline-flex max-xs:right-1 max-xs:top-[-12px] max-xs:text-[8px]" aria-hidden="true">
           Swipe for more →
         </span>
       </div>
 
       {/* Progress Indicator */}
-      <div className={styles.progressHeader}>
-        <span className={styles.progressLabel}>Simulation Progress</span>
-        <span className={styles.progressValue}>{progress}%</span>
+      <div className="flex items-baseline justify-between gap-3 uppercase max-xs:gap-2">
+        <span className="text-[10px] tracking-[0.16em] text-crt-ink/80 max-xs:text-[9px] max-xs:tracking-[0.1em]">
+          Simulation Progress
+        </span>
+        <span className="text-[10px] tracking-[0.14em] text-crt-amber/90 max-xs:text-[9px]">
+          {progress}%
+        </span>
       </div>
       <div
-        className={styles.progressContainer}
+        className="relative h-5 overflow-hidden rounded-[2px] border border-crt-line/30 bg-crt-panel-strong/60 max-xs:h-4"
         data-testid="progress-indicator"
         onClick={handleProgressClick}
         role="progressbar"
@@ -333,17 +352,22 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
           } as React.CSSProperties
         }
       >
-        <div className={styles.progressBar} style={{ width: `${progress}%` }} />
-        <div className={styles.progressTicks} aria-hidden="true">
+        <div
+          className="absolute inset-y-0 left-0 bg-gradient-to-r from-crt-ink/30 to-crt-ink/50 transition-[width] duration-300"
+          style={{ width: `${progress}%` }}
+        />
+        <div className="pointer-events-none absolute inset-0 grid grid-cols-[repeat(var(--tick-count),1fr)]" aria-hidden="true">
           {CHAPTERS.map((chapter) => (
             <span
               key={chapter.id}
-              className={styles.progressTick}
+              className="w-px justify-self-start bg-crt-line/20 shadow-[0_0_6px_rgba(51,255,51,0.2)] last:justify-self-end"
               data-testid="progress-tick"
             />
           ))}
         </div>
-        <span className={styles.progressText}>{progress}%</span>
+        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] tracking-[0.1em] text-crt-ink drop-shadow-[0_0_4px_rgba(0,0,0,0.8)] max-xs:text-[9px]">
+          {progress}%
+        </span>
       </div>
 
     </div>

@@ -9,14 +9,12 @@ import Timeline from './components/layout/Timeline';
 import BIOSLoading from './components/visualization/BIOSLoading';
 import ChapterSkeleton from './components/visualization/ChapterSkeleton';
 import ChapterWrapper from './components/visualization/ChapterWrapper';
-import MissionReport from './components/visualization/MissionReport';
 import { useSimulationState } from './hooks/useSimulationState';
 import { useViewport } from './hooks/useViewport';
 import { initializeEmbedder, isInitialized } from './ml/embeddings';
 import { setAmbientDrone } from './audio/engine';
 import { useConfigStore } from './stores/config';
 import { useMLStore } from './stores/ml';
-import styles from './styles/app-shell.module.css';
 
 const Chapter0Scene = lazy(() => import('./components/chapters/Chapter0Scene'));
 const Chapter1Scene = lazy(() => import('./components/chapters/Chapter1Scene'));
@@ -29,15 +27,12 @@ function App() {
   const [crtConfig, setCrtConfig] = useState<CRTConfig>(DEFAULT_CRT_CONFIG);
   const [simulationState, dispatch] = useSimulationState();
   const simulationStarted = useConfigStore((state) => state.simulationStarted);
-  const rpgStats = useConfigStore((state) => state.rpgStats);
-  const resetSimulation = useConfigStore((state) => state.resetSimulation);
   const mlStatus = useMLStore((state) => state.status);
   const setLoading = useMLStore((state) => state.setLoading);
   const setProgress = useMLStore((state) => state.setProgress);
   const setReady = useMLStore((state) => state.setReady);
   const setError = useMLStore((state) => state.setError);
   const { isMobile, prefersReducedMotion, prefersHighContrast } = useViewport();
-  const [isSidePanelOpen, setIsSidePanelOpen] = useState(!isMobile);
   const isModelReady = mlStatus === 'ready';
 
   // Initialize embedder on mount (downloads and caches Nomic model)
@@ -81,32 +76,7 @@ function App() {
     }
   }, [dispatch, simulationStarted]);
 
-  useEffect(() => {
-    if (isMobile) {
-      setIsSidePanelOpen(false);
-    }
-  }, [isMobile]);
-
   const { position } = simulationState;
-
-  const renderMainContent = () => {
-    if (simulationStarted && rpgStats) {
-      return (
-        <MissionReport
-          reach={rpgStats.reach}
-          resonance={rpgStats.resonance}
-          momentum={rpgStats.momentum}
-          percentile={rpgStats.percentile}
-          onReplay={resetSimulation}
-        />
-      );
-    }
-    return null;
-  };
-
-  const mainContent = renderMainContent();
-  const showSidePanel = Boolean(mainContent);
-  const sidePanelOpen = showSidePanel && isSidePanelOpen;
   const isCompactChapter = position.chapterIndex >= 3;
 
   const renderChapterScene = () => {
@@ -161,15 +131,16 @@ function App() {
       >
         <div
           data-testid="app-shell"
-          className={styles.appShell}
+          className="ds-shell relative min-h-screen grid-rows-[auto_auto_1fr] bg-crt-void bg-crt-veil data-[loading=true]:min-h-[min(100vh,100dvh)] data-[loading=true]:grid-rows-[auto_1fr]"
           data-loading="true"
           data-mobile={isMobile}
           data-reduced-motion={prefersReducedMotion}
           data-high-contrast={prefersHighContrast}
+          data-system="shell"
         >
           <ScreenFlicker />
           <Marquee />
-          <div className={styles.loadingCenter}>
+          <div className="flex min-h-[clamp(320px,60vh,640px)] items-center justify-center">
             <BIOSLoading />
           </div>
         </div>
@@ -185,14 +156,15 @@ function App() {
     >
       <div
         data-testid="app-shell"
-        className={styles.appShell}
+        className="ds-shell relative min-h-screen grid-rows-[auto_auto_1fr] bg-crt-void bg-crt-veil"
         data-mobile={isMobile}
         data-reduced-motion={prefersReducedMotion}
         data-high-contrast={prefersHighContrast}
+        data-system="shell"
       >
         <ScreenFlicker />
         <Marquee />
-        <section className={styles.timelineBar}>
+        <section className="relative z-[1]">
           <Timeline
             position={simulationState.position}
             status={simulationState.status}
@@ -200,24 +172,10 @@ function App() {
           />
         </section>
         <main
-          className={styles.main}
-          data-side-panel={sidePanelOpen}
-          data-side-open={sidePanelOpen}
+          className="relative grid min-h-0 items-stretch gap-shell grid-cols-1"
         >
-          {showSidePanel && (
-            <button
-              className={styles.sideToggle}
-              onClick={() => setIsSidePanelOpen((prev) => !prev)}
-              type="button"
-              aria-label={sidePanelOpen ? 'Hide mission report' : 'Show mission report'}
-              aria-expanded={sidePanelOpen}
-              aria-controls="mission-report-panel"
-            >
-              <span className={styles.sideToggleLabel}>REPORT</span>
-            </button>
-          )}
           <section
-            className={styles.chapterCanvas}
+            className="relative min-h-0 h-full overflow-x-hidden overflow-y-auto rounded-panel border border-crt-line/30 bg-crt-void/90 p-panel text-crt-ink shadow-[inset_0_0_40px_rgba(0,20,0,0.35)]"
             data-testid="chapter-canvas"
             data-proportion="fixed"
             data-viewport-fit="true"
@@ -226,11 +184,6 @@ function App() {
           >
             {renderChapterScene()}
           </section>
-          {sidePanelOpen && (
-            <section className={styles.sidePanel} id="mission-report-panel">
-              {mainContent}
-            </section>
-          )}
         </main>
         <CRTControls config={crtConfig} onChange={setCrtConfig} />
       </div>

@@ -1,8 +1,36 @@
+@config "../tailwind.config.js";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
+  --phosphor-green-rgb: 51 255 51;
+  --phosphor-amber-rgb: 255 176 0;
+  --phosphor-cyan-rgb: 0 255 255;
+  --phosphor-magenta-rgb: 255 0 255;
+  --crt-black-rgb: 10 10 10;
+  --crt-dark-rgb: 18 18 18;
+  --crt-void-rgb: 5 7 5;
+  --crt-panel-rgb: 0 18 0;
+  --crt-panel-strong-rgb: 0 20 0;
+  --crt-panel-deep-rgb: 0 10 0;
+  --crt-panel-soft-rgb: 0 8 0;
+  --crt-line-rgb: 51 255 51;
+  --shell-max: min(96vw, 1760px);
+  --shell-gutter: clamp(12px, 2vw, 20px);
+  --shell-gutter-sm: clamp(8px, 1.4vw, 14px);
+  --shell-gap: clamp(10px, 1.5vw, 16px);
+  --panel-pad: clamp(12px, 1.6vw, 20px);
+  --panel-pad-sm: clamp(8px, 1.2vw, 14px);
+  --panel-pad-lg: clamp(16px, 2vw, 24px);
+  --panel-radius: 4px;
+  --chapter-0-rgb: 51 255 51;
+  --chapter-1-rgb: 0 170 255;
+  --chapter-2-rgb: 255 176 0;
+  --chapter-3-rgb: 255 100 100;
+  --chapter-4-rgb: 180 100 255;
+  --chapter-5-rgb: 255 140 0;
   --phosphor-green: #33ff33;
   --phosphor-amber: #ffb000;
   --phosphor-cyan: #00ffff;
@@ -41,6 +69,8 @@ body {
     --phosphor-amber: #ffd24a;
     --crt-black: #000000;
     --crt-dark: #060606;
+    --crt-void-rgb: 0 0 0;
+    --crt-panel-deep-rgb: 0 12 0;
   }
 
   body {
@@ -52,6 +82,24 @@ body {
 @media (min-width: 1600px) {
   :root {
     --ui-scale: 1.04;
+  }
+}
+
+@media (max-width: 560px) {
+  :root {
+    --shell-gutter: clamp(8px, 3vw, 12px);
+    --shell-gap: clamp(8px, 2vw, 12px);
+    --panel-pad: clamp(10px, 3vw, 14px);
+    --panel-pad-sm: clamp(6px, 2vw, 10px);
+    --panel-pad-lg: clamp(12px, 3.5vw, 18px);
+  }
+}
+
+@media (max-height: 720px) {
+  :root {
+    --shell-gap: clamp(8px, 1.2vh, 12px);
+    --panel-pad: clamp(10px, 1.4vh, 16px);
+    --panel-pad-sm: clamp(6px, 1.1vh, 12px);
   }
 }
 

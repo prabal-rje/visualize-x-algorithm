@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { gsap } from 'gsap';
-import styles from '../../styles/chapter-wrapper.module.css';
 import { playChapterTransition } from '../../audio/engine';
 
 type ChapterWrapperProps = {
@@ -20,6 +19,14 @@ export default function ChapterWrapper({
   title,
   children
 }: ChapterWrapperProps) {
+  const chapterBorder = {
+    0: '51 255 51',
+    1: '0 170 255',
+    2: '255 176 0',
+    3: '255 100 100',
+    4: '180 100 255',
+    5: '255 140 0'
+  } as const;
   const wrapperRef = useRef<HTMLDivElement>(null);
   const wasActiveRef = useRef(isActive);
   const [inView, setInView] = useState(true);
@@ -106,14 +113,26 @@ export default function ChapterWrapper({
   return (
     <div
       ref={wrapperRef}
-      className={styles.chapter}
+      className="group relative rounded-panel border border-[color:rgb(var(--chapter-border)/0.5)] bg-crt-panel-deep/80 p-panel text-crt-ink shadow-crt-inset data-[active=false]:pointer-events-none data-[active=false]:opacity-30"
       data-testid={`chapter-wrapper-${chapterIndex}`}
       data-active={isActive}
       data-in-view={inView}
       data-chapter={chapterIndex}
+      data-system="chapter"
+      style={
+        {
+          '--chapter-border': chapterBorder[chapterIndex]
+        } as React.CSSProperties
+      }
     >
-      {title && <h2 className={styles.title}>{title}</h2>}
-      <div className={styles.content}>{children}</div>
+      {title && (
+        <h2 className="mb-4 font-display text-[18px] uppercase tracking-[0.2em] text-crt-ink text-glow-green">
+          {title}
+        </h2>
+      )}
+      <div className="relative group-data-[active=true]:animate-chapter-enter">
+        {children}
+      </div>
     </div>
   );
 }

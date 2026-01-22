@@ -38,23 +38,26 @@ describe('ConfigPanel', () => {
     vi.restoreAllMocks();
   });
 
-  it('steps from persona to audience to tweet in order', () => {
-    render(<ConfigPanel />);
-    expect(screen.queryByLabelText('Expert Mode')).not.toBeInTheDocument();
+  it('renders persona step when currentStep is 0', () => {
+    render(<ConfigPanel currentStep={0} />);
+    expect(screen.getByTestId('step-persona')).toBeInTheDocument();
     expect(screen.getByText('Tech Founder')).toBeInTheDocument();
     expect(
       screen.getByText('Building the future, one pivot at a time')
     ).toHaveClass(styles.personaSubtitleLarge);
-    expect(screen.getByTestId('step-persona')).toBeInTheDocument();
     expect(screen.queryByTestId('step-audience')).not.toBeInTheDocument();
     expect(screen.queryByTestId('step-tweet')).not.toBeInTheDocument();
+  });
 
-    fireEvent.click(screen.getByRole('button', { name: /continue to audience/i }));
+  it('renders audience step when currentStep is 1', () => {
+    render(<ConfigPanel currentStep={1} />);
     expect(screen.getByTestId('step-audience')).toBeInTheDocument();
-    expect(screen.getByTestId('audience-chip-tech')).toBeInTheDocument();
     expect(screen.queryByTestId('step-persona')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('step-tweet')).not.toBeInTheDocument();
+  });
 
-    fireEvent.click(screen.getByRole('button', { name: /continue to tweet/i }));
+  it('renders tweet step when currentStep is 2', () => {
+    render(<ConfigPanel currentStep={2} />);
     expect(screen.getByTestId('step-tweet')).toBeInTheDocument();
     expect(screen.getByTestId('tweet-input')).toBeInTheDocument();
     expect(screen.getByTestId('tweet-input')).toHaveClass(
@@ -62,22 +65,36 @@ describe('ConfigPanel', () => {
     );
     expect(screen.getByTestId('tweet-counter')).toBeInTheDocument();
     expect(screen.getByTestId('sample-shuffle')).toBeInTheDocument();
-    const shufflePath = screen
-      .getByTestId('sample-shuffle')
-      .querySelector('path') as SVGPathElement;
-    expect(shufflePath).toHaveAttribute(
-      'd',
-      'M3 5h4l2 2 2-2h6M15 3l2 2-2 2M3 15h4l2-2 2 2h6M15 13l2 2-2 2'
-    );
     expect(screen.getByTestId('begin-simulation')).toBeInTheDocument();
-    expect(screen.queryByTestId('sample-select')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('step-persona')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('step-audience')).not.toBeInTheDocument();
+  });
+
+  it('calls onStepForward when continue button is clicked', () => {
+    const onStepForward = vi.fn();
+    render(<ConfigPanel currentStep={0} onStepForward={onStepForward} />);
+    fireEvent.click(screen.getByRole('button', { name: /continue to audience/i }));
+    expect(onStepForward).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls onStepBack when back button is clicked', () => {
+    const onStepBack = vi.fn();
+    render(<ConfigPanel currentStep={1} onStepBack={onStepBack} />);
+    fireEvent.click(screen.getByRole('button', { name: /back to persona/i }));
+    expect(onStepBack).toHaveBeenCalledTimes(1);
+  });
+
+  it('marks config panel as unframed', () => {
+    render(<ConfigPanel currentStep={0} />);
+    expect(screen.getByTestId('config-panel')).toHaveAttribute(
+      'data-surface',
+      'bare'
+    );
   });
 
   it('preloads a tweet and shuffles samples', () => {
     vi.spyOn(Math, 'random').mockReturnValue(0.9);
-    render(<ConfigPanel />);
-    fireEvent.click(screen.getByRole('button', { name: /continue to audience/i }));
-    fireEvent.click(screen.getByRole('button', { name: /continue to tweet/i }));
+    render(<ConfigPanel currentStep={2} />);
     expect(screen.getByTestId('tweet-input')).toHaveValue(
       SAMPLE_TWEETS[0].text
     );
@@ -87,60 +104,31 @@ describe('ConfigPanel', () => {
     );
   });
 
-  it('shows defaults toast when advancing without explicit choices', () => {
-    render(<ConfigPanel />);
-    fireEvent.click(screen.getByRole('button', { name: /continue to audience/i }));
-    expect(
-      screen.getByText(/Using defaults: AI\/ML Researcher persona/i)
-    ).toBeInTheDocument();
-  });
-
-  it('toggles audience selections via multi-select chips', () => {
-    render(<ConfigPanel />);
-    fireEvent.click(screen.getByRole('button', { name: /continue to audience/i }));
+  it('toggles audience selections via multi-select chips on desktop', () => {
+    // Mock desktop viewport
+    Object.defineProperty(window, 'innerWidth', { value: 800, writable: true });
+    render(<ConfigPanel currentStep={1} />);
     const chip = screen.getByTestId('audience-chip-tech');
     expect(chip).toHaveAttribute('aria-pressed', 'true');
     fireEvent.click(chip);
     expect(chip).toHaveAttribute('aria-pressed', 'false');
   });
 
-  it('marks persona grid as mobile layout when viewport is small', () => {
-    const originalMatchMedia = window.matchMedia;
-    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
-      matches: query.includes('max-width: 900px'),
-      media: query,
-      onchange: null,
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-      dispatchEvent: vi.fn()
-    }));
-
-    render(<ConfigPanel />);
-    expect(screen.getByTestId('persona-grid')).toHaveAttribute(
-      'data-layout',
-      'mobile'
-    );
-
-    window.matchMedia = originalMatchMedia;
-  });
-
-  it('renders persona icons', () => {
-    render(<ConfigPanel />);
+  it('renders persona icons on desktop', () => {
+    // Mock desktop viewport
+    Object.defineProperty(window, 'innerWidth', { value: 800, writable: true });
+    render(<ConfigPanel currentStep={0} />);
     expect(screen.getAllByTestId('persona-icon').length).toBeGreaterThan(0);
   });
 
   it('starts simulation on begin button', () => {
-    render(<ConfigPanel />);
-    fireEvent.click(screen.getByRole('button', { name: /continue to audience/i }));
-    fireEvent.click(screen.getByRole('button', { name: /continue to tweet/i }));
+    render(<ConfigPanel currentStep={2} />);
     fireEvent.click(screen.getByTestId('begin-simulation'));
     expect(useConfigStore.getState().simulationStarted).toBe(true);
   });
 
   it('does not render expert mode toggle', () => {
-    render(<ConfigPanel />);
+    render(<ConfigPanel currentStep={0} />);
     expect(screen.queryByTestId('expert-check')).not.toBeInTheDocument();
   });
 });

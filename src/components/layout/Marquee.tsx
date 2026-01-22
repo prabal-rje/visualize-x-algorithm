@@ -1,3 +1,4 @@
+import { Home, Github, Twitter, Linkedin } from 'lucide-react';
 import { ATTRIBUTION } from '../../data/attribution';
 
 export default function Marquee() {
@@ -17,7 +18,7 @@ export default function Marquee() {
           target="_blank"
           aria-label="See project on GitHub"
         >
-          <span aria-hidden="true">⌘</span>
+          <Github size={14} aria-hidden="true" />
           <span>GitHub</span>
         </a>
         <a
@@ -27,7 +28,7 @@ export default function Marquee() {
           target="_blank"
           aria-label="Follow on Twitter"
         >
-          <span aria-hidden="true">𝕏</span>
+          <Twitter size={14} aria-hidden="true" />
           <span>@prabal_</span>
         </a>
         <a
@@ -37,7 +38,7 @@ export default function Marquee() {
           target="_blank"
           aria-label="Connect on LinkedIn"
         >
-          <span aria-hidden="true">in</span>
+          <Linkedin size={14} aria-hidden="true" />
         </a>
         <a
           className="inline-flex items-center gap-1.5 px-1 py-2 text-crt-amber transition-colors hover:text-crt-ink"
@@ -46,7 +47,7 @@ export default function Marquee() {
           target="_blank"
           aria-label="Visit prabal.ca"
         >
-          <span aria-hidden="true">🏠</span>
+          <Home size={14} aria-hidden="true" />
         </a>
       </div>
 
@@ -59,7 +60,7 @@ export default function Marquee() {
           rel="noreferrer"
           target="_blank"
         >
-          <span aria-hidden="true">⌘</span>
+          <Github size={16} aria-hidden="true" />
           <span>See on GitHub</span>
         </a>
         <span className="text-crt-ink/50">•</span>
@@ -70,7 +71,7 @@ export default function Marquee() {
           rel="noreferrer"
           target="_blank"
         >
-          <span aria-hidden="true">𝕏</span>
+          <Twitter size={16} aria-hidden="true" />
           <span>@prabal_</span>
         </a>
         <span className="text-crt-ink/50">•</span>
@@ -80,7 +81,7 @@ export default function Marquee() {
           rel="noreferrer"
           target="_blank"
         >
-          <span aria-hidden="true">in</span>
+          <Linkedin size={16} aria-hidden="true" />
           <span>LinkedIn</span>
         </a>
         <span className="text-crt-ink/50">•</span>
@@ -90,7 +91,7 @@ export default function Marquee() {
           rel="noreferrer"
           target="_blank"
         >
-          <span aria-hidden="true">🏠</span>
+          <Home size={16} aria-hidden="true" />
           <span>prabal.ca</span>
         </a>
       </div>

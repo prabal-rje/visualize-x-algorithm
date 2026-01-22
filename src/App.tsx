@@ -86,7 +86,12 @@ function App() {
       <Suspense fallback={<ChapterSkeleton />}>
         {chapterIndex === 0 && (
           <ChapterWrapper chapterIndex={0} isActive={true}>
-            <Chapter0Scene currentStep={subChapterIndex} isActive={true} />
+            <Chapter0Scene
+              currentStep={subChapterIndex}
+              isActive={true}
+              onStepForward={() => dispatch({ type: 'STEP_FORWARD' })}
+              onStepBack={() => dispatch({ type: 'STEP_BACK' })}
+            />
           </ChapterWrapper>
         )}
         {chapterIndex === 1 && (
@@ -156,7 +161,7 @@ function App() {
     >
       <div
         data-testid="app-shell"
-        className="ds-shell relative min-h-screen grid-rows-[auto_auto_1fr] bg-crt-void bg-crt-veil"
+        className="ds-shell relative min-h-screen grid-rows-[auto_auto_1fr] bg-crt-void bg-crt-veil max-sm:px-0"
         data-mobile={isMobile}
         data-reduced-motion={prefersReducedMotion}
         data-high-contrast={prefersHighContrast}

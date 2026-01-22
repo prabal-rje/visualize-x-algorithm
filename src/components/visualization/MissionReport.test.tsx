@@ -16,6 +16,14 @@ describe('MissionReport', () => {
     expect(screen.getByText('Mission Report')).toBeInTheDocument();
   });
 
+  it('marks mission report as design-system layout', () => {
+    render(<MissionReport {...defaultProps} />);
+    expect(screen.getByTestId('mission-report')).toHaveAttribute(
+      'data-system',
+      'report'
+    );
+  });
+
   it('displays reach value', () => {
     render(<MissionReport {...defaultProps} reach={2500} />);
     expect(screen.getByText('2500')).toBeInTheDocument();

@@ -8,6 +8,7 @@
   width: min(100%, 1100px);
   margin: 0 auto;
   position: relative;
+  box-sizing: border-box;
 }
 
 @media (max-width: 560px) {

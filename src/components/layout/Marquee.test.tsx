@@ -14,8 +14,11 @@ describe('Marquee', () => {
     });
   });
 
-  it('renders duplicated marquee tracks for seamless loop', () => {
+  it('marks marquee as design-system layout', () => {
     render(<Marquee />);
-    expect(screen.getAllByTestId('marquee-track')).toHaveLength(2);
+    expect(screen.getByTestId('marquee')).toHaveAttribute(
+      'data-system',
+      'marquee'
+    );
   });
 });

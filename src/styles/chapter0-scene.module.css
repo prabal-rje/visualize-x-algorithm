@@ -105,9 +105,21 @@
   }
 }
 
+@media (max-width: 560px) {
+  .container {
+    padding: 10px 12px;
+    align-items: center;
+  }
+
+  .content {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
 @media (max-width: 400px) {
   .container {
-    padding: 10px 6px;
+    padding: 8px 10px;
   }
 
   .title {

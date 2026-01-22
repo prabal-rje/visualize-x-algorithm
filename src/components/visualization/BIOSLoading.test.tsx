@@ -18,6 +18,14 @@ describe('BIOSLoading', () => {
     expect(screen.getByTestId('bios-loading')).toBeInTheDocument();
   });
 
+  it('marks bios loading as design-system layout', () => {
+    render(<BIOSLoading />);
+    expect(screen.getByTestId('bios-loading')).toHaveAttribute(
+      'data-system',
+      'bios'
+    );
+  });
+
   it('displays progress bar with role="progressbar"', () => {
     render(<BIOSLoading />);
     const progressbar = screen.getByRole('progressbar');

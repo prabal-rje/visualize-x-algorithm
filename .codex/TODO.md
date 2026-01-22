@@ -13,17 +13,13 @@ Instructions:
 #### Pre-Start
 
 
-
 #### Design & Plan
- 
 
 
 #### Phase 1: Loadout Chapter + Arena Gating
- 
 
 
 #### Phase 2: CRT Controls Overlay
- 
 
 ##### Phase 2.5: Square-ish dimensions
  
@@ -53,7 +49,7 @@ Instructions:
 #### Phase 6: Chapter 5 Split + Delivery Feedback
 
 #### Pre-Finish
- 
+
 
 ### 0. CRT Fidelity Fixes
 
@@ -82,6 +78,84 @@ Instructions:
 
 ## Completed
 - [x] Move completed tasks to Completed.
+
+### Feedback Fixes: Arena + Marquee + Stack
+
+#### Pre-Start
+- [x] Review feedback screenshots for extra bounding boxes and duplications.
+- [x] Capture baseline Chrome MCP screenshots (top bar + chapter 0).
+
+#### Design & Plan
+- [x] Draft feedback-fix design notes.
+- [x] Draft implementation plan with TDD steps.
+
+#### Phase 1: Loadout Chapter + Arena Gating
+- [x] Remove extra arena bounding boxes (shell + main).
+- [x] Remove ConfigPanel border/background framing.
+- [x] Fix marquee duplication and animation.
+- [x] Remove function stack duplication and add link emoji + GitHub link.
+- [x] Remove Mission Report side panel from app shell.
+- [x] Update tests for new structure.
+
+#### Pre-Finish
+- [x] Run targeted tests for feedback fixes.
+- [x] Capture final Chrome MCP screenshots.
+- [x] Update `.codex/TODO.md` and move completed tasks.
+
+### 0. Arena Darkness + Responsiveness
+
+#### Pre-Start
+- [x] Review legacy arena screenshots in `.trash` for visual parity.
+- [x] Capture baseline Chrome MCP screenshot (desktop).
+
+#### Design & Plan
+- [x] Draft arena darkness + responsiveness design doc.
+- [x] Draft implementation plan with TDD steps.
+
+#### Phase 1: Arena Surfaces
+- [x] Add CRT void/panel-deep tokens + restore spacing scale.
+- [x] Apply arena surface classes to app shell, timeline, marquee, and chapter canvas.
+- [x] Align ChapterWrapper surface to deep panel styling.
+- [x] Update tests for arena surface classes.
+
+#### Phase 2: Responsive Extremes
+- [x] Add height-based spacing adjustments for short viewports.
+- [x] Add small-screen spacing adjustments for phone/tablet widths.
+- [x] Capture Chrome MCP screenshots across target viewports.
+
+#### Pre-Finish
+- [x] Run targeted tests for arena styling.
+- [x] Capture final Chrome MCP screenshots.
+- [x] Update `.codex/TODO.md` and move completed tasks.
+
+### 0. Tailwind Design System Overhaul
+
+#### Pre-Start
+- [x] Capture baseline Chrome MCP screenshot (desktop).
+- [x] Review Tailwind config and layout CSS modules for refactor targets.
+
+#### Design & Plan
+- [x] Draft Tailwind design system design doc.
+- [x] Draft implementation plan with TDD steps.
+
+#### Phase 1: Design System Foundations
+- [x] Extend Tailwind theme (colors, spacing, containers, grids).
+- [x] Add global design-system layer utilities/components.
+- [x] Add layout helper classes + data attribute variants.
+
+#### Phase 2: Component Refactors
+- [x] Refactor App shell layout to Tailwind system.
+- [x] Refactor Marquee, BIOSLoading, MissionReport, ChapterWrapper to Tailwind.
+- [x] Simplify Timeline layout using design system utilities.
+
+#### Phase 3: Cleanup
+- [x] Remove unused CSS modules and simplify styles.
+- [x] Align/extend tests to cover new classnames and layout helpers.
+
+#### Pre-Finish
+- [x] Capture Chrome MCP screenshots (desktop/tablet/mobile).
+- [x] Run tests and lint.
+- [x] Update `.codex/TODO.md` and move completed tasks to Completed.
 
 ### Work Review 2: UX Review Across Device Sizes
 

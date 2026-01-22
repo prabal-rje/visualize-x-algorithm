@@ -101,6 +101,34 @@ describe('Timeline', () => {
     });
   });
 
+  describe('function stack', () => {
+    it('renders a single function stack track', () => {
+      render(
+        <Timeline
+          position={defaultPosition}
+          status="running"
+          dispatch={mockDispatch}
+        />
+      );
+      expect(screen.getAllByTestId('function-stack-track')).toHaveLength(1);
+    });
+
+    it('links the function file to x-algorithm', () => {
+      render(
+        <Timeline
+          position={defaultPosition}
+          status="running"
+          dispatch={mockDispatch}
+        />
+      );
+      const link = screen.getByTestId('function-file-link');
+      expect(link).toHaveAttribute(
+        'href',
+        expect.stringContaining('https://github.com/xai-org/x-algorithm/blob/main/')
+      );
+    });
+  });
+
   describe('navigation via clicking', () => {
     it('dispatches JUMP_TO_CHAPTER when clicking a chapter marker', async () => {
       const user = userEvent.setup();
@@ -244,6 +272,20 @@ describe('Timeline', () => {
         />
       );
       expect(screen.getByTestId('function-stack')).toBeInTheDocument();
+    });
+
+    it('marks timeline as design-system layout', () => {
+      render(
+        <Timeline
+          position={defaultPosition}
+          status="running"
+          dispatch={mockDispatch}
+        />
+      );
+      expect(screen.getByTestId('timeline')).toHaveAttribute(
+        'data-system',
+        'timeline'
+      );
     });
 
     it('shows current function info', () => {

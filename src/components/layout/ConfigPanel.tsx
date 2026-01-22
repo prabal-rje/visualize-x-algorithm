@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { Shuffle } from 'lucide-react';
 import { AUDIENCES } from '../../data/audiences';
 import { PERSONAS } from '../../data/personas';
 import { useConfigStore } from '../../stores/config';
 import styles from '../../styles/config-panel.module.css';
-import { useViewport } from '../../hooks/useViewport';
 
 const MAX_TWEET_LENGTH = 280;
 type AudienceId = (typeof AUDIENCES)[number]['id'];
@@ -43,7 +43,16 @@ const getPersonaInitials = (name: string) => {
   return initials || name.slice(0, 2).toUpperCase();
 };
 
-export default function ConfigPanel() {
+type ConfigPanelProps = {
+  currentStep?: number;
+  onStepForward?: () => void;
+  onStepBack?: () => void;
+};
+
+const STEP_NAMES = ['persona', 'audience', 'tweet'] as const;
+type StepName = (typeof STEP_NAMES)[number];
+
+export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack }: ConfigPanelProps) {
   const personaId = useConfigStore((state) => state.personaId);
   const setPersonaId = useConfigStore((state) => state.setPersonaId);
   const tweetText = useConfigStore((state) => state.tweetText);
@@ -52,14 +61,50 @@ export default function ConfigPanel() {
   const audienceMix = useConfigStore((state) => state.audienceMix);
   const setAudienceMix = useConfigStore((state) => state.setAudienceMix);
   const beginSimulation = useConfigStore((state) => state.beginSimulation);
-  const { isMobile } = useViewport();
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
-  const [step, setStep] = useState<'persona' | 'audience' | 'tweet'>('persona');
+  useEffect(() => {
+    const checkWidth = () => {
+      setIsPhoneWidth(window.innerWidth <= 600);
+    };
+    checkWidth();
+    window.addEventListener('resize', checkWidth);
+    return () => window.removeEventListener('resize', checkWidth);
+  }, []);
+
+  // Derive step name from currentStep prop (controlled by simulation state)
+  const step: StepName = STEP_NAMES[currentStep] ?? 'persona';
+
+  // Helper to advance - use callback if provided, otherwise no-op
+  const advanceStep = () => onStepForward?.();
+  const goBackStep = () => onStepBack?.();
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [personaTouched, setPersonaTouched] = useState(false);
   const [audienceTouched, setAudienceTouched] = useState(false);
+  const [personaCarouselIndex, setPersonaCarouselIndex] = useState(0);
+  const [audienceCarouselIndex, setAudienceCarouselIndex] = useState(0);
   const toastTimeout = useRef<number | null>(null);
   const remaining = MAX_TWEET_LENGTH - tweetText.length;
+
+  const cyclePersona = useCallback((direction: 'left' | 'right') => {
+    setPersonaCarouselIndex((prev) => {
+      if (direction === 'left') {
+        return prev === 0 ? PERSONAS.length - 1 : prev - 1;
+      } else {
+        return prev === PERSONAS.length - 1 ? 0 : prev + 1;
+      }
+    });
+  }, []);
+
+  const cycleAudience = useCallback((direction: 'left' | 'right') => {
+    setAudienceCarouselIndex((prev) => {
+      if (direction === 'left') {
+        return prev === 0 ? AUDIENCES.length - 1 : prev - 1;
+      } else {
+        return prev === AUDIENCES.length - 1 ? 0 : prev + 1;
+      }
+    });
+  }, []);
 
   const showDefaultsToast = () => {
     setToastMessage('Using defaults: AI/ML Researcher persona, balanced audience mix.');
@@ -123,108 +168,238 @@ export default function ConfigPanel() {
       {step === 'persona' && (
         <section className={styles.section} data-testid="step-persona">
           <h3 className={styles.sectionTitle}>Persona</h3>
-          <div
-            className={styles.personaGrid}
-            data-testid="persona-grid"
-            data-layout={isMobile ? 'mobile' : 'desktop'}
-          >
-            {PERSONAS.map((persona) => (
-              <button
-                key={persona.id}
-                type="button"
-                className={
-                  persona.id === personaId ? styles.personaActive : styles.persona
-                }
-                aria-pressed={persona.id === personaId}
-                onClick={() => {
-                  setPersonaId(persona.id);
-                  setPersonaTouched(true);
-                  if (!audienceTouched) {
-                    applyPersonaDefaults(persona.id);
-                  }
-                }}
-              >
-                <div className={styles.personaHeader}>
-                  <span
-                    className={styles.personaIcon}
-                    data-testid="persona-icon"
-                    aria-hidden="true"
-                  >
-                    {getPersonaInitials(persona.name)}
-                  </span>
-                  <div className={styles.personaName}>{persona.name}</div>
-                </div>
-                <div
-                  className={`${styles.personaSubtitle} ${styles.personaSubtitleLarge}`}
+          {isPhoneWidth ? (
+            <>
+              <div className={styles.personaCarouselWrapper}>
+                <button
+                  type="button"
+                  className={`${styles.carouselArrow} ${styles.carouselArrowLeft}`}
+                  onClick={() => cyclePersona('left')}
+                  aria-label="Previous persona"
                 >
-                  {persona.subtitle}
+                  ◀
+                </button>
+                <div
+                  className={styles.personaGrid}
+                  data-testid="persona-grid"
+                  data-layout="mobile"
+                >
+                  {(() => {
+                    const persona = PERSONAS[personaCarouselIndex];
+                    return (
+                      <button
+                        key={persona.id}
+                        type="button"
+                        className={
+                          persona.id === personaId ? styles.personaActive : styles.persona
+                        }
+                        aria-pressed={persona.id === personaId}
+                        onClick={() => {
+                          setPersonaId(persona.id);
+                          setPersonaTouched(true);
+                          if (!audienceTouched) {
+                            applyPersonaDefaults(persona.id);
+                          }
+                          // Auto-advance to audience on mobile
+                          advanceStep();
+                        }}
+                      >
+                        <div className={styles.personaHeader}>
+                          <span
+                            className={styles.personaIcon}
+                            data-testid="persona-icon"
+                            aria-hidden="true"
+                          >
+                            {getPersonaInitials(persona.name)}
+                          </span>
+                          <div className={styles.personaName}>{persona.name}</div>
+                        </div>
+                        <div
+                          className={`${styles.personaSubtitle} ${styles.personaSubtitleLarge}`}
+                        >
+                          {persona.subtitle}
+                        </div>
+                      </button>
+                    );
+                  })()}
                 </div>
-              </button>
-            ))}
-          </div>
-          <div className={styles.stepActions}>
-            <button
-              className={styles.stepButton}
-              onClick={() => {
-                if (!personaTouched && !audienceTouched) {
-                  showDefaultsToast();
-                }
-                setStep('audience');
-              }}
-              type="button"
+                <button
+                  type="button"
+                  className={`${styles.carouselArrow} ${styles.carouselArrowRight}`}
+                  onClick={() => cyclePersona('right')}
+                  aria-label="Next persona"
+                >
+                  ▶
+                </button>
+              </div>
+              <div className={styles.carouselCounter}>
+                {personaCarouselIndex + 1} / {PERSONAS.length} — tap to select
+              </div>
+            </>
+          ) : (
+            <div
+              className={styles.personaGrid}
+              data-testid="persona-grid"
+              data-layout="desktop"
             >
-              Continue to Audience
-            </button>
-          </div>
+              {PERSONAS.map((persona) => (
+                <button
+                  key={persona.id}
+                  type="button"
+                  className={
+                    persona.id === personaId ? styles.personaActive : styles.persona
+                  }
+                  aria-pressed={persona.id === personaId}
+                  onClick={() => {
+                    setPersonaId(persona.id);
+                    setPersonaTouched(true);
+                    if (!audienceTouched) {
+                      applyPersonaDefaults(persona.id);
+                    }
+                  }}
+                >
+                  <div className={styles.personaHeader}>
+                    <span
+                      className={styles.personaIcon}
+                      data-testid="persona-icon"
+                      aria-hidden="true"
+                    >
+                      {getPersonaInitials(persona.name)}
+                    </span>
+                    <div className={styles.personaName}>{persona.name}</div>
+                  </div>
+                  <div
+                    className={`${styles.personaSubtitle} ${styles.personaSubtitleLarge}`}
+                  >
+                    {persona.subtitle}
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+          {!isPhoneWidth && (
+            <div className={styles.stepActions}>
+              <button
+                className={styles.stepButton}
+                onClick={() => {
+                  if (!personaTouched && !audienceTouched) {
+                    showDefaultsToast();
+                  }
+                  advanceStep();
+                }}
+                type="button"
+              >
+                Continue to Audience
+              </button>
+            </div>
+          )}
         </section>
       )}
 
       {step === 'audience' && (
         <section className={styles.section} data-testid="step-audience">
-          <h3 className={styles.sectionTitle}>Audience Mix</h3>
-          <div className={styles.audienceList}>
-            {AUDIENCES.map((audience) => {
-              const isSelected = selectedAudienceIds.includes(audience.id);
-              return (
+          <h3 className={styles.sectionTitle}>Audience</h3>
+          {isPhoneWidth ? (
+            <>
+              <div className={styles.personaCarouselWrapper}>
                 <button
-                  key={audience.id}
                   type="button"
-                  data-testid={`audience-chip-${audience.id}`}
-                  className={
-                    isSelected ? styles.audienceChipActive : styles.audienceChip
-                  }
-                  aria-pressed={isSelected}
-                  onClick={() => handleAudienceToggle(audience.id)}
+                  className={`${styles.carouselArrow} ${styles.carouselArrowLeft}`}
+                  onClick={() => cycleAudience('left')}
+                  aria-label="Previous audience"
                 >
-                  <span className={styles.audienceLabel}>{audience.label}</span>
-                  <span className={styles.audienceMeta}>
-                    {isSelected ? 'Selected' : 'Tap to add'}
-                  </span>
+                  ◀
                 </button>
-              );
-            })}
-          </div>
-          <div className={styles.stepActions}>
-            <button
-              className={styles.stepButtonGhost}
-              onClick={() => setStep('persona')}
-              type="button"
-            >
-              Back to Persona
-            </button>
-            <button
-              className={styles.stepButton}
-              onClick={() => {
-                if (!audienceTouched && !personaTouched) {
-                  showDefaultsToast();
-                }
-                setStep('tweet');
-              }}
-              type="button"
-            >
-              Continue to Tweet
-            </button>
-          </div>
+                <div
+                  className={styles.personaGrid}
+                  data-testid="audience-carousel"
+                  data-layout="mobile"
+                >
+                  {(() => {
+                    const audience = AUDIENCES[audienceCarouselIndex];
+                    const isSelected = selectedAudienceIds.includes(audience.id);
+                    return (
+                      <button
+                        key={audience.id}
+                        type="button"
+                        data-testid={`audience-chip-${audience.id}`}
+                        className={
+                          isSelected ? styles.personaActive : styles.persona
+                        }
+                        aria-pressed={isSelected}
+                        onClick={() => {
+                          // On mobile, single-select: clear others and select this one
+                          setAudienceMix(buildAudienceMix([audience.id]));
+                          setAudienceTouched(true);
+                          // Auto-advance to tweet
+                          advanceStep();
+                        }}
+                      >
+                        <div className={styles.personaName}>{audience.label}</div>
+                      </button>
+                    );
+                  })()}
+                </div>
+                <button
+                  type="button"
+                  className={`${styles.carouselArrow} ${styles.carouselArrowRight}`}
+                  onClick={() => cycleAudience('right')}
+                  aria-label="Next audience"
+                >
+                  ▶
+                </button>
+              </div>
+              <div className={styles.carouselCounter}>
+                {audienceCarouselIndex + 1} / {AUDIENCES.length} — tap to select
+              </div>
+            </>
+          ) : (
+            <div className={styles.audienceList}>
+              {AUDIENCES.map((audience) => {
+                const isSelected = selectedAudienceIds.includes(audience.id);
+                return (
+                  <button
+                    key={audience.id}
+                    type="button"
+                    data-testid={`audience-chip-${audience.id}`}
+                    className={
+                      isSelected ? styles.audienceChipActive : styles.audienceChip
+                    }
+                    aria-pressed={isSelected}
+                    onClick={() => handleAudienceToggle(audience.id)}
+                  >
+                    <span className={styles.audienceLabel}>{audience.label}</span>
+                    <span className={styles.audienceMeta}>
+                      {isSelected ? 'Selected' : 'Tap to add'}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+          {!isPhoneWidth && (
+            <div className={styles.stepActions}>
+              <button
+                className={styles.stepButtonGhost}
+                onClick={() => goBackStep()}
+                type="button"
+              >
+                Back to Persona
+              </button>
+              <button
+                className={styles.stepButton}
+                onClick={() => {
+                  if (!audienceTouched && !personaTouched) {
+                    showDefaultsToast();
+                  }
+                  advanceStep();
+                }}
+                type="button"
+              >
+                Continue to Tweet
+              </button>
+            </div>
+          )}
         </section>
       )}
 
@@ -238,17 +413,7 @@ export default function ConfigPanel() {
               onClick={shuffleSampleTweet}
               type="button"
             >
-              <span className={styles.shuffleIcon} aria-hidden="true">
-                <svg viewBox="0 0 20 20" role="presentation">
-                  <path
-                    d="M3 5h4l2 2 2-2h6M15 3l2 2-2 2M3 15h4l2-2 2 2h6M15 13l2 2-2 2"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="square"
-                    strokeWidth="1.5"
-                  />
-                </svg>
-              </span>
+              <Shuffle className={styles.shuffleIcon} aria-hidden="true" size={18} />
               Shuffle Draft
             </button>
           </div>
@@ -265,7 +430,7 @@ export default function ConfigPanel() {
           <div className={styles.stepActions}>
             <button
               className={styles.stepButtonGhost}
-              onClick={() => setStep('audience')}
+              onClick={() => goBackStep()}
               type="button"
             >
               Back to Audience

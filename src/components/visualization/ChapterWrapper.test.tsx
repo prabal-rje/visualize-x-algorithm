@@ -52,14 +52,14 @@ describe('ChapterWrapper', () => {
     expect(wrapper).toHaveAttribute('data-in-view', 'true');
   });
 
-  it('applies chapter-specific class', () => {
+  it('marks wrapper as design-system layout', () => {
     render(
       <ChapterWrapper chapterIndex={2} isActive={true}>
         <div>Content</div>
       </ChapterWrapper>
     );
     const wrapper = screen.getByTestId('chapter-wrapper-2');
-    expect(wrapper.className).toMatch(/chapter/);
+    expect(wrapper).toHaveAttribute('data-system', 'chapter');
   });
 
   it('mounts without error when active', () => {

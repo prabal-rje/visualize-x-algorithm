@@ -19,14 +19,14 @@ export default function ChapterWrapper({
   title,
   children
 }: ChapterWrapperProps) {
-  const chapterBorder = {
+  const chapterBorder: Record<number, string> = {
     0: '51 255 51',
     1: '0 170 255',
     2: '255 176 0',
     3: '255 100 100',
     4: '180 100 255',
     5: '255 140 0'
-  } as const;
+  };
   const wrapperRef = useRef<HTMLDivElement>(null);
   const wasActiveRef = useRef(isActive);
   const [inView, setInView] = useState(true);
@@ -113,7 +113,7 @@ export default function ChapterWrapper({
   return (
     <div
       ref={wrapperRef}
-      className="group relative rounded-panel border border-[color:rgb(var(--chapter-border)/0.5)] bg-crt-panel-deep/80 p-panel text-crt-ink shadow-crt-inset data-[active=false]:pointer-events-none data-[active=false]:opacity-30"
+      className="group relative rounded-panel border border-[color:rgb(var(--chapter-border)/0.5)] bg-crt-panel-deep/80 p-panel text-crt-ink shadow-crt-inset data-[active=false]:pointer-events-none data-[active=false]:opacity-30 max-sm:border-0 max-sm:rounded-none max-sm:px-0 max-sm:py-3 max-sm:shadow-none max-sm:bg-transparent"
       data-testid={`chapter-wrapper-${chapterIndex}`}
       data-active={isActive}
       data-in-view={inView}

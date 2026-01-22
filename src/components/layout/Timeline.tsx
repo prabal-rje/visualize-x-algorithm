@@ -192,12 +192,12 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       </span>
     ));
 
-  // Navigation buttons component for reuse
+  // Navigation buttons component for reuse - square buttons
   const NavButtons = ({ className = '' }: { className?: string }) => (
     <div className={`flex gap-2 ${className}`}>
       <button
         type="button"
-        className="crt-button px-3 py-2 text-lg sm:px-4 sm:text-xl"
+        className="crt-button flex h-10 w-10 items-center justify-center text-lg sm:h-11 sm:w-11 sm:text-xl"
         onClick={handleStartOver}
         aria-label="Start over"
       >
@@ -205,7 +205,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       </button>
       <button
         type="button"
-        className="crt-button px-3 py-2 text-lg sm:px-4 sm:text-xl"
+        className="crt-button flex h-10 w-10 items-center justify-center text-lg sm:h-11 sm:w-11 sm:text-xl"
         onClick={handleStepBack}
         disabled={atStart}
         aria-label="Step back"
@@ -214,7 +214,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       </button>
       <button
         type="button"
-        className="crt-button px-3 py-2 text-lg sm:px-4 sm:text-xl"
+        className="crt-button flex h-10 w-10 items-center justify-center text-lg sm:h-11 sm:w-11 sm:text-xl"
         onClick={handlePlayPause}
         aria-label={isPlaying ? 'Pause' : 'Play'}
       >
@@ -222,7 +222,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       </button>
       <button
         type="button"
-        className="crt-button px-3 py-2 text-lg sm:px-4 sm:text-xl"
+        className="crt-button flex h-10 w-10 items-center justify-center text-lg sm:h-11 sm:w-11 sm:text-xl"
         onClick={handleStepForward}
         disabled={atEnd}
         aria-label="Step forward"
@@ -242,7 +242,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       <div className="flex flex-col gap-3 sm:hidden">
         {currentFunction && (
           <a
-            className="inline-flex items-center justify-center gap-2 text-xs text-crt-cyan transition hover:text-crt-ink"
+            className="inline-flex items-center justify-center gap-2 text-xs text-crt-ink transition hover:text-crt-amber"
             href={`${sourceBaseUrl}${currentFunction.file}`}
             rel="noreferrer"
             target="_blank"
@@ -255,9 +255,9 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       </div>
 
       {/* Desktop/Tablet: Nav buttons left, Function slideshow right */}
-      <div className="hidden sm:flex sm:items-stretch sm:gap-4" data-testid="function-stack">
+      <div className="hidden sm:flex sm:items-center sm:gap-4" data-testid="function-stack">
         {/* Left: Nav buttons */}
-        <NavButtons className="shrink-0" />
+        <NavButtons className="shrink-0 self-center" />
 
         {/* Right: Function slideshow */}
         {functionStack.length > 0 && currentFunction && (

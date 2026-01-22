@@ -40,9 +40,6 @@ export default function BIOSLoading() {
   }, [startTime]);
 
   const progressPercent = Math.round(progress * 100);
-  const barWidth = Math.round(progress * 40);
-  const barFill = '\u2588'.repeat(barWidth);
-  const barEmpty = '\u2591'.repeat(40 - barWidth);
 
   const getStepStatus = (index: number) => {
     const stepProgress = (index + 1) / INIT_STEPS.length;
@@ -53,15 +50,15 @@ export default function BIOSLoading() {
 
   return (
     <section
-      className="flex w-full max-w-[640px] flex-col gap-4 border border-crt-line bg-crt-black p-panel text-[16px] text-crt-ink shadow-[inset_0_0_30px_rgba(51,255,51,0.08),_0_0_24px_rgba(51,255,51,0.15)]"
+      className="flex w-full max-w-2xl flex-col gap-3 border border-crt-line bg-crt-black p-panel text-sm text-crt-ink shadow-[inset_0_0_30px_rgba(51,255,51,0.08),_0_0_24px_rgba(51,255,51,0.15)] sm:gap-4 sm:text-base"
       data-testid="bios-loading"
       data-system="bios"
     >
       <header className="text-center">
-        <div className="text-[20px] tracking-[0.1em] text-crt-amber text-glow-amber">
+        <div className="text-base tracking-[0.1em] text-crt-amber text-glow-amber sm:text-xl">
           X-ALGORITHM VISUALIZER v1.0
         </div>
-        <div className="text-[14px] text-crt-ink/70">
+        <div className="text-xs text-crt-ink/70 sm:text-sm">
           (c) 2026{' '}
           <a
             href={ATTRIBUTION.links.twitter}
@@ -74,54 +71,56 @@ export default function BIOSLoading() {
         </div>
       </header>
 
-      <div className="mt-2">
+      <div className="mt-1 sm:mt-2">
         <div className="tracking-[0.1em] text-crt-ink text-glow-green">
           SYSTEM INITIALIZATION
         </div>
-        <div className="overflow-hidden text-clip whitespace-nowrap text-crt-ink/50">
-          {'═'.repeat(60)}
-        </div>
+        <div className="h-px w-full bg-gradient-to-r from-crt-ink/50 via-crt-ink/30 to-crt-ink/50" />
       </div>
 
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-0.5 text-xs sm:gap-1 sm:text-sm">
         {INIT_STEPS.map((step, index) => (
-          <div key={step.id} className="flex justify-between text-crt-ink">
-            <span>&gt; {step.label}</span>
-            <span className="font-bold text-crt-amber">
+          <div key={step.id} className="flex justify-between gap-2 text-crt-ink">
+            <span className="truncate">&gt; {step.label}</span>
+            <span className="shrink-0 font-bold text-crt-amber">
               {getStepStatus(index)}
             </span>
           </div>
         ))}
       </div>
 
-      <div className="mt-2">
-        <div className="flex items-center justify-between gap-4">
+      <div className="mt-1 sm:mt-2">
+        <div className="flex items-center justify-between gap-2 text-xs sm:gap-4 sm:text-sm">
           <div
-            className="font-mono tracking-[0.05em] text-crt-cyan text-glow-cyan"
+            className="relative h-4 flex-1 overflow-hidden rounded-sm border border-crt-cyan/50 bg-crt-black sm:h-5"
             role="progressbar"
             aria-valuenow={progressPercent}
             aria-valuemin={0}
             aria-valuemax={100}
           >
-            {barFill}{barEmpty} {progressPercent}%
+            <div
+              className="absolute inset-y-0 left-0 bg-crt-cyan/80 transition-[width] duration-200"
+              style={{ width: `${progressPercent}%` }}
+            />
+            <span className="absolute inset-0 flex items-center justify-center font-mono text-xs tracking-wider text-crt-cyan text-glow-cyan">
+              {progressPercent}%
+            </span>
           </div>
-          <div className="font-mono text-crt-amber text-glow-amber" data-testid="elapsed-timer">
+          <div className="shrink-0 font-mono text-crt-amber text-glow-amber" data-testid="elapsed-timer">
             [{formatElapsedTime(elapsed)}]
           </div>
         </div>
         {currentStep && (
-          <div className="mt-1 text-crt-ink/80">{currentStep}</div>
+          <div className="mt-1 truncate text-xs text-crt-ink/80 sm:text-sm">{currentStep}</div>
         )}
       </div>
 
-      <div className="mt-4">
-        <div className="overflow-hidden text-clip whitespace-nowrap text-crt-ink/50">
-          {'─'.repeat(60)}
-        </div>
-        <div className="text-crt-amber/80 text-glow-amber">
+      <div className="mt-2 sm:mt-4">
+        <div className="h-px w-full bg-gradient-to-r from-crt-ink/30 via-crt-ink/20 to-crt-ink/30" />
+        <div className="mt-2 text-xs text-crt-amber/80 text-glow-amber sm:text-sm">
           [TIP] This visualizer uses real ML models to compute real scores.
         </div>
-        <div className="text-crt-amber/80 text-glow-amber">
+        <div className="text-xs text-crt-amber/80 text-glow-amber sm:text-sm">
           The download is worth it. Trust us.
         </div>
       </div>

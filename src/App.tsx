@@ -139,11 +139,9 @@ function App() {
           data-system="shell"
         >
           <ScreenFlicker />
-          {/* Mobile: rotate 90deg to force widescreen BIOS - swap w/h so rotated fits viewport */}
-          <div className="max-w-2xl max-sm:fixed max-sm:top-1/2 max-sm:left-1/2 max-sm:-translate-x-1/2 max-sm:-translate-y-1/2 max-sm:flex max-sm:items-center max-sm:justify-center max-sm:rotate-90 max-sm:w-[100vh] max-sm:h-[100vw] max-sm:max-w-none">
-            <div className="max-sm:w-full max-sm:max-w-[calc(100vh-32px)] max-sm:px-4">
-              <BIOSLoading />
-            </div>
+          {/* Mobile: rotate 90deg for widescreen BIOS effect */}
+          <div className="px-4 max-sm:fixed max-sm:top-1/2 max-sm:left-1/2 max-sm:-translate-x-1/2 max-sm:-translate-y-1/2 max-sm:rotate-90 max-sm:w-[min(100vh,100vw)] max-sm:px-6">
+            <BIOSLoading />
           </div>
         </div>
       </CRTOverlay>
@@ -177,7 +175,7 @@ function App() {
           className="relative grid min-h-0 items-stretch gap-shell grid-cols-1"
         >
           <section
-            className="relative min-h-0 h-full overflow-x-hidden overflow-y-auto rounded-panel border border-crt-line/30 bg-crt-void/90 p-panel text-crt-ink shadow-[inset_0_0_40px_rgba(0,20,0,0.35)]"
+            className="relative min-h-0 h-full overflow-x-hidden overflow-y-auto rounded-panel border border-transparent bg-crt-void/90 p-panel text-crt-ink shadow-[inset_0_0_40px_rgba(0,20,0,0.35)]"
             data-testid="chapter-canvas"
             data-proportion="fixed"
             data-viewport-fit="true"

@@ -45,3 +45,31 @@
     transform: translateX(-50%);
   }
 }
+
+/* Pause animation on hover for accessibility */
+.container:hover .trackGroup {
+  animation-play-state: paused;
+}
+
+/* Ensure links have adequate touch targets */
+.link {
+  min-height: 24px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 4px;
+}
+
+@media (max-width: 400px) {
+  .container {
+    height: 22px;
+  }
+
+  .trackGroup {
+    font-size: 12px;
+  }
+
+  .track {
+    gap: 12px;
+    padding-right: 24px;
+  }
+}

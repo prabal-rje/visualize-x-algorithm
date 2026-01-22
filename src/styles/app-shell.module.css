@@ -121,3 +121,14 @@
     letter-spacing: 0.14em;
   }
 }
+
+@media (max-width: 400px) {
+  .appShell {
+    padding: 8px;
+    gap: 10px;
+  }
+
+  .chapterCanvas {
+    padding: 8px;
+  }
+}

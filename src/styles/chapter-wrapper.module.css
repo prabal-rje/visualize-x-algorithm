@@ -62,3 +62,15 @@
 .chapter[data-active='true'] .content {
   animation: chapter-enter 0.3s ease-out;
 }
+
+@media (max-width: 600px) {
+  .chapter {
+    padding: 14px;
+  }
+}
+
+@media (max-width: 400px) {
+  .chapter {
+    padding: 10px;
+  }
+}

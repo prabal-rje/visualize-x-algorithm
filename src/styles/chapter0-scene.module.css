@@ -24,11 +24,12 @@
 
 .title {
   font-family: var(--font-mono);
-  font-size: 26px;
+  font-size: clamp(14px, 5vw, 26px);
   color: var(--phosphor-green);
   text-shadow: 0 0 20px var(--phosphor-green);
   margin: 0;
-  letter-spacing: 0.15em;
+  letter-spacing: clamp(0, 0.5vw, 0.15em);
+  word-break: break-word;
 }
 
 .stepLabel {
@@ -104,5 +105,27 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+}
+
+@media (max-width: 400px) {
+  .container {
+    padding: 10px 6px;
+  }
+
+  .title {
+    font-size: 16px;
+    letter-spacing: 0.02em;
+  }
+
+  .narration {
+    padding: 0 6px;
+    font-size: 11px;
+  }
+
+  .stepLabel {
+    font-size: 9px;
+    padding: 3px 6px;
+    letter-spacing: 0.08em;
   }
 }

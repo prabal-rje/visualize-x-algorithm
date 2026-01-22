@@ -373,6 +373,86 @@
   }
 }
 
+@media (max-width: 400px) {
+  .timeline {
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .functionStack {
+    padding: 6px 8px;
+    gap: 4px;
+  }
+
+  .functionStackLabel {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+  }
+
+  .functionStackFile {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+  }
+
+  .functionStackItem {
+    font-size: 10px;
+  }
+
+  .functionStackSummary {
+    font-size: 10px;
+  }
+
+  .controlButton {
+    min-height: 40px;
+    padding: 6px 8px;
+    font-size: 9px;
+    letter-spacing: 0.04em;
+  }
+
+  .marker {
+    min-width: 60px;
+    padding: 6px 8px;
+  }
+
+  .chapterNumber {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+  }
+
+  .chapterLabel {
+    font-size: 9px;
+    letter-spacing: 0.04em;
+    max-width: 70px;
+  }
+
+  .scrollHint {
+    font-size: 8px;
+    right: 4px;
+    top: -12px;
+  }
+
+  .progressHeader {
+    gap: 8px;
+  }
+
+  .progressLabel {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+
+  .progressValue {
+    font-size: 9px;
+  }
+
+  .progressContainer {
+    height: 16px;
+  }
+
+  .progressText {
+    font-size: 9px;
+  }
+}
+
 @keyframes stack-scroll {
   0% {
     transform: translateX(0);

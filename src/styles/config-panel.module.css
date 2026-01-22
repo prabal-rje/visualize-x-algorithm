@@ -357,3 +357,103 @@
     margin-bottom: 8px;
   }
 }
+
+/* Critical mobile fixes for 400px and below */
+@media (max-width: 400px) {
+  .panel {
+    padding: 10px;
+    gap: 14px;
+  }
+
+  .title {
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  .sectionTitle {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+
+  .personaGrid {
+    gap: 6px;
+  }
+
+  .persona,
+  .personaActive {
+    padding: 8px;
+    gap: 6px;
+  }
+
+  .personaIcon {
+    min-width: 26px;
+    min-height: 26px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+
+  .personaHeader {
+    gap: 8px;
+  }
+
+  .personaName {
+    font-size: 13px;
+    letter-spacing: 0;
+    word-break: break-word;
+  }
+
+  .personaSubtitle {
+    font-size: 11px;
+    letter-spacing: 0;
+  }
+
+  .personaSubtitleLarge {
+    font-size: 12px;
+  }
+
+  .audienceList {
+    gap: 6px;
+  }
+
+  .audienceChip,
+  .audienceChipActive {
+    padding: 8px;
+    gap: 4px;
+  }
+
+  .audienceLabel {
+    font-size: 11px;
+    letter-spacing: 0.02em;
+  }
+
+  .audienceMeta {
+    font-size: 10px;
+  }
+
+  .stepButton,
+  .stepButtonGhost,
+  .beginButton {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    padding: 10px 8px;
+  }
+
+  .shuffleButton {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 6px 10px;
+  }
+
+  .tweetInput {
+    font-size: 14px;
+  }
+
+  .tweetInputLarge {
+    font-size: 15px;
+  }
+
+  .counter {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+  }
+}

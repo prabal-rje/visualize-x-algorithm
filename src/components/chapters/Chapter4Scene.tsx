@@ -54,9 +54,11 @@ const DEFAULT_PROBS = {
 type Chapter4SceneProps = {
   currentStep: number;
   isActive: boolean;
+  /** Callback to continue to next step */
+  onContinue?: () => void;
 };
 
-export default function Chapter4Scene({ currentStep, isActive }: Chapter4SceneProps) {
+export default function Chapter4Scene({ currentStep, isActive, onContinue }: Chapter4SceneProps) {
   const tweetText = useConfigStore((state) => state.tweetText);
   const audienceMix = useConfigStore((state) => state.audienceMix);
   const { isMobile } = useViewport();
@@ -374,6 +376,19 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
           </div>
         )}
       </div>
+
+      {/* Continue button */}
+      {onContinue && (
+        <div className="mt-6 flex justify-center">
+          <button
+            type="button"
+            className="crt-button px-8 py-3 text-sm tracking-widest"
+            onClick={onContinue}
+          >
+            CONTINUE
+          </button>
+        </div>
+      )}
     </div>
   );
 }

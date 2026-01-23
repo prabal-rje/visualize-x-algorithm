@@ -88,6 +88,11 @@ function App() {
     dispatch({ type: 'RESET' });
   }, [dispatch, resetSimulation]);
 
+  // Callback for Continue button in chapter scenes
+  const handleContinue = useCallback(() => {
+    dispatch({ type: 'STEP_FORWARD' });
+  }, [dispatch]);
+
   const { position } = simulationState;
   const isCompactChapter = position.chapterIndex >= 3;
 
@@ -113,27 +118,28 @@ function App() {
               currentStep={subChapterIndex}
               isActive={true}
               userId="8392847293"
+              onContinue={handleContinue}
             />
           </ChapterWrapper>
         )}
         {chapterIndex === 2 && (
           <ChapterWrapper chapterIndex={2} isActive={true}>
-            <Chapter2Scene currentStep={subChapterIndex} isActive={true} />
+            <Chapter2Scene currentStep={subChapterIndex} isActive={true} onContinue={handleContinue} />
           </ChapterWrapper>
         )}
         {chapterIndex === 3 && (
           <ChapterWrapper chapterIndex={3} isActive={true}>
-            <Chapter3Scene currentStep={subChapterIndex} isActive={true} />
+            <Chapter3Scene currentStep={subChapterIndex} isActive={true} onContinue={handleContinue} />
           </ChapterWrapper>
         )}
         {chapterIndex === 4 && (
           <ChapterWrapper chapterIndex={4} isActive={true}>
-            <Chapter4Scene currentStep={subChapterIndex} isActive={true} />
+            <Chapter4Scene currentStep={subChapterIndex} isActive={true} onContinue={handleContinue} />
           </ChapterWrapper>
         )}
         {chapterIndex === 5 && (
           <ChapterWrapper chapterIndex={5} isActive={true}>
-            <Chapter5Scene currentStep={subChapterIndex} isActive={true} />
+            <Chapter5Scene currentStep={subChapterIndex} isActive={true} onContinue={handleContinue} />
           </ChapterWrapper>
         )}
       </Suspense>

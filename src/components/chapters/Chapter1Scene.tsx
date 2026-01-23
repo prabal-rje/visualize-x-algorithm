@@ -11,6 +11,8 @@ type Chapter1SceneProps = {
   isActive: boolean;
   /** User ID to display */
   userId: string;
+  /** Callback to continue to next step */
+  onContinue?: () => void;
 };
 
 // Sample engagement history data
@@ -49,7 +51,8 @@ const FEATURE_SUMMARY = [
 export default function Chapter1Scene({
   currentStep,
   isActive,
-  userId
+  userId,
+  onContinue
 }: Chapter1SceneProps) {
   const { isMobile } = useViewport();
 
@@ -144,6 +147,18 @@ export default function Chapter1Scene({
         </div>
       )}
 
+      {/* Continue button */}
+      {onContinue && (
+        <div className="mt-6 flex justify-center">
+          <button
+            type="button"
+            className="crt-button px-8 py-3 text-sm tracking-widest"
+            onClick={onContinue}
+          >
+            CONTINUE
+          </button>
+        </div>
+      )}
     </div>
   );
 }

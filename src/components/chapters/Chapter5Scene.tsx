@@ -54,6 +54,8 @@ const NON_TECH_AUDIENCE_IDS = new Set(['casual', 'news', 'creators', 'bots']);
 type Chapter5SceneProps = {
   currentStep: number;
   isActive: boolean;
+  /** Callback to continue to next step */
+  onContinue?: () => void;
 };
 
 const DEFAULT_PROBS = {
@@ -67,7 +69,7 @@ const DEFAULT_PROBS = {
 type AudienceId = (typeof AUDIENCES)[number]['id'];
 type AudienceMixType = Record<AudienceId, number>;
 
-export default function Chapter5Scene({ currentStep, isActive }: Chapter5SceneProps) {
+export default function Chapter5Scene({ currentStep, isActive, onContinue }: Chapter5SceneProps) {
   const personaId = useConfigStore((state) => state.personaId);
   const tweetText = useConfigStore((state) => state.tweetText);
   const audienceMix = useConfigStore((state) => state.audienceMix);
@@ -550,6 +552,18 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
         </div>
       )}
 
+      {/* Continue button */}
+      {onContinue && (
+        <div className="mt-6 flex justify-center">
+          <button
+            type="button"
+            className="crt-button px-8 py-3 text-sm tracking-widest"
+            onClick={onContinue}
+          >
+            CONTINUE
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -18,6 +18,8 @@ type Chapter2SceneProps = {
   currentStep: number;
   /** Whether the chapter is currently active */
   isActive: boolean;
+  /** Callback to continue to next step */
+  onContinue?: () => void;
 };
 
 // Number of candidate tweets to generate for vector space visualization
@@ -105,7 +107,8 @@ function formatCategory(category: string): string {
 
 export default function Chapter2Scene({
   currentStep,
-  isActive
+  isActive,
+  onContinue
 }: Chapter2SceneProps) {
   const tweetText = useConfigStore((state) => state.tweetText);
   const { isMobile } = useViewport();
@@ -368,6 +371,18 @@ export default function Chapter2Scene({
         </div>
       )}
 
+      {/* Continue button */}
+      {onContinue && (
+        <div className="mt-6 flex justify-center">
+          <button
+            type="button"
+            className="crt-button px-8 py-3 text-sm tracking-widest"
+            onClick={onContinue}
+          >
+            CONTINUE
+          </button>
+        </div>
+      )}
     </div>
   );
 }

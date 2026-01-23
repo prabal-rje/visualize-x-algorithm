@@ -6,6 +6,8 @@ import { useViewport } from '../../hooks/useViewport';
 type Chapter3SceneProps = {
   currentStep: number;
   isActive: boolean;
+  /** Callback to continue to next step */
+  onContinue?: () => void;
 };
 
 const STEP_NARRATION = [
@@ -37,7 +39,7 @@ const STEP_DATA = [
   { gates: FRESHNESS_GATES, startCount: 2789, endCount: 1823 }
 ];
 
-export default function Chapter3Scene({ currentStep, isActive }: Chapter3SceneProps) {
+export default function Chapter3Scene({ currentStep, isActive, onContinue }: Chapter3SceneProps) {
   const { isMobile } = useViewport();
   const stepData = STEP_DATA[currentStep] || STEP_DATA[0];
   const narration = STEP_NARRATION[currentStep] || STEP_NARRATION[0];
@@ -74,6 +76,19 @@ export default function Chapter3Scene({ currentStep, isActive }: Chapter3ScenePr
           isActive={isActive}
         />
       </div>
+
+      {/* Continue button */}
+      {onContinue && (
+        <div className="mt-6 flex justify-center">
+          <button
+            type="button"
+            className="crt-button px-8 py-3 text-sm tracking-widest"
+            onClick={onContinue}
+          >
+            CONTINUE
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -231,6 +231,11 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
             </div>
 
             <div className={styles.weightsTable}>
+              <div className={styles.weightsTableHeader}>
+                <span>Action</span>
+                <span>Indicates</span>
+                <span>Relative Significance</span>
+              </div>
               <div className={styles.weightsTableRow}>
                 <span className={styles.weightsTableAction}>Repost</span>
                 <span className={styles.weightsTableReason}>spreads content virally</span>

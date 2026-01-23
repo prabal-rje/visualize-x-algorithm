@@ -237,6 +237,24 @@
   margin-bottom: 16px;
 }
 
+.weightsTableHeader {
+  display: grid;
+  grid-template-columns: 100px 1fr 60px;
+  gap: 16px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(51, 255, 51, 0.5);
+  padding: 0 16px 4px;
+  border-bottom: 1px solid rgba(51, 255, 51, 0.2);
+  margin-bottom: 4px;
+}
+
+.weightsTableHeader span:last-child {
+  text-align: right;
+}
+
 .weightsTableRow {
   display: grid;
   grid-template-columns: 100px 1fr 60px;

@@ -14,6 +14,9 @@ dist-ssr
 .worktrees/
 
 # Editor directories and files
+.codex/
+.sources
+docs
 .vscode/*
 !.vscode/extensions.json
 .idea

@@ -52,50 +52,46 @@ export default function BIOSLoading() {
 
   return (
     <section
-      className="flex w-full max-w-2xl flex-col gap-3 border border-crt-line bg-crt-black p-panel text-sm text-crt-ink shadow-[inset_0_0_30px_rgba(51,255,51,0.08),_0_0_24px_rgba(51,255,51,0.15)] sm:gap-4 sm:text-base"
+      className="crt-panel flex w-full max-w-2xl flex-col gap-4 p-panel sm:gap-5"
       data-testid="bios-loading"
       data-system="bios"
     >
       <header className="text-center">
-        <div className="text-base tracking-[0.1em] text-crt-amber text-glow-amber sm:text-xl">
-          X-ALGORITHM VISUALIZER v1.0
-        </div>
-        <div className="text-xs text-crt-ink/70 sm:text-sm">
+        <h1 className="crt-h1">X-ALGORITHM VISUALIZER v1.0</h1>
+        <p className="crt-caption mt-1">
           (c) 2026{' '}
           <a
             href={ATTRIBUTION.links.twitter}
             target="_blank"
             rel="noreferrer"
-            className="text-crt-amber/80 transition hover:text-crt-amber hover:text-glow-amber"
+            className="crt-link"
           >
             @prabal_
           </a>
           <span className="sr-only">(c) 2026 @prabal_</span>
-        </div>
+        </p>
       </header>
 
-      <div className="mt-1 sm:mt-2">
-        <div className="tracking-[0.1em] text-crt-ink text-glow-green">
-          SYSTEM INITIALIZATION
-        </div>
-        <div className="h-px w-full bg-gradient-to-r from-crt-ink/50 via-crt-ink/30 to-crt-ink/50" />
+      <div>
+        <h2 className="crt-h3 text-glow-green">SYSTEM INITIALIZATION</h2>
+        <div className="crt-divider-glow mt-2" />
       </div>
 
-      <div className="flex flex-col gap-0.5 text-xs sm:gap-1 sm:text-sm">
+      <div className="flex flex-col gap-1">
         {INIT_STEPS.map((step, index) => (
-          <div key={step.id} className="flex justify-between gap-2 text-crt-ink">
+          <div key={step.id} className="crt-body flex justify-between gap-2">
             <span className="truncate">&gt; {step.label}</span>
-            <span className="shrink-0 font-bold text-crt-amber">
+            <span className="crt-badge-amber shrink-0 !p-0 !border-0 !bg-transparent">
               {getStepStatus(index)}
             </span>
           </div>
         ))}
       </div>
 
-      <div className="mt-1 sm:mt-2">
-        <div className="flex items-center justify-between gap-2 text-xs sm:gap-4 sm:text-sm">
+      <div>
+        <div className="flex items-center justify-between gap-3">
           <div
-            className="relative h-4 flex-1 overflow-hidden rounded-sm border border-crt-cyan/50 bg-crt-black sm:h-5"
+            className="crt-progress relative flex-1"
             role="progressbar"
             aria-valuenow={progressPercent}
             aria-valuemin={0}
@@ -105,27 +101,27 @@ export default function BIOSLoading() {
               className="absolute inset-y-0 left-0 bg-crt-cyan/80 transition-[width] duration-200"
               style={{ width: `${progressPercent}%` }}
             />
-            <span className="absolute inset-0 flex items-center justify-center font-mono text-xs tracking-wider text-crt-cyan text-glow-cyan">
+            <span className="crt-progress-text text-crt-cyan text-glow-cyan">
               {progressBar} {progressPercent}%
             </span>
           </div>
-          <div className="shrink-0 font-mono text-crt-amber text-glow-amber" data-testid="elapsed-timer">
+          <div className="crt-caption text-crt-amber text-glow-amber" data-testid="elapsed-timer">
             [{formatElapsedTime(elapsed)}]
           </div>
         </div>
         {currentStep && (
-          <div className="mt-1 truncate text-xs text-crt-ink/80 sm:text-sm">{currentStep}</div>
+          <p className="crt-caption mt-2 truncate opacity-80">{currentStep}</p>
         )}
       </div>
 
-      <div className="mt-2 sm:mt-4">
-        <div className="h-px w-full bg-gradient-to-r from-crt-ink/30 via-crt-ink/20 to-crt-ink/30" />
-        <div className="mt-2 text-xs text-crt-amber/80 text-glow-amber sm:text-sm">
+      <div>
+        <div className="crt-divider" />
+        <p className="crt-body mt-3 text-crt-amber/90 text-glow-amber">
           [TIP] This visualizer uses real ML models to compute real scores.
-        </div>
-        <div className="text-xs text-crt-amber/80 text-glow-amber sm:text-sm">
+        </p>
+        <p className="crt-body text-crt-amber/90 text-glow-amber">
           The download is worth it. Trust us.
-        </div>
+        </p>
       </div>
     </section>
   );

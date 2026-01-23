@@ -105,9 +105,15 @@
 }
 
 .sectionTitle {
-  font-size: 14px;
-  letter-spacing: 0.12em;
+  font-size: 16px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+
+@media (min-width: 560px) {
+  .sectionTitle {
+    font-size: 17px;
+  }
 }
 
 .personaGrid {
@@ -142,7 +148,13 @@
 }
 
 .personaName {
-  font-size: 16px;
+  font-size: 15px;
+}
+
+@media (min-width: 560px) {
+  .personaName {
+    font-size: 16px;
+  }
 }
 
 .personaHeader {
@@ -175,8 +187,14 @@
 
 .personaSubtitleLarge {
   font-size: 14px;
-  line-height: 1.35;
-  min-height: calc(1.35em * 2);
+  line-height: 1.4;
+  min-height: calc(1.4em * 2);
+}
+
+@media (min-width: 560px) {
+  .personaSubtitleLarge {
+    font-size: 15px;
+  }
 }
 
 .sampleRow {
@@ -229,14 +247,27 @@
 }
 
 .tweetInputLarge {
-  font-size: 18px;
-  line-height: 1.45;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+@media (min-width: 560px) {
+  .tweetInputLarge {
+    font-size: 18px;
+  }
 }
 
 .counter {
-  font-size: 12px;
-  letter-spacing: 0.1em;
+  font-size: 13px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: rgba(51, 255, 51, 0.7);
+}
+
+@media (min-width: 560px) {
+  .counter {
+    font-size: 14px;
+  }
 }
 
 .audienceList {
@@ -264,14 +295,26 @@
 }
 
 .audienceLabel {
-  font-size: 14px;
+  font-size: 15px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
+@media (min-width: 560px) {
+  .audienceLabel {
+    font-size: 16px;
+  }
+}
+
 .audienceMeta {
-  font-size: 11px;
+  font-size: 12px;
   color: rgba(51, 255, 51, 0.7);
+}
+
+@media (min-width: 560px) {
+  .audienceMeta {
+    font-size: 13px;
+  }
 }
 
 .stepActions {
@@ -309,21 +352,28 @@
 
 .beginButton {
   box-sizing: border-box;
-  border: 1px solid var(--phosphor-green);
-  background: rgba(0, 20, 0, 0.6);
-  color: var(--phosphor-green);
-  padding: 10px 16px;
+  border: 1px solid var(--phosphor-amber);
+  background: rgba(40, 25, 0, 0.6);
+  color: var(--phosphor-amber);
+  padding: 12px 20px;
   font-size: 14px;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 0 18px rgba(51, 255, 51, 0.25);
+  box-shadow: 0 0 18px rgba(255, 176, 0, 0.35);
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .beginButton:hover {
-  box-shadow: 0 0 24px rgba(51, 255, 51, 0.6);
-  transform: translateY(-1px);
+  box-shadow: 0 0 24px rgba(255, 176, 0, 0.6);
+  transform: translateY(-1px) scale(1.02);
+}
+
+@media (min-width: 560px) {
+  .beginButton {
+    font-size: 15px;
+    padding: 14px 24px;
+  }
 }
 
 .mobileButtonRow {

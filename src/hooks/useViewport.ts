@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { MOBILE_BREAKPOINT } from '../constants/breakpoints';
 
 type ViewportState = {
   isMobile: boolean;
@@ -11,7 +12,7 @@ function getViewportState(): ViewportState {
     return { isMobile: false, prefersReducedMotion: false, prefersHighContrast: false };
   }
 
-  const isMobile = window.matchMedia('(max-width: 900px)').matches;
+  const isMobile = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT}px)`).matches;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const prefersHighContrast = window.matchMedia('(prefers-contrast: more)').matches;
 
@@ -26,7 +27,7 @@ export function useViewport(): ViewportState {
       return undefined;
     }
 
-    const mobileQuery = window.matchMedia('(max-width: 900px)');
+    const mobileQuery = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT}px)`);
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const contrastQuery = window.matchMedia('(prefers-contrast: more)');
 

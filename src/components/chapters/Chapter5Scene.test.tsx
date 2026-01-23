@@ -24,10 +24,11 @@ describe('Chapter5Scene', () => {
     expect(screen.getByTestId('reaction-burst')).toBeInTheDocument();
   });
 
-  it('renders delivery summary and cascade on step 3', () => {
+  it('renders delivery summary on step 3', () => {
     render(<Chapter5Scene currentStep={3} isActive={true} />);
     expect(screen.getByTestId('delivery-summary')).toBeInTheDocument();
-    expect(screen.getByTestId('engagement-cascade')).toBeInTheDocument();
+    expect(screen.getByText('PERFORMANCE SUMMARY')).toBeInTheDocument();
+    expect(screen.getByText('Tier')).toBeInTheDocument();
   });
 
   it('stages delivery summary rows for progressive reveal', () => {

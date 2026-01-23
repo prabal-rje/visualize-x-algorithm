@@ -11,7 +11,7 @@ describe('Chapter5Scene', () => {
 
   it('shows user tweet in the top-K ranking', () => {
     render(<Chapter5Scene currentStep={0} isActive={true} />);
-    expect(screen.getByTestId('user-tweet-rank')).toBeInTheDocument();
+    expect(screen.getByText('Your Tweet')).toBeInTheDocument();
   });
 
   it('renders reach forecast panel on step 1', () => {

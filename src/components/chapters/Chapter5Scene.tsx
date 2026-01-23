@@ -1,12 +1,14 @@
-import type { CSSProperties } from 'react';
+import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import Avatar from 'boring-avatars';
 import styles from '../../styles/chapter5-scene.module.css';
 import { AUDIENCES } from '../../data/audiences';
 import { PERSONAS } from '../../data/personas';
 import { useConfigStore } from '../../stores/config';
 import { simulateEngagement } from '../../simulation/simulate';
+import { predictEngagement, calculateWeightedScore } from '../../ml/engagement';
+import { isInitialized } from '../../ml/embeddings';
 import EngagementCascade from '../visualization/EngagementCascade';
-import TopKSelector from '../visualization/TopKSelector';
+import TopKSelector, { type Candidate } from '../visualization/TopKSelector';
 import TypewriterText from '../visualization/TypewriterText';
 import { useViewport } from '../../hooks/useViewport';
 
@@ -67,12 +69,60 @@ type Chapter5SceneProps = {
   isActive: boolean;
 };
 
+const DEFAULT_PROBS = {
+  like: 0.20,
+  repost: 0.12,
+  reply: 0.13,
+  bookmark: 0.39,
+  click: 0.42
+};
+
 export default function Chapter5Scene({ currentStep, isActive }: Chapter5SceneProps) {
   const personaId = useConfigStore((state) => state.personaId);
   const tweetText = useConfigStore((state) => state.tweetText);
   const audienceMix = useConfigStore((state) => state.audienceMix);
   const simulationResult = useConfigStore((state) => state.simulationResult);
   const { isMobile } = useViewport();
+  const [probs, setProbs] = useState(DEFAULT_PROBS);
+
+  // Compute engagement probabilities (same as Chapter 4)
+  useEffect(() => {
+    let isMounted = true;
+    async function load() {
+      try {
+        if (!isInitialized()) {
+          setProbs(DEFAULT_PROBS);
+          return;
+        }
+        const result = await predictEngagement(tweetText || 'Hello world', audienceMix);
+        if (!isMounted) return;
+        setProbs(result);
+      } catch (error) {
+        if (!isMounted) return;
+        setProbs(DEFAULT_PROBS);
+        console.error('Failed to compute engagement probabilities', error);
+      }
+    }
+    load();
+    return () => {
+      isMounted = false;
+    };
+  }, [tweetText, audienceMix]);
+
+  // Compute final score (same formula as Chapter 4)
+  const baseScore = calculateWeightedScore(probs);
+  const diversityPenalty = Math.min(0.12, baseScore * 0.1);
+  const finalScore = Math.max(0, baseScore - diversityPenalty);
+
+  // Rankings matching Chapter 4 format
+  const rankings: Candidate[] = useMemo(() => {
+    return [
+      { id: 'alpha', label: 'Candidate A', score: finalScore + 0.18, isUser: false },
+      { id: 'you', label: 'Your Tweet', score: finalScore, isUser: true },
+      { id: 'beta', label: 'Candidate B', score: Math.max(0, finalScore - 0.07), isUser: false },
+      { id: 'gamma', label: 'Candidate C', score: Math.max(0, finalScore - 0.12), isUser: false }
+    ];
+  }, [finalScore]);
 
   const result =
     simulationResult ??
@@ -184,46 +234,6 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
     reaction: REACTION_TYPES[index % REACTION_TYPES.length]
   }));
 
-  const userPreview = (tweetText || 'Your tweet goes here...')
-    .trim()
-    .slice(0, 120);
-  const normalizedPreview =
-    userPreview.length === 120 ? `${userPreview}…` : userPreview;
-  const userScore = Math.min(0.96, Math.max(0.55, adjustedScore * 3));
-  const topCandidates = [
-    {
-      id: 'c1',
-      label: '@latentlabs',
-      preview: 'Rethinking retrieval stacks for multi-tenant LLM systems.',
-      score: Math.min(0.99, userScore + 0.09)
-    },
-    {
-      id: 'you',
-      label: 'Your Tweet',
-      preview: normalizedPreview || 'Your tweet goes here…',
-      score: userScore,
-      isUser: true
-    },
-    {
-      id: 'c2',
-      label: '@founderlog',
-      preview: 'We shipped weekly with a 3-person team and zero burn.',
-      score: Math.max(0.1, userScore - 0.05)
-    },
-    {
-      id: 'c3',
-      label: '@visionai',
-      preview: 'Benchmarking the latest multimodal models against real-world data.',
-      score: Math.max(0.08, userScore - 0.11)
-    },
-    {
-      id: 'c4',
-      label: '@shipsmarter',
-      preview: 'Launch checklist: how we hit 10k users in 12 days.',
-      score: Math.max(0.06, userScore - 0.18)
-    }
-  ];
-  const mobileCandidates = [...topCandidates].sort((a, b) => b.score - a.score);
 
   return (
     <div
@@ -254,22 +264,12 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
           </div>
 
           {currentStep === 0 && (
-            <div className={styles.mobilePanel}>
-              {mobileCandidates.map((candidate, index) => (
-                <div
-                  key={candidate.id}
-                  className={styles.mobileRow}
-                  data-highlight={candidate.isUser ? 'true' : 'false'}
-                >
-                  <span className={styles.mobileRank}>{index + 1}</span>
-                  <div className={styles.mobileRowContent}>
-                    <span className={styles.mobileLabel}>{candidate.label}</span>
-                    <span className={styles.mobilePreview}>{candidate.preview}</span>
-                  </div>
-                  <span className={styles.mobileValue}>{candidate.score.toFixed(2)}</span>
-                </div>
-              ))}
-            </div>
+            <TopKSelector
+              candidates={rankings}
+              topK={3}
+              minScore={0.4}
+              isActive={isActive}
+            />
           )}
 
           {currentStep === 1 && (
@@ -334,7 +334,12 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
           </div>
 
           {currentStep === 0 && (
-            <TopKSelector candidates={topCandidates} topK={3} isActive={isActive} />
+            <TopKSelector
+              candidates={rankings}
+              topK={3}
+              minScore={0.4}
+              isActive={isActive}
+            />
           )}
 
           {currentStep === 1 && (

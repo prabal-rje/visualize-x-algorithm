@@ -204,6 +204,7 @@ export default function Chapter2Scene({
       <div className={styles.header}>
         <span className={styles.chapterNumber}>CHAPTER 2</span>
         <h2 className={styles.title}>THE GATHERING</h2>
+        <div className={styles.stepLabel}>{STEP_LABELS[currentStep] || STEP_LABELS[0]}</div>
       </div>
 
       {/* Narration */}
@@ -225,7 +226,6 @@ export default function Chapter2Scene({
           {currentStep === 0 && (
             <div className={styles.mobileStep}>
               <div className={styles.mobileStepHeader}>
-                <div className={styles.stepLabel}>{STEP_LABELS[0]}</div>
                 <span className={styles.mobileMeta}>Tokens: {tokenCount}</span>
               </div>
               <TokenDisplay
@@ -239,7 +239,6 @@ export default function Chapter2Scene({
           {/* Step 1: Token Embeddings */}
           {currentStep === 1 && (
             <div className={styles.mobileStep}>
-              <div className={styles.stepLabel}>{STEP_LABELS[1]}</div>
               <TokenEmbeddingAnim
                 tokens={tokens}
                 isActive={isActive}
@@ -250,7 +249,6 @@ export default function Chapter2Scene({
           {/* Step 2: Pooling */}
           {currentStep === 2 && (
             <div className={styles.mobileStep}>
-              <div className={styles.stepLabel}>{STEP_LABELS[2]}</div>
               {isLoading ? (
                 <div className={styles.loading}>Computing embedding...</div>
               ) : (
@@ -265,7 +263,6 @@ export default function Chapter2Scene({
 
           {currentStep === 3 && (
             <div className={styles.mobileStep}>
-              <div className={styles.stepLabel}>{STEP_LABELS[3]}</div>
               {isLoading ? (
                 <div className={styles.loading}>Computing similarities...</div>
               ) : (
@@ -283,7 +280,6 @@ export default function Chapter2Scene({
 
           {currentStep === 4 && (
             <div className={styles.mobileStep}>
-              <div className={styles.stepLabel}>{STEP_LABELS[4]}</div>
               <div className={styles.mobileStreamGrid}>
                 <div className={styles.mobileStreamColumn}>
                   <div className={styles.mobileStreamTitle}>THUNDER</div>
@@ -310,7 +306,6 @@ export default function Chapter2Scene({
           {/* Step 0: Tokenization */}
           {currentStep === 0 && (
             <div className={styles.step}>
-              <div className={styles.stepLabel}>{STEP_LABELS[0]}</div>
               <TokenDisplay
                 tokens={tokens}
                 maxVisible={20}
@@ -322,7 +317,6 @@ export default function Chapter2Scene({
           {/* Step 1: Token Embeddings */}
           {currentStep === 1 && (
             <div className={styles.step}>
-              <div className={styles.stepLabel}>{STEP_LABELS[1]}</div>
               <TokenEmbeddingAnim
                 tokens={tokens}
                 isActive={isActive}
@@ -333,7 +327,6 @@ export default function Chapter2Scene({
           {/* Step 2: Pooling */}
           {currentStep === 2 && (
             <div className={styles.step}>
-              <div className={styles.stepLabel}>{STEP_LABELS[2]}</div>
               {isLoading ? (
                 <div className={styles.loading}>Computing embedding...</div>
               ) : (
@@ -348,7 +341,6 @@ export default function Chapter2Scene({
 
           {currentStep === 3 && (
             <div className={styles.step}>
-              <div className={styles.stepLabel}>{STEP_LABELS[3]}</div>
               {isLoading ? (
                 <div className={styles.loading}>Computing similarities...</div>
               ) : (
@@ -366,7 +358,6 @@ export default function Chapter2Scene({
 
           {currentStep === 4 && (
             <div className={styles.step}>
-              <div className={styles.stepLabel}>{STEP_LABELS[4]}</div>
               <CandidateStreams
                 thunderPosts={THUNDER_POSTS}
                 phoenixPosts={PHOENIX_POSTS}

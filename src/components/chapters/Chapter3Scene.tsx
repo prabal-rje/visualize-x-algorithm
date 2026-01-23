@@ -52,6 +52,7 @@ export default function Chapter3Scene({ currentStep, isActive }: Chapter3ScenePr
       <div className={styles.header}>
         <span className={styles.chapterNumber}>CHAPTER 3</span>
         <h2 className={styles.title}>THE FILTERING</h2>
+        <div className={styles.stepLabel}>{label}</div>
       </div>
 
       <div className={styles.narration}>
@@ -66,7 +67,6 @@ export default function Chapter3Scene({ currentStep, isActive }: Chapter3ScenePr
       </div>
 
       <div className={isMobile ? styles.mobileContent : styles.content}>
-        <div className={styles.stepLabel}>{label}</div>
         <FunnelViz
           gates={stepData.gates}
           startCount={stepData.startCount}

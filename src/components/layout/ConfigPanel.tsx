@@ -3,6 +3,7 @@ import { Shuffle } from 'lucide-react';
 import { AUDIENCES } from '../../data/audiences';
 import { PERSONAS } from '../../data/personas';
 import { useConfigStore } from '../../stores/config';
+import { useViewport } from '../../hooks/useViewport';
 import styles from '../../styles/config-panel.module.css';
 
 const MAX_TWEET_LENGTH = 280;
@@ -23,13 +24,38 @@ const PERSONA_AUDIENCE_DEFAULTS: Partial<Record<PersonaId, AudienceId[]>> = {
 };
 
 const buildAudienceMix = (selectedIds: AudienceId[]) => {
-  const count = selectedIds.length;
-  const share = count > 0 ? 100 / count : 0;
+  const selectedCount = selectedIds.length;
+  const allIds = AUDIENCES.map((a) => a.id);
+  const unselectedIds = allIds.filter((id) => !selectedIds.includes(id));
+  const unselectedCount = unselectedIds.length;
+
+  // If all selected or none selected, distribute evenly
+  if (selectedCount === 0 || unselectedCount === 0) {
+    const share = selectedCount > 0 ? 100 / selectedCount : 0;
+    return AUDIENCES.reduce<Record<AudienceId, number>>((acc, audience) => {
+      acc[audience.id] = selectedIds.includes(audience.id) ? share : 0;
+      return acc;
+    }, {} as Record<AudienceId, number>);
+  }
+
+  // 75% to selected, 25% to unselected
+  // But cap unselected share to never exceed selected share
+  const selectedShare = 75 / selectedCount;
+  const rawUnselectedShare = 25 / unselectedCount;
+  const unselectedShare = Math.min(rawUnselectedShare, selectedShare * 0.3); // Cap at 30% of selected share
+
+  // Redistribute any leftover to selected audiences
+  const totalUnselected = unselectedShare * unselectedCount;
+  const adjustedSelectedShare = (100 - totalUnselected) / selectedCount;
+
   return AUDIENCES.reduce<Record<AudienceId, number>>((acc, audience) => {
-    acc[audience.id] = selectedIds.includes(audience.id) ? share : 0;
+    acc[audience.id] = selectedIds.includes(audience.id) ? adjustedSelectedShare : unselectedShare;
     return acc;
   }, {} as Record<AudienceId, number>);
 };
+
+// Threshold to determine if an audience is "selected" (has significant share)
+const SELECTED_THRESHOLD = 8;
 
 const getPersonaInitials = (name: string) => {
   const tokens = name
@@ -61,16 +87,7 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
   const audienceMix = useConfigStore((state) => state.audienceMix);
   const setAudienceMix = useConfigStore((state) => state.setAudienceMix);
   const beginSimulation = useConfigStore((state) => state.beginSimulation);
-  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
-
-  useEffect(() => {
-    const checkWidth = () => {
-      setIsPhoneWidth(window.innerWidth <= 600);
-    };
-    checkWidth();
-    window.addEventListener('resize', checkWidth);
-    return () => window.removeEventListener('resize', checkWidth);
-  }, []);
+  const { isMobile } = useViewport();
 
   // Derive step name from currentStep prop (controlled by simulation state)
   const step: StepName = STEP_NAMES[currentStep] ?? 'persona';
@@ -139,7 +156,7 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
   }, []);
 
   const selectedAudienceIds = AUDIENCES.filter(
-    (audience) => (audienceMix[audience.id] ?? 0) > 0
+    (audience) => (audienceMix[audience.id] ?? 0) >= SELECTED_THRESHOLD
   ).map((audience) => audience.id);
 
   const handleAudienceToggle = (audienceId: AudienceId) => {
@@ -168,7 +185,7 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
       {step === 'persona' && (
         <section className={styles.section} data-testid="step-persona">
           <h3 className={styles.sectionTitle}>Persona</h3>
-          {isPhoneWidth ? (
+          {isMobile ? (
             <>
               <div className={styles.personaCarouselWrapper}>
                 <button
@@ -277,7 +294,7 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
               ))}
             </div>
           )}
-          {!isPhoneWidth && (
+          {!isMobile && (
             <div className={styles.stepActions}>
               <button
                 className={styles.stepButton}
@@ -299,7 +316,7 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
       {step === 'audience' && (
         <section className={styles.section} data-testid="step-audience">
           <h3 className={styles.sectionTitle}>Audience</h3>
-          {isPhoneWidth ? (
+          {isMobile ? (
             <>
               <div className={styles.personaCarouselWrapper}>
                 <button
@@ -377,7 +394,7 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
               })}
             </div>
           )}
-          {!isPhoneWidth && (
+          {!isMobile && (
             <div className={styles.stepActions}>
               <button
                 className={styles.stepButtonGhost}
@@ -406,17 +423,19 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
       {step === 'tweet' && (
         <section className={styles.section} data-testid="step-tweet">
           <h3 className={styles.sectionTitle}>Tweet Draft</h3>
-          <div className={styles.sampleRow}>
-            <button
-              className={styles.shuffleButton}
-              data-testid="sample-shuffle"
-              onClick={shuffleSampleTweet}
-              type="button"
-            >
-              <Shuffle className={styles.shuffleIcon} aria-hidden="true" size={18} />
-              Shuffle Draft
-            </button>
-          </div>
+          {!isMobile && (
+            <div className={styles.sampleRow}>
+              <button
+                className={styles.shuffleButton}
+                data-testid="sample-shuffle"
+                onClick={shuffleSampleTweet}
+                type="button"
+              >
+                <Shuffle className={styles.shuffleIcon} aria-hidden="true" size={18} />
+                Shuffle Draft
+              </button>
+            </div>
+          )}
           <textarea
             className={`${styles.tweetInput} ${styles.tweetInputLarge}`}
             data-testid="tweet-input"
@@ -427,23 +446,45 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
           <div className={styles.counter} data-testid="tweet-counter">
             {tweetText.length}/{MAX_TWEET_LENGTH} ({remaining} left)
           </div>
-          <div className={styles.stepActions}>
-            <button
-              className={styles.stepButtonGhost}
-              onClick={() => goBackStep()}
-              type="button"
-            >
-              Back to Audience
-            </button>
-            <button
-              className={styles.beginButton}
-              data-testid="begin-simulation"
-              onClick={beginSimulation}
-              type="button"
-            >
-              BEGIN SIMULATION
-            </button>
-          </div>
+          {isMobile ? (
+            <div className={styles.mobileButtonRow}>
+              <button
+                className={styles.shuffleButtonMobile}
+                data-testid="sample-shuffle"
+                onClick={shuffleSampleTweet}
+                type="button"
+              >
+                <Shuffle className={styles.shuffleIcon} aria-hidden="true" size={16} />
+                Shuffle
+              </button>
+              <button
+                className={styles.beginButtonOrange}
+                data-testid="begin-simulation"
+                onClick={beginSimulation}
+                type="button"
+              >
+                BEGIN
+              </button>
+            </div>
+          ) : (
+            <div className={styles.stepActions}>
+              <button
+                className={styles.stepButtonGhost}
+                onClick={() => goBackStep()}
+                type="button"
+              >
+                Back to Audience
+              </button>
+              <button
+                className={styles.beginButton}
+                data-testid="begin-simulation"
+                onClick={beginSimulation}
+                type="button"
+              >
+                BEGIN SIMULATION
+              </button>
+            </div>
+          )}
         </section>
       )}
     </div>

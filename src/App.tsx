@@ -13,6 +13,7 @@ import ChapterWrapper from './components/visualization/ChapterWrapper';
 import { useSimulationState } from './hooks/useSimulationState';
 import { useViewport } from './hooks/useViewport';
 import { initializeEmbedder, isInitialized } from './ml/embeddings';
+import { initAudienceEmbeddings } from './ml/reach';
 import { setAmbientDrone } from './audio/engine';
 import { useConfigStore } from './stores/config';
 import { useMLStore } from './stores/ml';
@@ -49,7 +50,10 @@ function App() {
       setProgress(progress / 100);
       setLoading(status);
     })
-      .then(() => {
+      .then(async () => {
+        // Pre-compute audience embeddings for reach calculation
+        setLoading('Computing audience profiles...');
+        await initAudienceEmbeddings();
         setReady();
       })
       .catch((err) => {

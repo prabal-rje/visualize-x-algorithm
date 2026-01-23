@@ -31,6 +31,8 @@ const USER_FEATURES = {
   premium: true
 };
 
+const STEP_LABELS = ['1A: The gRPC Call', '1B: Query Hydration'];
+
 const STEP_NARRATION = [
   'When you open X and pull down to refresh, a single gRPC request launches a cascade of computations...',
   'The server hydrates your query with engagement history and user features...'
@@ -61,6 +63,7 @@ export default function Chapter1Scene({
       <div className={styles.header}>
         <span className={styles.chapterNumber}>CHAPTER 1</span>
         <h2 className={styles.title}>THE REQUEST</h2>
+        <div className={styles.stepLabel}>{STEP_LABELS[currentStep] || STEP_LABELS[0]}</div>
       </div>
 
       {/* Narration */}
@@ -80,7 +83,6 @@ export default function Chapter1Scene({
         <div className={styles.mobileContent}>
           {currentStep === 0 && (
             <div className={styles.mobileStep}>
-              <div className={styles.stepLabel}>1A: The gRPC Call</div>
               <div className={styles.mobileVizFrame}>
                 <RequestVisualization isActive={isActive} userId={userId} />
               </div>
@@ -92,7 +94,6 @@ export default function Chapter1Scene({
 
           {currentStep === 1 && (
             <div className={styles.mobileStep}>
-              <div className={styles.stepLabel}>1B: Query Hydration</div>
               <div className={styles.mobileGrid}>
                 <div className={styles.mobileCard}>
                   <div className={styles.mobileCardTitle}>Engagement History</div>
@@ -127,14 +128,12 @@ export default function Chapter1Scene({
         <div className={styles.content}>
           {currentStep === 0 && (
             <div className={styles.step}>
-              <div className={styles.stepLabel}>1A: The gRPC Call</div>
               <RequestVisualization isActive={isActive} userId={userId} />
             </div>
           )}
 
           {currentStep === 1 && (
             <div className={styles.step}>
-              <div className={styles.stepLabel}>1B: Query Hydration</div>
               <DataStream
                 engagementHistory={ENGAGEMENT_HISTORY}
                 userFeatures={USER_FEATURES}

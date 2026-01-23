@@ -7,6 +7,7 @@ import { useConfigStore } from '../../stores/config';
 import { simulateEngagement } from '../../simulation/simulate';
 import { predictEngagement, calculateWeightedScore } from '../../ml/engagement';
 import { isInitialized } from '../../ml/embeddings';
+import { computeSemanticReach, areAudienceEmbeddingsReady } from '../../ml/reach';
 import TopKSelector, { type Candidate } from '../visualization/TopKSelector';
 import TypewriterText from '../visualization/TypewriterText';
 import { useViewport } from '../../hooks/useViewport';
@@ -63,6 +64,9 @@ const DEFAULT_PROBS = {
   click: 0.42
 };
 
+type AudienceId = (typeof AUDIENCES)[number]['id'];
+type AudienceMixType = Record<AudienceId, number>;
+
 export default function Chapter5Scene({ currentStep, isActive }: Chapter5SceneProps) {
   const personaId = useConfigStore((state) => state.personaId);
   const tweetText = useConfigStore((state) => state.tweetText);
@@ -70,6 +74,31 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
   const simulationResult = useConfigStore((state) => state.simulationResult);
   const { isMobile } = useViewport();
   const [probs, setProbs] = useState(DEFAULT_PROBS);
+  const [semanticReach, setSemanticReach] = useState<AudienceMixType>(audienceMix);
+
+  // Compute semantic reach based on tweet content similarity to each audience
+  useEffect(() => {
+    let isMounted = true;
+    async function computeReach() {
+      try {
+        if (!areAudienceEmbeddingsReady()) {
+          setSemanticReach(audienceMix);
+          return;
+        }
+        const reach = await computeSemanticReach(tweetText || 'Hello world', audienceMix);
+        if (!isMounted) return;
+        setSemanticReach(reach);
+      } catch (error) {
+        if (!isMounted) return;
+        setSemanticReach(audienceMix);
+        console.error('Failed to compute semantic reach', error);
+      }
+    }
+    computeReach();
+    return () => {
+      isMounted = false;
+    };
+  }, [tweetText, audienceMix]);
 
   // Compute engagement probabilities (same as Chapter 4)
   useEffect(() => {
@@ -145,7 +174,7 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
   ];
 
   const reachRows = AUDIENCES.map((audience) => {
-    const share = audienceMix[audience.id] ?? 0;
+    const share = semanticReach[audience.id] ?? 0;
     return {
       id: audience.id,
       label: audience.label,
@@ -218,6 +247,7 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
       <div className={styles.header}>
         <span className={styles.chapterNumber}>CHAPTER 5</span>
         <h2 className={styles.title}>THE DELIVERY</h2>
+        <div className={styles.stepLabel}>{STEP_LABELS[currentStep] || STEP_LABELS[0]}</div>
       </div>
 
       <div className={styles.narration}>
@@ -233,10 +263,6 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
 
       {isMobile ? (
         <div className={styles.mobileContent}>
-          <div className={styles.stepLabel}>
-            {STEP_LABELS[currentStep] || STEP_LABELS[0]}
-          </div>
-
           {currentStep === 0 && (
             <TopKSelector
               candidates={rankings}
@@ -374,10 +400,6 @@ export default function Chapter5Scene({ currentStep, isActive }: Chapter5ScenePr
         </div>
       ) : (
         <div className={styles.content}>
-          <div className={styles.stepLabel}>
-            {STEP_LABELS[currentStep] || STEP_LABELS[0]}
-          </div>
-
           {currentStep === 0 && (
             <TopKSelector
               candidates={rankings}

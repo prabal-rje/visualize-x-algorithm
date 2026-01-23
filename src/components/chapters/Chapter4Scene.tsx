@@ -131,6 +131,7 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
       <div className={styles.header}>
         <span className={styles.chapterNumber}>CHAPTER 4</span>
         <h2 className={styles.title}>THE SCORING</h2>
+        <div className={styles.stepLabel}>{label}</div>
       </div>
 
       <div className={styles.narration}>
@@ -145,7 +146,6 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
       </div>
 
       <div className={styles.content}>
-        <div className={styles.stepLabel}>{label}</div>
 
         {/* Step 0: Your History */}
         {currentStep === 0 && (

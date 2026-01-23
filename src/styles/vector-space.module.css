@@ -223,3 +223,31 @@
 .container[data-active='false'] .candidate {
   opacity: 0.6;
 }
+
+/* Mobile: remove outer boundary, just show the graph */
+@media (max-width: 600px) {
+  .container {
+    padding: 8px;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .header {
+    margin-bottom: 8px;
+  }
+
+  .label {
+    font-size: 11px;
+  }
+
+  .space {
+    width: 100%;
+    height: 280px;
+    border: 1px solid rgba(51, 255, 51, 0.2);
+  }
+
+  .hoverSlot {
+    display: none;
+  }
+}

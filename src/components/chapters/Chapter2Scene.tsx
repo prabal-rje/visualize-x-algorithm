@@ -4,15 +4,17 @@ import { getEmbedding, isInitialized } from '../../ml/embeddings';
 import { cosinePreview } from '../../ml/similarity';
 import { generateTweetPool, type TweetCandidate } from '../../ml/tweetPool';
 import { useConfigStore } from '../../stores/config';
-import EmbeddingHeatmap from '../visualization/EmbeddingHeatmap';
 import VectorSpace from '../visualization/VectorSpace';
 import CandidateStreams from '../visualization/CandidateStreams';
 import TypewriterText from '../visualization/TypewriterText';
-import TokenizationFlow, { tokenizeSubTokens } from '../visualization/TokenizationFlow';
+import { tokenizeSubTokens } from '../visualization/TokenizationFlow';
+import TokenDisplay from '../visualization/TokenDisplay';
+import TokenEmbeddingAnim from '../visualization/TokenEmbeddingAnim';
+import PoolingViz from '../visualization/PoolingViz';
 import { useViewport } from '../../hooks/useViewport';
 
 type Chapter2SceneProps = {
-  /** Current step (0 = tokenize, 1 = embeddings, 2 = pooling, 3 = placement, 4 = similarity, 5 = merging) */
+  /** Current step (0 = tokenize, 1 = embeddings, 2 = pooling, 3 = similarity, 4 = merging) */
   currentStep: number;
   /** Whether the chapter is currently active */
   isActive: boolean;
@@ -40,7 +42,6 @@ const STEP_NARRATION = [
   'Split your tweet into sub-token pieces so the model can digest each fragment...',
   'Each token becomes a dense vector that captures its semantic meaning...',
   'Pool token vectors into a single 128-dimensional tweet embedding...',
-  'Candidates get placed one by one based on cosine proximity to your embedding...',
   'Your embedding floats in vector space. Posts with similar vectors gravitate toward you...',
   'Thunder brings posts from people you follow. Phoenix discovers content from strangers the AI thinks you\'ll like...'
 ];
@@ -49,7 +50,6 @@ const MOBILE_STEP_NARRATION = [
   'Split your tweet into sub-token pieces so the model can digest each fragment...',
   'Each token becomes a dense vector that captures its semantic meaning...',
   'Pool token vectors into a single 128-dimensional tweet embedding...',
-  'Candidates get placed one by one based on cosine proximity...',
   'Similar vectors drift closer to your tweet in embedding space...',
   'Thunder brings followers. Phoenix pulls in strangers the AI expects you\'ll like...'
 ];
@@ -58,28 +58,10 @@ const STEP_LABELS = [
   '2A: Tokenize Tweet',
   '2B: Token Embeddings',
   '2C: Pooling',
-  '2D: Placement Pass',
-  '2E: Similarity Map',
-  '2F: Merging Sources'
+  '2D: Similarity Map',
+  '2E: Merging Sources'
 ];
 
-const ENCODING_STAGES = [
-  {
-    id: 'token',
-    label: 'Tokenize',
-    hint: 'Split your tweet into sub-token pieces.'
-  },
-  {
-    id: 'embed',
-    label: 'Token Embeddings',
-    hint: 'Embed each token into a latent vector.'
-  },
-  {
-    id: 'pool',
-    label: 'Pooling',
-    hint: 'Pool token vectors into one signal.'
-  }
-];
 
 
 // Map similarity to 2D position with better spread
@@ -138,12 +120,10 @@ export default function Chapter2Scene({
     text: string;
   }>>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const maxTokens = 12;
-  const tokenCount = tokenizeSubTokens(tweetText || 'Hello world').length;
-  // Steps 0, 1, 2 are encoding stages (tokenize, embed, pool)
-  // Steps 3, 4, 5 are placement, similarity, merge
-  const isEncodingStep = currentStep <= 2;
-  const encodingStage = isEncodingStep ? currentStep : 2;
+
+  // Tokenize the tweet text
+  const tokens = tokenizeSubTokens(tweetText || 'Hello world');
+  const tokenCount = tokens.length;
 
   // Generate tweet pool once on mount (embeddings pre-computed)
   useEffect(() => {
@@ -244,80 +224,62 @@ export default function Chapter2Scene({
       {/* Step Content */}
       {isMobile ? (
         <div className={styles.mobileContent}>
-          {isEncodingStep && (
+          {/* Step 0: Tokenization */}
+          {currentStep === 0 && (
             <div className={styles.mobileStep}>
               <div className={styles.mobileStepHeader}>
-                <div className={styles.stepLabel}>{STEP_LABELS[currentStep]}</div>
+                <div className={styles.stepLabel}>{STEP_LABELS[0]}</div>
                 <span className={styles.mobileMeta}>Tokens: {tokenCount}</span>
               </div>
+              <TokenDisplay
+                tokens={tokens}
+                maxVisible={12}
+                isActive={isActive}
+              />
+            </div>
+          )}
+
+          {/* Step 1: Token Embeddings */}
+          {currentStep === 1 && (
+            <div className={styles.mobileStep}>
+              <div className={styles.stepLabel}>{STEP_LABELS[1]}</div>
+              <TokenEmbeddingAnim
+                tokens={tokens}
+                isActive={isActive}
+              />
+            </div>
+          )}
+
+          {/* Step 2: Pooling */}
+          {currentStep === 2 && (
+            <div className={styles.mobileStep}>
+              <div className={styles.stepLabel}>{STEP_LABELS[2]}</div>
               {isLoading ? (
                 <div className={styles.loading}>Computing embedding...</div>
               ) : (
-                <div className={styles.mobileEncoding}>
-                  <div className={styles.mobileStageList}>
-                    {ENCODING_STAGES.map((stage, index) => (
-                      <div
-                        key={stage.id}
-                        className={styles.mobileStageRow}
-                        data-active={encodingStage === index}
-                        data-complete={encodingStage > index}
-                      >
-                        <span className={styles.mobileStageIndex}>{index + 1}</span>
-                        <div>
-                          <div className={styles.mobileStageLabel}>{stage.label}</div>
-                          <div className={styles.mobileStageHint}>{stage.hint}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className={styles.mobileEncodingVisuals}>
-                    <TokenizationFlow
-                      tweet={tweetText}
-                      isActive={isActive}
-                      maxTokens={maxTokens}
-                      stage={encodingStage}
-                    />
-                    {encodingStage >= 1 && (
-                      <div className={styles.mobileEmbedding}>
-                        <EmbeddingHeatmap
-                          embedding={userEmbedding}
-                          label="TWEET EMBEDDING"
-                          isActive={isActive}
-                          tokenCount={tokenCount}
-                        />
-                      </div>
-                    )}
-                  </div>
-                </div>
+                <PoolingViz
+                  tokens={tokens}
+                  embedding={userEmbedding}
+                  isActive={isActive}
+                />
               )}
             </div>
           )}
 
           {currentStep === 3 && (
-            <div className={styles.mobileStep} data-testid="placement-stage">
+            <div className={styles.mobileStep}>
               <div className={styles.stepLabel}>{STEP_LABELS[3]}</div>
               {isLoading ? (
                 <div className={styles.loading}>Computing similarities...</div>
               ) : (
-                <div className={styles.mobileListPanel}>
-                  {topCandidates.map((candidate) => (
-                    <div key={candidate.text} className={styles.mobileCandidateRow}>
-                      <div className={styles.mobileCandidateHeader}>
-                        <span>{candidate.label}</span>
-                        <span>{Math.round(candidate.similarity * 100)}%</span>
-                      </div>
-                      <div className={styles.mobileCandidateBar}>
-                        <div
-                          className={styles.mobileCandidateFill}
-                          style={{ width: `${candidate.similarity * 100}%` }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                  <div className={styles.mobileNote}>
-                    Candidates slot in before the similarity reveal.
-                  </div>
-                </div>
+                <VectorSpace
+                  userPoint={USER_POINT}
+                  candidates={candidateData}
+                  showSimilarity={false}
+                  label="MAP OF SIMILAR TWEETS"
+                  isActive={isActive}
+                  userTweet={tweetText || 'Your tweet'}
+                />
               )}
             </div>
           )}
@@ -325,39 +287,6 @@ export default function Chapter2Scene({
           {currentStep === 4 && (
             <div className={styles.mobileStep}>
               <div className={styles.stepLabel}>{STEP_LABELS[4]}</div>
-              {isLoading ? (
-                <div className={styles.loading}>Computing similarities...</div>
-              ) : (
-                <div className={styles.mobileListPanel}>
-                  <div className={styles.mobileLegend}>
-                    <span className={styles.mobileLegendLabel}>Your Tweet</span>
-                    <span className={styles.mobileLegendValue}>Anchor point</span>
-                  </div>
-                  {topCandidates.map((candidate) => (
-                    <div key={candidate.text} className={styles.mobileCandidateRow}>
-                      <div className={styles.mobileCandidateHeader}>
-                        <span>{candidate.label}</span>
-                        <span>{Math.round(candidate.similarity * 100)}%</span>
-                      </div>
-                      <div className={styles.mobileCandidateBar}>
-                        <div
-                          className={styles.mobileCandidateFill}
-                          style={{ width: `${candidate.similarity * 100}%` }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                  <div className={styles.mobileNote}>
-                    Closer dots share higher semantic similarity.
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {currentStep === 5 && (
-            <div className={styles.mobileStep}>
-              <div className={styles.stepLabel}>{STEP_LABELS[5]}</div>
               <div className={styles.mobileStreamGrid}>
                 <div className={styles.mobileStreamColumn}>
                   <div className={styles.mobileStreamTitle}>THUNDER</div>
@@ -381,74 +310,59 @@ export default function Chapter2Scene({
         </div>
       ) : (
         <div className={styles.content}>
-          {isEncodingStep && (
+          {/* Step 0: Tokenization */}
+          {currentStep === 0 && (
             <div className={styles.step}>
-              <div className={styles.stepLabel}>{STEP_LABELS[currentStep]}</div>
+              <div className={styles.stepLabel}>{STEP_LABELS[0]}</div>
+              <TokenDisplay
+                tokens={tokens}
+                maxVisible={20}
+                isActive={isActive}
+              />
+            </div>
+          )}
+
+          {/* Step 1: Token Embeddings */}
+          {currentStep === 1 && (
+            <div className={styles.step}>
+              <div className={styles.stepLabel}>{STEP_LABELS[1]}</div>
+              <TokenEmbeddingAnim
+                tokens={tokens}
+                isActive={isActive}
+              />
+            </div>
+          )}
+
+          {/* Step 2: Pooling */}
+          {currentStep === 2 && (
+            <div className={styles.step}>
+              <div className={styles.stepLabel}>{STEP_LABELS[2]}</div>
               {isLoading ? (
                 <div className={styles.loading}>Computing embedding...</div>
               ) : (
-                <>
-                  <div className={styles.encodingGrid}>
-                    <div className={styles.stageRail}>
-                      {ENCODING_STAGES.map((stage, index) => (
-                        <div
-                          key={stage.id}
-                          className={styles.stageCard}
-                          data-testid={`${stage.id}-stage`}
-                          data-active={encodingStage === index}
-                          data-complete={encodingStage > index}
-                        >
-                          <span className={styles.stageIndex}>
-                            {index + 1}
-                          </span>
-                          <div className={styles.stageText}>
-                            <div className={styles.stageLabel}>{stage.label}</div>
-                            <div className={styles.stageHint}>{stage.hint}</div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className={styles.stageContent}>
-                      <TokenizationFlow
-                        tweet={tweetText}
-                        isActive={isActive}
-                        maxTokens={maxTokens}
-                        stage={encodingStage}
-                      />
-                      {encodingStage === 1 && (
-                        <EmbeddingHeatmap
-                          embedding={userEmbedding}
-                          label="TWEET EMBEDDING"
-                          isActive={isActive}
-                          tokenCount={tokenCount}
-                        />
-                      )}
-                    </div>
-                  </div>
-                </>
+                <PoolingViz
+                  tokens={tokens}
+                  embedding={userEmbedding}
+                  isActive={isActive}
+                />
               )}
             </div>
           )}
 
           {currentStep === 3 && (
-            <div className={styles.step} data-testid="placement-stage">
+            <div className={styles.step}>
               <div className={styles.stepLabel}>{STEP_LABELS[3]}</div>
               {isLoading ? (
                 <div className={styles.loading}>Computing similarities...</div>
               ) : (
-                <>
-                  <VectorSpace
-                    userPoint={USER_POINT}
-                    candidates={candidateData}
-                    showSimilarity={false}
-                    label="PLACEMENT PASS"
-                    isActive={isActive}
-                    userTweet={tweetText || 'Your tweet'}
-                  />
-                  <div className={styles.placementNote}>
-                    First place candidates, then reveal the similarity map.
-                  </div>
-                </>
+                <VectorSpace
+                  userPoint={USER_POINT}
+                  candidates={candidateData}
+                  showSimilarity={false}
+                  label="MAP OF SIMILAR TWEETS"
+                  isActive={isActive}
+                  userTweet={tweetText || 'Your tweet'}
+                />
               )}
             </div>
           )}
@@ -456,59 +370,6 @@ export default function Chapter2Scene({
           {currentStep === 4 && (
             <div className={styles.step}>
               <div className={styles.stepLabel}>{STEP_LABELS[4]}</div>
-              {isLoading ? (
-                <div className={styles.loading}>Computing similarities...</div>
-              ) : (
-                <>
-                  <div className={styles.legend}>
-                    <div className={styles.legendTitle}>Legend</div>
-                    <div className={styles.legendItems}>
-                      <div className={styles.legendItem}>
-                        <span
-                          className={`${styles.legendDot} ${styles.legendDotUser}`}
-                          aria-hidden="true"
-                        />
-                        Your tweet
-                      </div>
-                      <div className={styles.legendItem}>
-                        <span
-                          className={`${styles.legendDot} ${styles.legendDotHigh}`}
-                          aria-hidden="true"
-                        />
-                        High similarity
-                      </div>
-                      <div className={styles.legendItem}>
-                        <span
-                          className={`${styles.legendDot} ${styles.legendDotMedium}`}
-                          aria-hidden="true"
-                        />
-                        Mid similarity
-                      </div>
-                      <div className={styles.legendItem}>
-                        <span
-                          className={`${styles.legendDot} ${styles.legendDotLow}`}
-                          aria-hidden="true"
-                        />
-                        Low similarity
-                      </div>
-                    </div>
-                  </div>
-                  <VectorSpace
-                    userPoint={USER_POINT}
-                    candidates={candidateData}
-                    showSimilarity={true}
-                    label="EMBEDDING SPACE"
-                    isActive={isActive}
-                    userTweet={tweetText || 'Your tweet'}
-                  />
-                </>
-              )}
-            </div>
-          )}
-
-          {currentStep === 5 && (
-            <div className={styles.step}>
-              <div className={styles.stepLabel}>{STEP_LABELS[5]}</div>
               <CandidateStreams
                 thunderPosts={THUNDER_POSTS}
                 phoenixPosts={PHOENIX_POSTS}

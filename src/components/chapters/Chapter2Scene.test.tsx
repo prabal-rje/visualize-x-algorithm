@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { setEmbedderForTests } from '../../ml/embeddings';
 import { useConfigStore } from '../../stores/config';
@@ -37,72 +37,49 @@ describe('Chapter2Scene', () => {
     expect(screen.getByText(/THE GATHERING/)).toBeInTheDocument();
   });
 
-  it('shows only tokenization visuals at step 0', async () => {
+  it('shows token display at step 0', async () => {
     render(<Chapter2Scene {...defaultProps} currentStep={0} />);
     await waitFor(() => {
-      expect(screen.getByTestId('tokenization-flow')).toBeInTheDocument();
+      expect(screen.getByTestId('token-display')).toBeInTheDocument();
     });
-    expect(screen.queryByTestId('embedding-heatmap')).not.toBeInTheDocument();
+    // Should not show embedding components at step 0
+    expect(screen.queryByTestId('token-embedding-anim')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('pooling-viz')).not.toBeInTheDocument();
   });
 
-  it('shows tokenization stage at step 0', async () => {
-    render(<Chapter2Scene {...defaultProps} currentStep={0} />);
-    await waitFor(() => {
-      expect(screen.getByTestId('token-stage')).toBeInTheDocument();
-    });
-    expect(screen.getByTestId('tokenization-flow')).toHaveAttribute('data-stage', '0');
-  });
-
-  it('shows token embedding heatmap at step 1', async () => {
+  it('shows token embedding animation at step 1', async () => {
     render(<Chapter2Scene {...defaultProps} currentStep={1} />);
     await waitFor(() => {
-      expect(screen.getByTestId('embedding-heatmap')).toBeInTheDocument();
+      expect(screen.getByTestId('token-embedding-anim')).toBeInTheDocument();
     });
-    expect(
-      within(screen.getByTestId('embedding-heatmap')).getByText(/TWEET EMBEDDING/i)
-    ).toBeInTheDocument();
   });
 
-  it('shows pooling stage at step 2', async () => {
+  it('shows pooling visualization at step 2', async () => {
     render(<Chapter2Scene {...defaultProps} currentStep={2} />);
     await waitFor(() => {
-      expect(screen.getByTestId('tokenization-flow')).toHaveAttribute('data-stage', '2');
+      expect(screen.getByTestId('pooling-viz')).toBeInTheDocument();
     });
   });
 
-  it('shows placement stage before similarity map', async () => {
+  it('shows vector space at step 3 (similarity map)', async () => {
     render(<Chapter2Scene {...defaultProps} currentStep={3} />);
-    await waitFor(() => {
-      expect(screen.getByTestId('placement-stage')).toBeInTheDocument();
-    });
-  });
-
-  it('shows a legend label in the gathering step', async () => {
-    render(<Chapter2Scene {...defaultProps} currentStep={4} />);
-    await waitFor(() => {
-      expect(screen.getByText(/Legend/i)).toBeInTheDocument();
-    });
-  });
-
-  it('shows vector space at step 2 after loading', async () => {
-    render(<Chapter2Scene {...defaultProps} currentStep={4} />);
     await waitFor(() => {
       expect(screen.getByTestId('vector-space')).toBeInTheDocument();
     });
   });
 
-  it('shows candidate streams at step 5 (merging)', () => {
-    render(<Chapter2Scene {...defaultProps} currentStep={5} />);
+  it('shows candidate streams at step 4 (merging)', () => {
+    render(<Chapter2Scene {...defaultProps} currentStep={4} />);
     expect(screen.getByTestId('candidate-streams')).toBeInTheDocument();
   });
 
-  it('shows Thunder stream label at step 5', () => {
-    render(<Chapter2Scene {...defaultProps} currentStep={5} />);
+  it('shows Thunder stream label at step 4', () => {
+    render(<Chapter2Scene {...defaultProps} currentStep={4} />);
     expect(screen.getByText(/THUNDER/)).toBeInTheDocument();
   });
 
-  it('shows Phoenix stream label at step 5', () => {
-    render(<Chapter2Scene {...defaultProps} currentStep={5} />);
+  it('shows Phoenix stream label at step 4', () => {
+    render(<Chapter2Scene {...defaultProps} currentStep={4} />);
     expect(screen.getByText(/PHOENIX/)).toBeInTheDocument();
   });
 

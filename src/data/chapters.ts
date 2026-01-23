@@ -167,8 +167,8 @@ export const CHAPTERS: Chapter[] = [
       },
       {
         id: 'ch2-d',
-        labelSimple: 'Placement',
-        labelTechnical: 'Vector Placement',
+        labelSimple: 'Similarity',
+        labelTechnical: 'Similarity Map',
         functions: [
           {
             id: 'ch2-d-1',
@@ -181,25 +181,11 @@ export const CHAPTERS: Chapter[] = [
       },
       {
         id: 'ch2-e',
-        labelSimple: 'Similarity',
-        labelTechnical: 'Similarity Map',
-        functions: [
-          {
-            id: 'ch2-e-1',
-            name: 'EmbeddingSpace::project()',
-            file: 'phoenix/ann/embedding_space.py',
-            summary: 'Projecting candidates into a similarity map',
-            githubUrl: `${GITHUB_BASE}/phoenix/ann/embedding_space.py`
-          }
-        ]
-      },
-      {
-        id: 'ch2-f',
         labelSimple: 'Merge',
         labelTechnical: 'Source Merge',
         functions: [
           {
-            id: 'ch2-f-1',
+            id: 'ch2-e-1',
             name: 'PhoenixCandidatePipeline::run()',
             file: 'home-mixer/pipeline/phoenix_candidate_pipeline.rs',
             summary: 'Merging Thunder and Phoenix candidates',

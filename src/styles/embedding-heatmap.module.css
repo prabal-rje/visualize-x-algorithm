@@ -144,3 +144,60 @@
     opacity: 0;
   }
 }
+
+/* Mobile layout: color scale at bottom */
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+
+  .header {
+    margin-bottom: 8px;
+  }
+
+  .label {
+    font-size: 11px;
+  }
+
+  .dim {
+    font-size: 9px;
+  }
+
+  .content {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .scale {
+    flex-direction: row;
+    order: 1; /* Move below the grid */
+    width: 100%;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .scaleGradient {
+    width: 120px;
+    height: 10px;
+    flex: none;
+    background: linear-gradient(
+      to right,
+      rgb(180, 20, 180),   /* -1: Magenta */
+      rgb(40, 50, 255),    /* -0.5: Blue */
+      rgb(10, 230, 200),   /* 0: Cyan */
+      rgb(210, 255, 20),   /* +0.5: Yellow */
+      rgb(255, 155, 10)    /* +1: Orange/Red */
+    );
+  }
+
+  .scaleLabel {
+    font-size: 8px;
+  }
+
+  .grid {
+    width: 200px;
+    height: 100px;
+    gap: 1px;
+    padding: 3px;
+  }
+}

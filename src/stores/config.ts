@@ -11,6 +11,44 @@ type PersonaId = Persona['id'];
 type AudienceId = (typeof AUDIENCES)[number]['id'];
 type AudienceMix = Record<AudienceId, number>;
 
+// Semantic mapping: which audience best matches each persona
+const PERSONA_PRIMARY_AUDIENCE: Record<PersonaId, AudienceId> = {
+  'tech-founder': 'founders',
+  'software-engineer': 'tech',
+  'ai-researcher': 'tech',
+  'venture-capitalist': 'investors',
+  'cs-student': 'students',
+  'tech-reporter': 'news',
+  'product-manager': 'tech',
+  'tech-executive': 'founders',
+  'content-creator': 'creators',
+  'indie-hacker': 'founders',
+  'designer': 'creators',
+  'data-scientist': 'tech',
+  'cybersecurity-pro': 'tech',
+  'consultant': 'investors',
+  'marketer': 'creators',
+  'educator': 'students'
+};
+
+// Generate audience mix weighted toward the persona's primary audience
+function getAudienceMixForPersona(personaId: PersonaId): AudienceMix {
+  const primaryAudience = PERSONA_PRIMARY_AUDIENCE[personaId] ?? 'tech';
+  const mix = {} as AudienceMix;
+
+  // Primary audience gets 75%, rest 25% split evenly among others
+  const primaryShare = 75;
+  const otherShare = (100 - primaryShare) / (AUDIENCES.length - 1);
+
+  for (const audience of AUDIENCES) {
+    mix[audience.id] = audience.id === primaryAudience
+      ? primaryShare
+      : Number(otherShare.toFixed(1));
+  }
+
+  return mix;
+}
+
 type ConfigState = {
   expertMode: boolean;
   personaId: PersonaId;
@@ -33,11 +71,7 @@ type ConfigState = {
 
 const defaultPersonaId: PersonaId = PERSONAS[0]?.id ?? 'tech-founder';
 const defaultSampleTweet = SAMPLE_TWEETS[0];
-const audienceDefault = 100 / AUDIENCES.length;
-const defaultAudienceMix = AUDIENCES.reduce((acc, audience) => {
-  acc[audience.id] = Number(audienceDefault.toFixed(2));
-  return acc;
-}, {} as AudienceMix);
+const defaultAudienceMix = getAudienceMixForPersona(defaultPersonaId);
 
 export const useConfigStore = create<ConfigState>()(
   persist(
@@ -51,7 +85,10 @@ export const useConfigStore = create<ConfigState>()(
       simulationResult: null,
       rpgStats: null,
       setExpertMode: (value) => set({ expertMode: value }),
-      setPersonaId: (personaId) => set({ personaId }),
+      setPersonaId: (personaId) => set({
+        personaId,
+        audienceMix: getAudienceMixForPersona(personaId)
+      }),
       setTweetText: (text) => set({ tweetText: text, sampleTweetId: null }),
       selectSampleTweet: (id) => {
         const sample = SAMPLE_TWEETS.find((item) => item.id === id);

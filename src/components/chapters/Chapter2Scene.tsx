@@ -193,9 +193,6 @@ export default function Chapter2Scene({
   const USER_POINT = { x: 50, y: 50, label: 'Your Tweet' };
   const narration = (isMobile ? MOBILE_STEP_NARRATION : STEP_NARRATION)[currentStep]
     ?? (isMobile ? MOBILE_STEP_NARRATION[0] : STEP_NARRATION[0]);
-  const topCandidates = [...candidateData]
-    .sort((a, b) => b.similarity - a.similarity)
-    .slice(0, isMobile ? 6 : 8);
 
   return (
     <div

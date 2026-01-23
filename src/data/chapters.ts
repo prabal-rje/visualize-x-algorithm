@@ -239,64 +239,43 @@ export const CHAPTERS: Chapter[] = [
     subChapters: [
       {
         id: 'ch4-a',
-        labelSimple: 'Tokens',
-        labelTechnical: 'Context Tokens',
+        labelSimple: 'History',
+        labelTechnical: 'Your History',
         functions: [
           {
             id: 'ch4-a-1',
-            name: 'PhoenixRanker.forward()',
+            name: 'PhoenixRanker.encode_context()',
             file: 'phoenix/recsys_model.py',
-            summary: 'Encoding engagement context tokens',
+            summary: 'Reading your recent engagement history',
             githubUrl: `${GITHUB_BASE}/phoenix/recsys_model.py`
           }
         ]
       },
       {
         id: 'ch4-b',
-        labelSimple: 'Attention',
-        labelTechnical: 'Attention Weights',
-        functions: [
-          {
-            id: 'ch4-b-1',
-            name: 'PhoenixRanker.attention()',
-            file: 'phoenix/recsys_model.py',
-            summary: 'Computing token attention weights',
-            githubUrl: `${GITHUB_BASE}/phoenix/recsys_model.py`
-          }
-        ]
-      },
-      {
-        id: 'ch4-c',
         labelSimple: 'Odds',
         labelTechnical: 'Engagement Odds',
         functions: [
           {
-            id: 'ch4-c-1',
-            name: 'PhoenixScorer::score()',
+            id: 'ch4-b-1',
+            name: 'PhoenixScorer::predict()',
             file: 'home-mixer/scorers/phoenix_scorer.rs',
-            summary: 'Estimating engagement probabilities',
+            summary: 'Predicting engagement probabilities',
             githubUrl: `${GITHUB_BASE}/home-mixer/scorers/phoenix_scorer.rs`
           }
         ]
       },
       {
-        id: 'ch4-d',
-        labelSimple: 'Combine',
-        labelTechnical: 'Weighted Score',
+        id: 'ch4-c',
+        labelSimple: 'Score',
+        labelTechnical: 'Final Score',
         functions: [
           {
-            id: 'ch4-d-1',
-            name: 'WeightedScorer::score()',
+            id: 'ch4-c-1',
+            name: 'WeightedScorer::combine()',
             file: 'home-mixer/scorers/weighted_scorer.rs',
-            summary: 'Combining scores with weights',
+            summary: 'Combining odds into final ranking score',
             githubUrl: `${GITHUB_BASE}/home-mixer/scorers/weighted_scorer.rs`
-          },
-          {
-            id: 'ch4-d-2',
-            name: 'AuthorDiversityScorer::score()',
-            file: 'home-mixer/scorers/diversity.rs',
-            summary: 'Penalizing repeated authors',
-            githubUrl: `${GITHUB_BASE}/home-mixer/scorers/diversity.rs`
           }
         ]
       }

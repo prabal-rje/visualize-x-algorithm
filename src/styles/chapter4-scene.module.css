@@ -1,6 +1,7 @@
 .container {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 16px;
   padding: 20px;
   min-height: 300px;
@@ -28,23 +29,6 @@
   letter-spacing: 0.14em;
 }
 
-.file {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 12px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-}
-
-.fileLabel {
-  color: rgba(51, 255, 51, 0.5);
-}
-
-.filePath {
-  color: var(--phosphor-green);
-}
-
 .narration {
   text-align: center;
   padding: 8px 24px;
@@ -56,135 +40,460 @@
 }
 
 .content {
-  flex: 1;
-  display: grid;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.stepLabel {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: rgba(51, 255, 51, 0.7);
+  letter-spacing: 0.1em;
+  padding: 6px 16px;
+  border: 1px solid rgba(51, 255, 51, 0.3);
+  background: rgba(0, 20, 0, 0.5);
+}
+
+/* Panel - shared styles for all steps */
+.panel {
+  width: 100%;
+  border: 1px solid rgba(51, 255, 51, 0.3);
+  background: rgba(0, 12, 0, 0.6);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
   gap: 12px;
 }
 
-.mobileContent {
-  display: grid;
-  gap: 12px;
+.panelHeader {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--phosphor-green);
+  text-shadow: 0 0 8px var(--phosphor-green);
 }
 
-.mobilePanel {
-  border: 1px solid rgba(51, 255, 51, 0.25);
-  background: rgba(0, 12, 0, 0.65);
-  padding: 12px;
-  display: grid;
-  gap: 8px;
-}
-
-.mobileRow {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  gap: 8px;
+.panelSubtext {
   font-family: var(--font-mono);
   font-size: 11px;
+  color: rgba(51, 255, 51, 0.7);
+  margin-top: -6px;
+}
+
+/* Step 0: History List */
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.historyItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: rgba(0, 20, 0, 0.5);
+  border: 1px solid rgba(51, 255, 51, 0.15);
+  animation: fadeSlideIn 0.3s ease-out both;
+}
+
+.historyIcon {
+  font-size: 16px;
+}
+
+.historyText {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 12px;
   color: var(--phosphor-green);
 }
 
-.mobileLabel {
-  color: rgba(51, 255, 51, 0.9);
-}
-
-.mobileMeta {
-  color: rgba(51, 255, 51, 0.6);
-  text-transform: uppercase;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-}
-
-.mobileValue {
-  color: rgba(255, 176, 0, 0.9);
-}
-
-.mobileNote {
+.historyAction {
   font-family: var(--font-mono);
   font-size: 10px;
-  text-align: center;
-  color: rgba(51, 255, 51, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(51, 255, 51, 0.6);
 }
 
-.mobileSummary {
+/* Step 1: Factors Box */
+.factorsBox {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  background: rgba(0, 30, 0, 0.4);
+  border: 1px solid rgba(51, 255, 51, 0.2);
+  margin-bottom: 4px;
+}
+
+.factorRow {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.factorLabel {
+  color: rgba(51, 255, 51, 0.6);
+}
+
+.factorValue {
+  color: rgba(255, 176, 0, 0.9);
+  font-weight: bold;
+}
+
+/* Step 1: Odds List */
+.oddsList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.oddsItem {
+  display: grid;
+  grid-template-columns: 70px 1fr 50px;
+  align-items: center;
+  gap: 12px;
+  animation: fadeSlideIn 0.3s ease-out both;
+}
+
+.oddsAction {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: capitalize;
+  color: var(--phosphor-green);
+}
+
+.oddsBarContainer {
+  height: 16px;
+  background: rgba(0, 20, 0, 0.8);
+  border: 1px solid rgba(51, 255, 51, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.oddsBar {
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255, 176, 0, 0.6) 0%, rgba(255, 176, 0, 0.9) 100%);
+  box-shadow: 0 0 10px rgba(255, 176, 0, 0.4);
+  transition: width 0.5s ease-out;
+}
+
+.oddsValue {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: bold;
+  color: rgba(255, 176, 0, 0.95);
+  text-align: right;
+}
+
+.oddsNote {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: rgba(51, 255, 51, 0.6);
+  line-height: 1.5;
+  padding: 8px;
+  background: rgba(0, 20, 0, 0.3);
+  border-left: 2px solid rgba(51, 255, 51, 0.3);
+  margin-top: 8px;
+}
+
+/* Step 2: Score Breakdown */
+.scoreBreakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formulaSection {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  background: rgba(0, 20, 0, 0.4);
+  border: 1px solid rgba(51, 255, 51, 0.15);
+}
+
+.formulaRow {
+  display: grid;
+  grid-template-columns: 80px 1fr 60px;
+  gap: 8px;
   font-family: var(--font-mono);
   font-size: 11px;
   color: rgba(51, 255, 51, 0.85);
 }
 
-.mobileRankings {
-  display: grid;
-  gap: 6px;
+.formulaRow[data-penalty] {
+  color: rgba(255, 100, 100, 0.9);
 }
 
-.stepLabel {
-  justify-self: center;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: rgba(51, 255, 51, 0.7);
-  letter-spacing: 0.1em;
-  padding: 4px 12px;
-  border: 1px solid rgba(51, 255, 51, 0.3);
-  background: rgba(0, 20, 0, 0.5);
+.formulaAction {
+  text-transform: capitalize;
 }
 
-.callout {
-  width: min(560px, 100%);
-  display: grid;
-  gap: 6px;
-  padding: 10px 12px;
-  border: 1px solid rgba(51, 255, 51, 0.25);
-  background: rgba(0, 14, 0, 0.6);
-  box-shadow: inset 0 0 12px rgba(51, 255, 51, 0.08);
+.formulaCalc {
+  color: rgba(51, 255, 51, 0.6);
+  text-align: center;
 }
 
-.calloutHeader {
+.formulaResult {
+  text-align: right;
+  color: rgba(255, 176, 0, 0.9);
+}
+
+.formulaRow[data-penalty] .formulaResult {
+  color: rgba(255, 100, 100, 0.9);
+}
+
+.formulaDivider {
+  height: 1px;
+  background: rgba(51, 255, 51, 0.3);
+  margin: 6px 0;
+}
+
+.finalScoreBox {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  padding: 16px 20px;
+  background: rgba(0, 20, 0, 0.6);
+  border: 2px solid rgba(255, 176, 0, 0.5);
+  box-shadow: 0 0 20px rgba(255, 176, 0, 0.2);
 }
 
-.calloutTitle {
+.finalScoreLabel {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 176, 0, 0.8);
+}
+
+.finalScoreValue {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: bold;
+  color: rgba(255, 176, 0, 1);
+  text-shadow: 0 0 15px rgba(255, 176, 0, 0.6);
+}
+
+/* Ranking Section */
+.rankingSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.rankingHeader {
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--phosphor-green);
+  color: rgba(51, 255, 51, 0.7);
 }
 
-.calloutFormula {
+.rankingNote {
   font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
+  font-size: 10px;
+  color: rgba(51, 255, 51, 0.5);
+  margin-bottom: 4px;
+}
+
+.rankingItem {
+  position: relative;
+  display: grid;
+  grid-template-columns: 36px 1fr 60px;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(0, 20, 0, 0.4);
+  border: 1px solid rgba(51, 255, 51, 0.15);
+  animation: fadeSlideIn 0.3s ease-out both;
+  cursor: pointer;
+  transition: border-color 0.2s ease, margin-bottom 0.2s ease;
+}
+
+.rankingItem:hover {
+  border-color: rgba(51, 255, 51, 0.5);
+  margin-bottom: 60px;
+}
+
+.rankingItem:hover .rankingTooltip {
+  display: block;
+}
+
+.rankingTooltip {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 10;
+  padding: 12px 14px;
+  background: rgba(0, 8, 0, 1);
+  border: 2px solid rgba(51, 255, 51, 0.7);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.9), 0 0 30px rgba(51, 255, 51, 0.3);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--phosphor-green);
+  text-shadow: 0 0 10px var(--phosphor-green);
+}
+
+.rankingItem[data-user='true'] {
+  background: rgba(255, 176, 0, 0.1);
+  border-color: rgba(255, 176, 0, 0.4);
+}
+
+.rankingPosition {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: bold;
+  color: rgba(51, 255, 51, 0.8);
+}
+
+.rankingItem[data-user='true'] .rankingPosition {
   color: rgba(255, 176, 0, 0.9);
 }
 
-.calloutText {
+.rankingLabel {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: rgba(51, 255, 51, 0.8);
-  line-height: 1.4;
-}
-
-.functionRef {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  padding: 12px;
-  border-top: 1px solid rgba(51, 255, 51, 0.2);
-  font-family: var(--font-mono);
-  font-size: 11px;
-}
-
-.funcLabel {
-  color: rgba(51, 255, 51, 0.5);
-}
-
-.funcName {
   color: var(--phosphor-green);
-  text-shadow: 0 0 5px rgba(51, 255, 51, 0.5);
+}
+
+.rankingItem[data-user='true'] .rankingLabel {
+  color: rgba(255, 176, 0, 0.95);
+  font-weight: bold;
+}
+
+.rankingScore {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-align: right;
+  color: rgba(51, 255, 51, 0.8);
+}
+
+.rankingItem[data-user='true'] .rankingScore {
+  color: rgba(255, 176, 0, 0.9);
+}
+
+.rankingItem[data-user='true'] .rankingTooltip {
+  border-color: rgba(255, 176, 0, 0.7);
+  color: rgba(255, 176, 0, 1);
+  text-shadow: 0 0 10px rgba(255, 176, 0, 0.6);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.9), 0 0 30px rgba(255, 176, 0, 0.3);
+}
+
+/* Mobile - hide hover tooltips, use tap instead */
+.rankingItem[data-mobile='true']:hover {
+  margin-bottom: 0;
+}
+
+.rankingItem[data-mobile='true']:hover .rankingTooltip {
+  display: none;
+}
+
+/* Mobile Preview Dialog */
+.previewDialog {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: dialogFadeIn 0.2s ease-out;
+}
+
+@keyframes dialogFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.previewContent {
+  max-width: 320px;
+  width: 100%;
+  background: rgba(0, 10, 0, 1);
+  border: 2px solid rgba(51, 255, 51, 0.6);
+  box-shadow: 0 0 40px rgba(51, 255, 51, 0.3);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.previewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--phosphor-green);
+  text-shadow: 0 0 10px var(--phosphor-green);
+}
+
+.previewClose {
+  background: none;
+  border: 1px solid rgba(51, 255, 51, 0.4);
+  color: var(--phosphor-green);
+  font-size: 16px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.previewClose:hover {
+  background: rgba(51, 255, 51, 0.1);
+  border-color: var(--phosphor-green);
+}
+
+.previewText {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--phosphor-green);
+  padding: 12px;
+  background: rgba(0, 20, 0, 0.5);
+  border: 1px solid rgba(51, 255, 51, 0.2);
+}
+
+.previewScore {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: rgba(255, 176, 0, 0.9);
+  text-align: right;
+}
+
+/* Animations */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .container[data-active='true'] .title {
@@ -192,8 +501,7 @@
 }
 
 @keyframes title-glow {
-  0%,
-  100% {
+  0%, 100% {
     text-shadow: 0 0 20px var(--phosphor-green);
   }
   50% {
@@ -209,17 +517,32 @@
   animation: none;
 }
 
-@media (min-width: 1100px) {
+/* Desktop */
+@media (min-width: 768px) {
+  .content {
+    max-width: 550px;
+  }
+
   .title {
     font-size: 30px;
     letter-spacing: 0.18em;
   }
+
+  .oddsItem {
+    grid-template-columns: 90px 1fr 60px;
+  }
+
+  .formulaRow {
+    grid-template-columns: 100px 1fr 70px;
+    font-size: 12px;
+  }
 }
 
+/* Mobile */
 @media (max-width: 600px) {
   .container {
     padding: 16px;
-    gap: 16px;
+    gap: 12px;
   }
 
   .title {
@@ -233,19 +556,42 @@
     line-height: 1.5;
   }
 
-  .stepLabel {
-    max-width: 90%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .panel {
+    padding: 12px;
   }
 
-  .calloutHeader {
-    flex-direction: column;
-    align-items: flex-start;
+  .panelHeader {
+    font-size: 13px;
   }
 
-  .mobileRow {
-    grid-template-columns: 1fr auto;
+  .oddsItem {
+    grid-template-columns: 60px 1fr 45px;
+    gap: 8px;
+  }
+
+  .oddsAction {
+    font-size: 11px;
+  }
+
+  .oddsValue {
+    font-size: 12px;
+  }
+
+  .finalScoreBox {
+    padding: 12px 16px;
+  }
+
+  .finalScoreValue {
+    font-size: 28px;
+  }
+
+  .formulaRow {
+    grid-template-columns: 70px 1fr 50px;
+    font-size: 10px;
+  }
+
+  .rankingItem {
+    grid-template-columns: 32px 1fr 50px;
+    padding: 6px 10px;
   }
 }

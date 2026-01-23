@@ -11,7 +11,7 @@ describe('index.html fonts', () => {
   });
 
   it('sets the app title and favicon', () => {
-    expect(html).toContain('<title>The Anatomy of Virality</title>');
+    expect(html).toContain('<title>X Algorithm Visualizer</title>');
     expect(html).toContain('rel="icon"');
     expect(html).toContain('favicon.svg');
   });

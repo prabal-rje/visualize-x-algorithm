@@ -6,7 +6,7 @@ export const ATTRIBUTION = {
     projectRepo: 'github.com/prabal-rje/visualize-x-algorithm'
   },
   project: {
-    name: 'The Anatomy of Virality',
+    name: 'X Algorithm Visualizer',
     tagline: 'See how the X algorithm actually works - with real math.',
     version: '1.0.0'
   },

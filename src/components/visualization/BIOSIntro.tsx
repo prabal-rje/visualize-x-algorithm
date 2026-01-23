@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { ATTRIBUTION } from '../../data/attribution';
 
 const INTRO_LINES = [
-  '> YOUR TWEET. REAL MATH <',
-  'Type anything. Pick your persona.',
-  'Watch YOUR words get tokenized, embedded, and scored—live.',
+  '> UNDERSTAND X\'s ALGORITHM <',
+  'Write a tweet. Pick a persona.',
+  'Watch it get tokenized, embedded, filtered, and ranked—live.',
   '',
   '> POWERED BY REAL ML MODELS <',
-  'Every number changes based on what YOU write.'
+  'Every number computed from YOUR actual words.'
 ];
 
 type BIOSIntroProps = {
@@ -38,7 +38,7 @@ export default function BIOSIntro({ onStart }: BIOSIntroProps) {
       data-system="bios"
     >
       <header className="text-center">
-        <h1 className="crt-h2 text-crt-amber text-glow-amber">THE ANATOMY OF VIRALITY</h1>
+        <h1 className="crt-h2 text-crt-amber text-glow-amber">X ALGORITHM VISUALIZER</h1>
         <p className="crt-h4 mt-2 text-crt-amber">
           (c) 2026{' '}
           <a

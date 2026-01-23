@@ -10,7 +10,9 @@ import { isInitialized } from '../../ml/embeddings';
 import { computeSemanticReach, areAudienceEmbeddingsReady } from '../../ml/reach';
 import TopKSelector, { type Candidate } from '../visualization/TopKSelector';
 import TypewriterText from '../visualization/TypewriterText';
+import SimpleAvatar from '../visualization/SimpleAvatar';
 import { useViewport } from '../../hooks/useViewport';
+import { useIsFirefox } from '../../hooks/useIsFirefox';
 
 const STEP_NARRATION = [
   'Top-K selection picks the strongest candidates for delivery...',
@@ -75,6 +77,7 @@ export default function Chapter5Scene({ currentStep, isActive, onContinue }: Cha
   const audienceMix = useConfigStore((state) => state.audienceMix);
   const simulationResult = useConfigStore((state) => state.simulationResult);
   const { isMobile } = useViewport();
+  const isFirefox = useIsFirefox();
   const [probs, setProbs] = useState(DEFAULT_PROBS);
   const [semanticReach, setSemanticReach] = useState<AudienceMixType>(audienceMix);
 
@@ -313,12 +316,11 @@ export default function Chapter5Scene({ currentStep, isActive, onContinue }: Cha
                     className={styles.mobileAvatar}
                     style={{ '--index': index } as CSSProperties}
                   >
-                    <Avatar
-                      size={24}
-                      name={avatar.label}
-                      variant="beam"
-                      colors={AVATAR_COLORS}
-                    />
+                    {isFirefox ? (
+                      <SimpleAvatar size={24} name={avatar.label} colors={AVATAR_COLORS} />
+                    ) : (
+                      <Avatar size={24} name={avatar.label} variant="beam" colors={AVATAR_COLORS} />
+                    )}
                     <span
                       className={styles.mobileAvatarBurst}
                       data-reaction={avatar.reaction}
@@ -451,13 +453,11 @@ export default function Chapter5Scene({ currentStep, isActive, onContinue }: Cha
                     style={{ '--index': index } as CSSProperties}
                     aria-label={`Audience member ${avatar.label}`}
                   >
-                    <Avatar
-                      size={44}
-                      name={avatar.label}
-                      variant="beam"
-                      colors={AVATAR_COLORS}
-                      className={styles.avatarSvg}
-                    />
+                    {isFirefox ? (
+                      <SimpleAvatar size={44} name={avatar.label} colors={AVATAR_COLORS} className={styles.avatarSvg} />
+                    ) : (
+                      <Avatar size={44} name={avatar.label} variant="beam" colors={AVATAR_COLORS} className={styles.avatarSvg} />
+                    )}
                     <span
                       className={styles.avatarBurst}
                       data-reaction={avatar.reaction}

@@ -352,70 +352,10 @@ describe('Timeline', () => {
       expect(screen.getByTestId('progress-indicator')).toBeInTheDocument();
     });
 
-    it('shows progress label and tick markers', () => {
-      render(
-        <Timeline
-          position={defaultPosition}
-          status="running"
-          dispatch={mockDispatch}
-        />
-      );
-      expect(screen.getByText(/Simulation Progress/i)).toBeInTheDocument();
-      expect(screen.getAllByTestId('progress-tick')).toHaveLength(
-        CHAPTERS.length
-      );
-    });
   });
 
-  describe('play/pause controls', () => {
-    it('renders play button when paused', () => {
-      render(
-        <Timeline
-          position={defaultPosition}
-          status="paused"
-          dispatch={mockDispatch}
-        />
-      );
-      expect(screen.getByRole('button', { name: /play/i })).toBeInTheDocument();
-    });
-
-    it('renders pause button when running', () => {
-      render(
-        <Timeline
-          position={defaultPosition}
-          status="running"
-          dispatch={mockDispatch}
-        />
-      );
-      expect(screen.getByRole('button', { name: /pause/i })).toBeInTheDocument();
-    });
-
-    it('dispatches PAUSE when clicking pause button', async () => {
-      const user = userEvent.setup();
-      render(
-        <Timeline
-          position={defaultPosition}
-          status="running"
-          dispatch={mockDispatch}
-        />
-      );
-      await user.click(screen.getByRole('button', { name: /pause/i }));
-      expect(mockDispatch).toHaveBeenCalledWith({ type: 'PAUSE' });
-    });
-
-    it('dispatches RESUME when clicking play button', async () => {
-      const user = userEvent.setup();
-      render(
-        <Timeline
-          position={defaultPosition}
-          status="paused"
-          dispatch={mockDispatch}
-        />
-      );
-      await user.click(screen.getByRole('button', { name: /play/i }));
-      expect(mockDispatch).toHaveBeenCalledWith({ type: 'RESUME' });
-    });
-  });
+  // Note: Play/pause buttons were removed from UI; only keyboard controls remain
+  // Note: Progress tick markers were also removed - progress bar is now a simple fill
 
   describe('keyboard controls', () => {
     it('toggles play/pause with space key', () => {

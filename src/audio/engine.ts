@@ -29,9 +29,10 @@ function initNodes() {
   crusher = new Tone.BitCrusher(4).connect(master);
 
   typewriter = new Tone.Synth({
-    oscillator: { type: 'square' },
-    envelope: { attack: 0.001, decay: 0.02, sustain: 0.05, release: 0.01 }
-  }).connect(crusher);
+    oscillator: { type: 'sine' },
+    envelope: { attack: 0.001, decay: 0.015, sustain: 0, release: 0.01 },
+    volume: -24
+  }).connect(master); // bypass crusher for softer sound
 
   chime = new Tone.Synth({
     oscillator: { type: 'sine' },
@@ -54,8 +55,9 @@ function initNodes() {
     envelope: { attack: 0.002, decay: 0.1, sustain: 0, release: 0.05 }
   }).connect(pingPanner);
 
-  drone = new Tone.Oscillator({ frequency: 50, type: 'sine', volume: -26 }).connect(crusher);
-  dataDrone = new Tone.Oscillator({ frequency: 110, type: 'square', volume: -30 }).connect(crusher);
+  // CRT hum - layered frequencies for that "machine room" feel
+  drone = new Tone.Oscillator({ frequency: 60, type: 'sine', volume: -20 }).connect(master);
+  dataDrone = new Tone.Oscillator({ frequency: 120, type: 'triangle', volume: -24 }).connect(master);
 
   initialized = true;
 }
@@ -82,8 +84,9 @@ export async function startAudio() {
 export async function playTypewriterKey() {
   if (!shouldPlay()) return;
   if (!(await ensureStarted())) return;
-  const freq = 420 + Math.random() * 280;
-  typewriter?.triggerAttackRelease(freq, '32n');
+  // Soft, low tick - gentle on ears
+  const freq = 180 + Math.random() * 60;
+  typewriter?.triggerAttackRelease(freq, '64n');
 }
 
 export async function playDataChirp() {

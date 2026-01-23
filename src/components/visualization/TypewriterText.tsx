@@ -76,7 +76,10 @@ export default function TypewriterText({
       timeoutId = setTimeout(() => {
         if (currentIndex < text.length) {
           setDisplayedText(text.slice(0, currentIndex + 1));
-          void playTypewriterKey();
+          // Only play sound every ~4th character (25% chance)
+          if (Math.random() < 0.25) {
+            void playTypewriterKey();
+          }
           currentIndex += 1;
           scheduleNext();
         } else {

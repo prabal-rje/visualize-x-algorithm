@@ -224,6 +224,49 @@
   opacity: 0.6;
 }
 
+/* Mobile modal for tweet details */
+.mobileModal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 16px;
+}
+
+.mobileModalContent {
+  position: relative;
+  max-width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: rgba(0, 20, 0, 0.98);
+  border: 2px solid var(--phosphor-green);
+  box-shadow: 0 0 30px rgba(51, 255, 51, 0.4);
+  padding: 16px;
+}
+
+.mobileModalClose {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: 1px solid rgba(51, 255, 51, 0.5);
+  color: var(--phosphor-green);
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.mobileModalClose:hover {
+  background: rgba(51, 255, 51, 0.1);
+  border-color: var(--phosphor-green);
+}
+
 /* Mobile: remove outer boundary, just show the graph */
 @media (max-width: 600px) {
   .container {
@@ -249,5 +292,11 @@
 
   .hoverSlot {
     display: none;
+  }
+
+  /* Make points easier to tap on mobile */
+  .candidate .pointDot {
+    min-width: 24px;
+    min-height: 24px;
   }
 }

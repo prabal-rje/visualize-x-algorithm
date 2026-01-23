@@ -100,6 +100,7 @@ function progressToPosition(progressPercent: number): SimulationPosition {
 
 export default function Timeline({ position, status, dispatch }: TimelineProps) {
   const expertMode = useConfigStore((state) => state.expertMode);
+  const resetSimulation = useConfigStore((state) => state.resetSimulation);
   const { isMobile } = useViewport();
   const sourceBaseUrl = 'https://github.com/xai-org/x-algorithm/blob/main/';
   const currentFunction = getFunctionAtPosition(
@@ -128,8 +129,9 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
   }, [dispatch, atEnd]);
 
   const handleStartOver = useCallback(() => {
+    resetSimulation(); // Reset config store's simulationStarted flag
     dispatch({ type: 'RESET' });
-  }, [dispatch]);
+  }, [dispatch, resetSimulation]);
 
   const handleChapterClick = useCallback((chapterIndex: number) => {
     dispatch({ type: 'JUMP_TO_CHAPTER', chapterIndex });

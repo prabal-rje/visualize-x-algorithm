@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { ExternalLink, Github, Twitter, Linkedin, Home } from 'lucide-react';
 import { CHAPTERS, getFunctionAtPosition } from '../../data/chapters';
 import { ATTRIBUTION } from '../../data/attribution';
+import { useConfigStore } from '../../stores/config';
 import type { SimulationPosition, SimulationAction, SimulationStatus } from '../../hooks/useSimulationState';
 
 type MobileHeaderProps = {
@@ -68,6 +69,7 @@ function calculateProgress(position: SimulationPosition): number {
 }
 
 export default function MobileHeader({ position, status, dispatch }: MobileHeaderProps) {
+  const resetSimulation = useConfigStore((state) => state.resetSimulation);
   const sourceBaseUrl = 'https://github.com/xai-org/x-algorithm/blob/main/';
   const currentFunction = getFunctionAtPosition(
     position.chapterIndex,
@@ -92,8 +94,9 @@ export default function MobileHeader({ position, status, dispatch }: MobileHeade
   }, [dispatch, atEnd]);
 
   const handleStartOver = useCallback(() => {
+    resetSimulation(); // Reset config store's simulationStarted flag
     dispatch({ type: 'RESET' });
-  }, [dispatch]);
+  }, [dispatch, resetSimulation]);
 
   const handlePlayPause = useCallback(() => {
     if (isPlaying) {

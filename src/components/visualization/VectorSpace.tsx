@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { X } from 'lucide-react';
+import { useViewport } from '../../hooks/useViewport';
 import styles from '../../styles/vector-space.module.css';
 import VectorSpaceHover from './VectorSpaceHover';
 
@@ -42,12 +44,20 @@ export default function VectorSpace({
   label = 'VECTOR SPACE',
   isActive = true
 }: VectorSpaceProps) {
+  const { isMobile } = useViewport();
   const [hovered, setHovered] = useState<{
     text: string;
     similarity: number;
     label: string;
   } | null>(null);
+  // On mobile, use modal state; on desktop, use hover
+  const [mobileSelected, setMobileSelected] = useState<{
+    text: string;
+    similarity: number;
+    label: string;
+  } | null>(null);
   const showHover = Boolean(hovered?.text);
+  const showModal = isMobile && Boolean(mobileSelected?.text);
 
   return (
     <div
@@ -87,25 +97,35 @@ export default function VectorSpace({
               ['--dot-glow' as string]: `${glowSize}px`,
               ['--dot-alpha' as string]: `${0.2 + intensity * 0.8}`
             }}
+            onClick={() => {
+              if (!candidate.text || !isMobile) return;
+              setMobileSelected({
+                text: candidate.text,
+                similarity: candidate.similarity,
+                label: candidate.label
+              });
+            }}
             onMouseEnter={() => {
-              if (!candidate.text) return;
+              if (!candidate.text || isMobile) return;
               setHovered({
                 text: candidate.text,
                 similarity: candidate.similarity,
                 label: candidate.label
               });
             }}
-            onMouseLeave={() => setHovered(null)}
+            onMouseLeave={() => !isMobile && setHovered(null)}
             onFocus={() => {
-              if (!candidate.text) return;
+              if (!candidate.text || isMobile) return;
               setHovered({
                 text: candidate.text,
                 similarity: candidate.similarity,
                 label: candidate.label
               });
             }}
-            onBlur={() => setHovered(null)}
+            onBlur={() => !isMobile && setHovered(null)}
             tabIndex={0}
+            role="button"
+            aria-label={`View tweet: ${candidate.label}`}
             title={candidate.text ? `${candidate.text}\n\nSimilarity: ${candidate.similarity.toFixed(3)}` : undefined}
           >
             <div className={styles.pointDot} />
@@ -124,25 +144,35 @@ export default function VectorSpace({
             left: `${userPoint.x}%`,
             top: `${userPoint.y}%`
           }}
+          onClick={() => {
+            if (!userTweet || !isMobile) return;
+            setMobileSelected({
+              text: userTweet,
+              similarity: 1,
+              label: userPoint.label
+            });
+          }}
           onMouseEnter={() => {
-            if (!userTweet) return;
+            if (!userTweet || isMobile) return;
             setHovered({
               text: userTweet,
               similarity: 1,
               label: userPoint.label
             });
           }}
-          onMouseLeave={() => setHovered(null)}
+          onMouseLeave={() => !isMobile && setHovered(null)}
           onFocus={() => {
-            if (!userTweet) return;
+            if (!userTweet || isMobile) return;
             setHovered({
               text: userTweet,
               similarity: 1,
               label: userPoint.label
             });
           }}
-          onBlur={() => setHovered(null)}
+          onBlur={() => !isMobile && setHovered(null)}
           tabIndex={0}
+          role="button"
+          aria-label="View your tweet"
         >
           <div className={styles.pointDot} />
           <span className={styles.pointLabel}>{userPoint.label}</span>
@@ -157,6 +187,34 @@ export default function VectorSpace({
           />
         ) : null}
       </div>
+
+      {/* Mobile modal dialog */}
+      {showModal && mobileSelected && (
+        <div
+          className={styles.mobileModal}
+          data-testid="vector-space-modal"
+          onClick={() => setMobileSelected(null)}
+        >
+          <div
+            className={styles.mobileModalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              className={styles.mobileModalClose}
+              onClick={() => setMobileSelected(null)}
+              aria-label="Close"
+            >
+              <X size={18} />
+            </button>
+            <VectorSpaceHover
+              tweet={mobileSelected.text}
+              similarity={mobileSelected.similarity}
+              label={mobileSelected.label === userPoint.label ? 'YOUR TWEET' : mobileSelected.label}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

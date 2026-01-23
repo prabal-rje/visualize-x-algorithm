@@ -8,6 +8,7 @@ import ScreenFlicker from './components/effects/ScreenFlicker';
 import Marquee from './components/layout/Marquee';
 import MobileHeader from './components/layout/MobileHeader';
 import Timeline from './components/layout/Timeline';
+import BIOSIntro from './components/visualization/BIOSIntro';
 import BIOSLoading from './components/visualization/BIOSLoading';
 import ChapterSkeleton from './components/visualization/ChapterSkeleton';
 import ChapterWrapper from './components/visualization/ChapterWrapper';
@@ -28,6 +29,7 @@ const Chapter5Scene = lazy(() => import('./components/chapters/Chapter5Scene'));
 
 function App() {
   const [crtConfig, setCrtConfig] = useState<CRTConfig>(DEFAULT_CRT_CONFIG);
+  const [showIntro, setShowIntro] = useState(true);
   const [simulationState, dispatch] = useSimulationState();
   const simulationStarted = useConfigStore((state) => state.simulationStarted);
   const beginSimulation = useConfigStore((state) => state.beginSimulation);
@@ -93,6 +95,25 @@ function App() {
     dispatch({ type: 'STEP_FORWARD' });
   }, [dispatch]);
 
+  // Callback for dismissing intro screen
+  const handleDismissIntro = useCallback(() => {
+    setShowIntro(false);
+  }, []);
+
+  // Handle Enter key to dismiss intro
+  useEffect(() => {
+    if (!showIntro || !isModelReady) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        setShowIntro(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [showIntro, isModelReady]);
+
   const { position } = simulationState;
   const isCompactChapter = position.chapterIndex >= 3;
 
@@ -146,6 +167,7 @@ function App() {
     );
   };
 
+  // Show loading screen while model downloads
   if (!isModelReady) {
     return (
       <CRTOverlay
@@ -168,6 +190,35 @@ function App() {
             {/* Mobile: rotate 90deg for widescreen BIOS effect */}
             <div className="px-4 max-sm:fixed max-sm:top-1/2 max-sm:left-1/2 max-sm:-translate-x-1/2 max-sm:-translate-y-1/2 max-sm:rotate-90 max-sm:w-[min(100vh,100vw)] max-sm:px-6">
               <BIOSLoading />
+            </div>
+          </div>
+        </div>
+      </CRTOverlay>
+    );
+  }
+
+  // Show intro screen after model is ready, before simulation
+  if (showIntro) {
+    return (
+      <CRTOverlay
+        config={crtConfig}
+        reducedEffects={isMobile}
+        reducedMotion={prefersReducedMotion}
+      >
+        <div
+          data-testid="app-shell"
+          className="relative flex min-h-screen flex-col bg-crt-void bg-crt-veil"
+          data-intro="true"
+          data-mobile={isMobile}
+          data-reduced-motion={prefersReducedMotion}
+          data-high-contrast={prefersHighContrast}
+          data-system="shell"
+        >
+          <ScreenFlicker />
+          <Marquee />
+          <div className="flex flex-1 items-center justify-center p-4 max-sm:p-0">
+            <div className="px-4 max-sm:fixed max-sm:top-1/2 max-sm:left-1/2 max-sm:-translate-x-1/2 max-sm:-translate-y-1/2 max-sm:rotate-90 max-sm:w-[85vh] max-sm:px-2">
+              <BIOSIntro onStart={handleDismissIntro} />
             </div>
           </div>
         </div>

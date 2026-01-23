@@ -222,6 +222,14 @@
   margin-bottom: 16px;
 }
 
+.weightsIntro p {
+  margin: 0;
+}
+
+.weightsIntro p + p {
+  margin-top: 12px;
+}
+
 .weightsTable {
   display: flex;
   flex-direction: column;
@@ -231,12 +239,12 @@
 
 .weightsTableRow {
   display: grid;
-  grid-template-columns: 90px 50px 1fr;
-  gap: 12px;
+  grid-template-columns: 100px 1fr 60px;
+  gap: 16px;
   font-family: var(--font-mono);
   font-size: 13px;
   align-items: center;
-  padding: 8px 12px;
+  padding: 10px 16px;
   background: rgba(0, 20, 0, 0.4);
   border: 1px solid rgba(51, 255, 51, 0.15);
 }
@@ -247,18 +255,18 @@
   font-weight: bold;
 }
 
+.weightsTableReason {
+  color: rgba(51, 255, 51, 0.6);
+  font-style: italic;
+  font-size: 12px;
+}
+
 .weightsTableValue {
   color: rgba(255, 176, 0, 1);
   font-weight: bold;
   font-size: 15px;
   text-align: right;
   text-shadow: 0 0 8px rgba(255, 176, 0, 0.5);
-}
-
-.weightsTableReason {
-  color: rgba(51, 255, 51, 0.6);
-  font-style: italic;
-  font-size: 12px;
 }
 
 .weightsDisclaimer {

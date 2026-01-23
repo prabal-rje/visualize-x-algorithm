@@ -226,34 +226,35 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
             </div>
 
             <div className={styles.weightsIntro}>
-              X prioritizes actions that drive platform goals—spreading content, sparking conversation, signaling high intent. Each action type gets a multiplier.
+              <p>X prioritizes actions that drive platform goals—spreading content, sparking conversation, signaling high intent.</p>
+              <p>Each action type gets a multiplier:</p>
             </div>
 
             <div className={styles.weightsTable}>
               <div className={styles.weightsTableRow}>
                 <span className={styles.weightsTableAction}>Repost</span>
-                <span className={styles.weightsTableValue}>2.0×</span>
                 <span className={styles.weightsTableReason}>spreads content virally</span>
+                <span className={styles.weightsTableValue}>2.0×</span>
               </div>
               <div className={styles.weightsTableRow}>
                 <span className={styles.weightsTableAction}>Reply</span>
-                <span className={styles.weightsTableValue}>1.5×</span>
                 <span className={styles.weightsTableReason}>drives conversation</span>
+                <span className={styles.weightsTableValue}>1.5×</span>
               </div>
               <div className={styles.weightsTableRow}>
                 <span className={styles.weightsTableAction}>Bookmark</span>
-                <span className={styles.weightsTableValue}>1.2×</span>
                 <span className={styles.weightsTableReason}>high intent signal</span>
+                <span className={styles.weightsTableValue}>1.2×</span>
               </div>
               <div className={styles.weightsTableRow}>
                 <span className={styles.weightsTableAction}>Like</span>
-                <span className={styles.weightsTableValue}>1.0×</span>
                 <span className={styles.weightsTableReason}>baseline engagement</span>
+                <span className={styles.weightsTableValue}>1.0×</span>
               </div>
               <div className={styles.weightsTableRow}>
                 <span className={styles.weightsTableAction}>Click</span>
-                <span className={styles.weightsTableValue}>0.5×</span>
                 <span className={styles.weightsTableReason}>passive interest</span>
+                <span className={styles.weightsTableValue}>0.5×</span>
               </div>
             </div>
 

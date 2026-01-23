@@ -1,4 +1,5 @@
-import { Home, Github, Twitter, Linkedin } from 'lucide-react';
+import { Home, Github, Linkedin } from 'lucide-react';
+import XIcon from '../icons/XIcon';
 import { ATTRIBUTION } from '../../data/attribution';
 
 export default function Marquee() {
@@ -26,9 +27,9 @@ export default function Marquee() {
           href={ATTRIBUTION.links.twitter}
           rel="noreferrer"
           target="_blank"
-          aria-label="Follow on Twitter"
+          aria-label="Follow on X"
         >
-          <Twitter size={18} aria-hidden="true" />
+          <XIcon size={18} aria-hidden />
           <span>@prabal_</span>
         </a>
         <a
@@ -71,7 +72,7 @@ export default function Marquee() {
           rel="noreferrer"
           target="_blank"
         >
-          <Twitter size={20} aria-hidden="true" />
+          <XIcon size={20} aria-hidden />
           <span>@prabal_</span>
         </a>
         <span className="text-crt-ink/50">•</span>

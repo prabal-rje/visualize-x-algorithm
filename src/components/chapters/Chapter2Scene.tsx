@@ -126,7 +126,6 @@ export default function Chapter2Scene({
 
   // Tokenize the tweet text
   const tokens = tokenizeSubTokens(tweetText || 'Hello world');
-  const tokenCount = tokens.length;
 
   // Generate tweet pool once on mount (embeddings pre-computed)
   useEffect(() => {

@@ -16,7 +16,7 @@
 .chapterNumber {
   display: block;
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 15px;
   color: rgba(51, 255, 51, 0.75);
   letter-spacing: 0.16em;
 }
@@ -24,7 +24,7 @@
 /* sm breakpoint - matches tailwind.config.js screens.sm */
 @media (min-width: 560px) {
   .chapterNumber {
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 
@@ -58,7 +58,7 @@
   text-align: center;
   padding: 8px 24px;
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.5;
   color: var(--phosphor-green);
   opacity: 0.9;
@@ -96,7 +96,7 @@
 
 .mobilePanelHeader {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 15px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: rgba(51, 255, 51, 0.75);
@@ -110,7 +110,7 @@
   border: 1px solid rgba(51, 255, 51, 0.2);
   background: rgba(0, 18, 0, 0.6);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 15px;
   color: rgba(51, 255, 51, 0.85);
 }
 
@@ -121,7 +121,7 @@
 }
 
 .mobileRank {
-  font-size: 12px;
+  font-size: 16px;
   color: rgba(255, 176, 0, 0.8);
 }
 
@@ -136,7 +136,7 @@
 
 .mobilePreview {
   color: rgba(51, 255, 51, 0.65);
-  font-size: 10px;
+  font-size: 16px;
 }
 
 .mobileValue {
@@ -147,13 +147,13 @@
   display: flex;
   justify-content: space-between;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 15px;
   color: rgba(51, 255, 51, 0.85);
 }
 
 .mobileNote {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 15px;
   color: rgba(51, 255, 51, 0.6);
   text-align: center;
 }
@@ -161,7 +161,7 @@
 .stepLabel {
   justify-self: center;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 16px;
   color: rgba(51, 255, 51, 0.7);
   letter-spacing: 0.1em;
   padding: 4px 12px;
@@ -180,7 +180,7 @@
 
 .reachHeader {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 16px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: rgba(51, 255, 51, 0.7);
@@ -190,7 +190,7 @@
   display: flex;
   justify-content: space-between;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 16px;
   color: var(--phosphor-green);
   padding-bottom: 8px;
   border-bottom: 1px solid rgba(51, 255, 51, 0.2);
@@ -206,7 +206,7 @@
   gap: 12px;
   align-items: center;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 16px;
   opacity: 0;
   animation: reach-row-reveal 0.4s ease forwards;
   animation-delay: calc(var(--index, 0) * 0.15s + 0.2s);
@@ -259,7 +259,7 @@
 
 .reachNote {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 15px;
   color: rgba(51, 255, 51, 0.6);
   text-align: center;
 }
@@ -277,7 +277,7 @@
 
 .reactionHeader {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 16px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: rgba(51, 255, 51, 0.7);
@@ -363,7 +363,7 @@
 
 .floatingParticle {
   position: absolute;
-  font-size: 12px;
+  font-size: 16px;
   opacity: 0;
   pointer-events: none;
   animation: particle-float 3s ease-in-out infinite;
@@ -404,7 +404,7 @@
   display: flex;
   justify-content: space-between;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 16px;
   color: rgba(51, 255, 51, 0.85);
   position: relative;
   z-index: 1;
@@ -431,7 +431,7 @@
 
 .reactionNote {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 15px;
   color: rgba(51, 255, 51, 0.6);
   text-align: center;
 }
@@ -447,7 +447,7 @@
 
 .summaryHeader {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 16px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--phosphor-green);
@@ -502,7 +502,7 @@
   display: flex;
   justify-content: space-between;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 15px;
   color: rgba(51, 255, 51, 0.85);
   border-bottom: 1px solid rgba(51, 255, 51, 0.15);
   padding-bottom: 4px;
@@ -510,7 +510,7 @@
 
 .summaryNote {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 15px;
   line-height: 1.4;
   color: rgba(51, 255, 51, 0.65);
 }
@@ -639,7 +639,7 @@
   display: flex;
   justify-content: space-between;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 16px;
   color: var(--phosphor-green);
   padding-bottom: 6px;
   border-bottom: 1px solid rgba(51, 255, 51, 0.2);
@@ -651,7 +651,7 @@
   gap: 8px;
   align-items: center;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 15px;
   opacity: 0;
   animation: mobile-row-reveal 0.4s ease forwards;
   animation-delay: calc(var(--index, 0) * 0.15s + 0.2s);
@@ -740,7 +740,7 @@
   position: absolute;
   top: -8px;
   right: -6px;
-  font-size: 12px;
+  font-size: 16px;
   opacity: 0;
   animation: mobile-avatar-pop 1.8s ease-in-out infinite;
 }
@@ -830,7 +830,7 @@
   display: flex;
   justify-content: space-between;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 15px;
   color: rgba(51, 255, 51, 0.85);
   position: relative;
   z-index: 1;
@@ -863,7 +863,7 @@
   display: flex;
   justify-content: space-between;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 15px;
   color: rgba(51, 255, 51, 0.85);
   opacity: 0;
   animation: mobile-reveal-slide 0.5s ease forwards;
@@ -872,7 +872,7 @@
 
 .mobileRevealNote {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 15px;
   color: rgba(51, 255, 51, 0.6);
   text-align: center;
   opacity: 0;
@@ -946,7 +946,7 @@
 
   .narration {
     padding: 6px 16px;
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .avatarGrid {
@@ -970,7 +970,7 @@
 
   .narration {
     padding: 6px 12px;
-    font-size: 12px;
+    font-size: 16px;
     line-height: 1.5;
   }
 

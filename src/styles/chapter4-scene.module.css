@@ -17,14 +17,14 @@
 .chapterNumber {
   display: block;
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 15px;
   color: rgba(51, 255, 51, 0.75);
   letter-spacing: 0.16em;
 }
 
 @media (min-width: 560px) {
   .chapterNumber {
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 
@@ -41,7 +41,7 @@
   text-align: center;
   padding: 8px 24px;
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.5;
   color: var(--phosphor-green);
   opacity: 0.9;
@@ -62,11 +62,12 @@
   flex-direction: column;
   align-items: center;
   gap: 16px;
+  margin-top: 16px;
 }
 
 .stepLabel {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 16px;
   color: rgba(51, 255, 51, 0.7);
   letter-spacing: 0.1em;
   padding: 6px 16px;
@@ -87,7 +88,7 @@
 
 .panelHeader {
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -97,7 +98,7 @@
 
 .panelSubtext {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 15px;
   color: rgba(51, 255, 51, 0.7);
   margin-top: -6px;
 }
@@ -126,44 +127,40 @@
 .historyText {
   flex: 1;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 16px;
   color: var(--phosphor-green);
 }
 
 .historyAction {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 16px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: rgba(51, 255, 51, 0.6);
 }
 
-/* Step 1: Factors Box */
-.factorsBox {
+/* Step 1: Factors List - displayed as normal text (not boxed) */
+.factorsList {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 10px 12px;
-  background: rgba(0, 30, 0, 0.4);
-  border: 1px solid rgba(51, 255, 51, 0.2);
-  margin-bottom: 4px;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
-.factorRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.factorLine {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 16px;
+  color: var(--phosphor-green);
+  line-height: 1.5;
 }
 
-.factorLabel {
-  color: rgba(51, 255, 51, 0.6);
+.factorLine span {
+  color: rgba(51, 255, 51, 0.7);
 }
 
-.factorValue {
-  color: rgba(255, 176, 0, 0.9);
-  font-weight: bold;
+.factorLine strong {
+  color: rgba(255, 176, 0, 0.95);
+  margin-left: 6px;
 }
 
 /* Step 1: Odds List */
@@ -183,7 +180,7 @@
 
 .oddsAction {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 16px;
   text-transform: capitalize;
   color: var(--phosphor-green);
 }
@@ -205,7 +202,7 @@
 
 .oddsValue {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: bold;
   color: rgba(255, 176, 0, 0.95);
   text-align: right;
@@ -213,13 +210,18 @@
 
 .oddsNote {
   font-family: var(--font-mono);
-  font-size: 10px;
-  color: rgba(51, 255, 51, 0.6);
-  line-height: 1.5;
-  padding: 8px;
-  background: rgba(0, 20, 0, 0.3);
-  border-left: 2px solid rgba(51, 255, 51, 0.3);
-  margin-top: 8px;
+  font-size: 15px;
+  color: rgba(51, 255, 51, 0.65);
+  line-height: 1.6;
+  margin-top: 16px;
+}
+
+.oddsNote p {
+  margin: 0;
+}
+
+.oddsNote p + p {
+  margin-top: 10px;
 }
 
 /* Step 2: Score Breakdown */
@@ -232,7 +234,7 @@
 /* Weights Panel */
 .weightsIntro {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.6;
   color: var(--phosphor-green);
   margin-bottom: 16px;
@@ -258,7 +260,7 @@
   grid-template-columns: 100px 1fr 60px;
   gap: 16px;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 16px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: rgba(51, 255, 51, 0.5);
@@ -276,7 +278,7 @@
   grid-template-columns: 100px 1fr 60px;
   gap: 16px;
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 15px;
   align-items: center;
   padding: 10px 16px;
   background: rgba(0, 20, 0, 0.4);
@@ -292,7 +294,7 @@
 .weightsTableReason {
   color: rgba(51, 255, 51, 0.6);
   font-style: italic;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .weightsTableValue {
@@ -305,13 +307,18 @@
 
 .weightsDisclaimer {
   font-family: var(--font-mono);
-  font-size: 10px;
-  color: rgba(51, 255, 51, 0.5);
-  font-style: italic;
-  line-height: 1.5;
-  padding: 10px;
-  background: rgba(0, 20, 0, 0.3);
-  border-left: 2px solid rgba(51, 255, 51, 0.3);
+  font-size: 15px;
+  color: rgba(51, 255, 51, 0.65);
+  line-height: 1.6;
+  margin-top: 12px;
+}
+
+.weightsDisclaimer p {
+  margin: 0;
+}
+
+.weightsDisclaimer p + p {
+  margin-top: 10px;
 }
 
 .formulaSection {
@@ -328,7 +335,7 @@
   grid-template-columns: 80px 1fr 60px;
   gap: 8px;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 15px;
   color: rgba(51, 255, 51, 0.85);
 }
 
@@ -372,7 +379,7 @@
 
 .finalScoreLabel {
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(255, 176, 0, 0.8);
@@ -399,7 +406,7 @@
 
 .reminderLabel {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 16px;
   color: rgba(255, 176, 0, 0.7);
 }
 
@@ -414,13 +421,18 @@
 /* Ranking Explainer */
 .rankingExplainer {
   font-family: var(--font-mono);
-  font-size: 10px;
-  line-height: 1.5;
-  color: rgba(51, 255, 51, 0.6);
-  padding: 10px;
-  background: rgba(0, 20, 0, 0.3);
-  border-left: 2px solid rgba(51, 255, 51, 0.3);
-  margin-top: 12px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(51, 255, 51, 0.65);
+  margin-top: 16px;
+}
+
+.rankingExplainer p {
+  margin: 0;
+}
+
+.rankingExplainer p + p {
+  margin-top: 10px;
 }
 
 /* Ranking Section */
@@ -432,7 +444,7 @@
 
 .rankingHeader {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 16px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgba(51, 255, 51, 0.7);
@@ -440,7 +452,7 @@
 
 .rankingNote {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 16px;
   color: rgba(51, 255, 51, 0.5);
   margin-bottom: 4px;
 }
@@ -480,7 +492,7 @@
   border: 2px solid rgba(51, 255, 51, 0.7);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.9), 0 0 30px rgba(51, 255, 51, 0.3);
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 16px;
   line-height: 1.5;
   color: var(--phosphor-green);
   text-shadow: 0 0 10px var(--phosphor-green);
@@ -493,7 +505,7 @@
 
 .rankingPosition {
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   color: rgba(51, 255, 51, 0.8);
 }
@@ -504,7 +516,7 @@
 
 .rankingLabel {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 16px;
   color: var(--phosphor-green);
 }
 
@@ -515,7 +527,7 @@
 
 .rankingScore {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 16px;
   text-align: right;
   color: rgba(51, 255, 51, 0.8);
 }
@@ -579,7 +591,7 @@
   justify-content: space-between;
   align-items: center;
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   color: var(--phosphor-green);
   text-shadow: 0 0 10px var(--phosphor-green);
@@ -606,7 +618,7 @@
 
 .previewText {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.6;
   color: var(--phosphor-green);
   padding: 12px;
@@ -616,7 +628,7 @@
 
 .previewScore {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 16px;
   color: rgba(255, 176, 0, 0.9);
   text-align: right;
 }
@@ -671,7 +683,7 @@
 
   .formulaRow {
     grid-template-columns: 100px 1fr 70px;
-    font-size: 12px;
+    font-size: 16px;
   }
 }
 
@@ -689,7 +701,7 @@
 
   .narration {
     padding: 6px 16px;
-    font-size: 12px;
+    font-size: 16px;
     line-height: 1.5;
   }
 
@@ -698,7 +710,7 @@
   }
 
   .panelHeader {
-    font-size: 13px;
+    font-size: 15px;
   }
 
   .oddsItem {
@@ -711,7 +723,7 @@
   }
 
   .oddsValue {
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .finalScoreBox {
@@ -724,7 +736,7 @@
 
   .formulaRow {
     grid-template-columns: 70px 1fr 50px;
-    font-size: 10px;
+    font-size: 14px;
   }
 
   .rankingItem {

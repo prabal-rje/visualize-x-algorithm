@@ -180,17 +180,13 @@ export default function Chapter4Scene({ currentStep, isActive, onContinue }: Cha
               Probabilities computed from content + audience similarity
             </div>
 
-            {/* Input factors */}
-            <div className={styles.factorsBox}>
-              <div className={styles.factorRow}>
-                <span className={styles.factorLabel}>Content type:</span>
-                <span className={styles.factorValue}>{contentCategory}</span>
+            {/* Input factors - displayed as normal text */}
+            <div className={styles.factorsList}>
+              <div className={styles.factorLine}>
+                <span>Content type:</span> <strong>{contentCategory}</strong>
               </div>
-              <div className={styles.factorRow}>
-                <span className={styles.factorLabel}>Top audiences:</span>
-                <span className={styles.factorValue}>
-                  {topAudiences.map(a => a.label).join(', ') || 'Mixed'}
-                </span>
+              <div className={styles.factorLine}>
+                <span>Top audiences:</span> <strong>{topAudiences.map(a => a.label).join(', ') || 'Mixed'}</strong>
               </div>
             </div>
 
@@ -214,7 +210,8 @@ export default function Chapter4Scene({ currentStep, isActive, onContinue }: Cha
             </div>
 
             <div className={styles.oddsNote}>
-              X&apos;s Grok transformer predicts these probabilities by analyzing your tweet content, your past engagement patterns, and how similar users have engaged with similar content.
+              <p>X&apos;s Grok transformer predicts these probabilities.</p>
+              <p>It analyzes your tweet content, your past engagement patterns, and how similar users have engaged with similar content.</p>
             </div>
           </div>
         )}
@@ -236,7 +233,7 @@ export default function Chapter4Scene({ currentStep, isActive, onContinue }: Cha
               <div className={styles.weightsTableHeader}>
                 <span>Action</span>
                 <span>Indicates</span>
-                <span>Relative Significance</span>
+                <span>Weight</span>
               </div>
               <div className={styles.weightsTableRow}>
                 <span className={styles.weightsTableAction}>Repost</span>
@@ -266,7 +263,8 @@ export default function Chapter4Scene({ currentStep, isActive, onContinue }: Cha
             </div>
 
             <div className={styles.weightsDisclaimer}>
-              Actual weights are learned by the Grok transformer and not publicly disclosed. Values shown are illustrative.
+              <p>Actual weights are learned by the Grok transformer and not publicly disclosed.</p>
+              <p>Values shown are illustrative.</p>
             </div>
           </div>
         )}
@@ -371,7 +369,8 @@ export default function Chapter4Scene({ currentStep, isActive, onContinue }: Cha
             </div>
 
             <div className={styles.rankingExplainer}>
-              Higher scores appear earlier in the timeline. Your position depends on how your tweet&apos;s predicted engagement compares to others competing for the same slot.
+              <p>Higher scores appear earlier in the timeline.</p>
+              <p>Your position depends on how your tweet&apos;s predicted engagement compares to others competing for the same slot.</p>
             </div>
           </div>
         )}

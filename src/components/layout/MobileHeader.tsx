@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
-import { ExternalLink, Github, Twitter, Linkedin, Home } from 'lucide-react';
+import { ExternalLink, Github, Linkedin, Home } from 'lucide-react';
+import XIcon from '../icons/XIcon';
 import { CHAPTERS, getFunctionAtPosition } from '../../data/chapters';
 import { ATTRIBUTION } from '../../data/attribution';
 import { useConfigStore } from '../../stores/config';
@@ -108,7 +109,7 @@ export default function MobileHeader({ position, status, dispatch }: MobileHeade
           rel="noreferrer"
           target="_blank"
         >
-          <Twitter size={14} />
+          <XIcon size={14} />
           <span>@prabal_</span>
         </a>
         <a className="text-crt-amber" href={ATTRIBUTION.links.linkedin} rel="noreferrer" target="_blank">

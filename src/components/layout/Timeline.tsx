@@ -112,7 +112,11 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
   const currentSubChapter = currentChapter?.subChapters[position.subChapterIndex];
   const functionStack = currentSubChapter?.functions ?? [];
   const atStart = isAtStart(position);
-  const atEnd = isAtEnd(position) || status === 'complete';
+  const atLastPosition = isAtEnd(position);
+  const isComplete = status === 'complete';
+  // Disable step forward only when actually complete, not when at last position
+  // (clicking at last position triggers completion)
+  const atEnd = isComplete;
   const progress = calculateProgress(position);
   const isPlaying = status === 'running';
 
@@ -123,10 +127,11 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
   }, [dispatch, atStart]);
 
   const handleStepForward = useCallback(() => {
-    if (!atEnd) {
+    // Allow dispatch even at last position - reducer will set status='complete'
+    if (!isComplete) {
       dispatch({ type: 'STEP_FORWARD' });
     }
-  }, [dispatch, atEnd]);
+  }, [dispatch, isComplete]);
 
   const handleStartOver = useCallback(() => {
     resetSimulation(); // Reset config store's simulationStarted flag

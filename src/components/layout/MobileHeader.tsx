@@ -77,7 +77,9 @@ export default function MobileHeader({ position, status, dispatch }: MobileHeade
     position.functionIndex
   );
   const atStart = isAtStart(position);
-  const atEnd = isAtEnd(position) || status === 'complete';
+  const isComplete = status === 'complete';
+  // Disable step forward only when actually complete, not when at last position
+  const atEnd = isComplete;
   const progress = calculateProgress(position);
   const isPlaying = status === 'running';
 
@@ -88,10 +90,11 @@ export default function MobileHeader({ position, status, dispatch }: MobileHeade
   }, [dispatch, atStart]);
 
   const handleStepForward = useCallback(() => {
-    if (!atEnd) {
+    // Allow dispatch even at last position - reducer will set status='complete'
+    if (!isComplete) {
       dispatch({ type: 'STEP_FORWARD' });
     }
-  }, [dispatch, atEnd]);
+  }, [dispatch, isComplete]);
 
   const handleStartOver = useCallback(() => {
     resetSimulation(); // Reset config store's simulationStarted flag

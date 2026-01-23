@@ -1,4 +1,5 @@
 import { Suspense, lazy, useCallback, useEffect, useState } from 'react';
+import CompletionOverlay from './components/effects/CompletionOverlay';
 import CRTControls from './components/effects/CRTControls';
 import { DEFAULT_CRT_CONFIG } from './components/effects/crtConfig';
 import type { CRTConfig } from './components/effects/crtConfig';
@@ -30,6 +31,7 @@ function App() {
   const [simulationState, dispatch] = useSimulationState();
   const simulationStarted = useConfigStore((state) => state.simulationStarted);
   const beginSimulation = useConfigStore((state) => state.beginSimulation);
+  const resetSimulation = useConfigStore((state) => state.resetSimulation);
   const mlStatus = useMLStore((state) => state.status);
   const setLoading = useMLStore((state) => state.setLoading);
   const setProgress = useMLStore((state) => state.setProgress);
@@ -79,6 +81,12 @@ function App() {
     dispatch({ type: 'START' });
     dispatch({ type: 'JUMP_TO_CHAPTER', chapterIndex: 1 });
   }, [beginSimulation, dispatch]);
+
+  // Callback for trying again from completion screen
+  const handleTryAgain = useCallback(() => {
+    resetSimulation(); // Reset config store's simulationStarted flag
+    dispatch({ type: 'RESET' });
+  }, [dispatch, resetSimulation]);
 
   const { position } = simulationState;
   const isCompactChapter = position.chapterIndex >= 3;
@@ -226,6 +234,11 @@ function App() {
         )}
 
         <CRTControls config={crtConfig} onChange={setCrtConfig} />
+
+        {/* Completion celebration overlay */}
+        {simulationState.status === 'complete' && (
+          <CompletionOverlay onTryAgain={handleTryAgain} />
+        )}
       </div>
     </CRTOverlay>
   );

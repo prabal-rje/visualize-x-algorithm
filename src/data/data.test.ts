@@ -22,6 +22,6 @@ describe('data fixtures', () => {
     const ch5 = CHAPTERS.find((chapter) => chapter.id === 'ch5');
     expect(ch3?.subChapters.length).toBe(2); // Quality Gates, Freshness Gates
     expect(ch4?.subChapters.length).toBe(5); // History, Odds, Weights, Score, Rank
-    expect(ch5?.subChapters.length).toBeGreaterThanOrEqual(4);
+    expect(ch5?.subChapters.length).toBe(3); // Select, Reach, Reactions (Report merged into completion overlay)
   });
 });

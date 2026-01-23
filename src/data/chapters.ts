@@ -349,21 +349,8 @@ export const CHAPTERS: Chapter[] = [
             githubUrl: '' // Simulation-only, not in X codebase
           }
         ]
-      },
-      {
-        id: 'ch5-d',
-        labelSimple: 'Report',
-        labelTechnical: 'Delivery Report',
-        functions: [
-          {
-            id: 'ch5-d-1',
-            name: 'get_scored_posts()',
-            file: 'home-mixer/server.rs',
-            summary: 'Returning ranked timeline to client',
-            githubUrl: `${GITHUB_BASE}/home-mixer/server.rs`
-          }
-        ]
       }
+      // Note: 5D (Delivery Report) content is now shown in the completion overlay
     ]
   }
 ];

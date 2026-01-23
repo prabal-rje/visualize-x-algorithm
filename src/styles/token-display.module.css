@@ -75,22 +75,26 @@
   animation: token-appear 0.3s ease forwards;
 }
 
-@media (max-width: 600px) {
+/* Mobile/Tablet: match MOBILE_BREAKPOINT (1200px) */
+@media (max-width: 1199px) {
   .container {
     padding: 14px;
     max-width: 100%;
+    margin: 0 auto;
   }
 
   .tokenGrid {
     gap: 6px;
+    justify-content: center;
   }
 
   .token {
     padding: 3px 8px;
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .count {
-    font-size: 10px;
+    font-size: 11px;
+    text-align: center;
   }
 }

@@ -21,7 +21,7 @@
      --------------------------------------------------------------------------- */
   .crt-h1 {
     font-family: 'Press Start 2P', 'VT323', monospace;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1.4;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -37,6 +37,14 @@
     text-transform: uppercase;
     color: rgb(var(--phosphor-green-rgb));
     text-shadow: 0 0 8px rgb(var(--phosphor-green-rgb) / 0.5);
+  }
+
+  /* Safari: disable text-shadow on Press Start 2P font (causes blur bleeding) */
+  .safari .crt-h1 {
+    text-shadow: none;
+  }
+  .safari .crt-h2 {
+    text-shadow: none;
   }
 
   .crt-h3 {
@@ -59,7 +67,7 @@
 
   /* Responsive typography - tablet+ */
   @media (min-width: 560px) {
-    .crt-h1 { font-size: 26px; }
+    .crt-h1 { font-size: 24px; }
     .crt-h2 { font-size: 18px; }
     .crt-h3 { font-size: 16px; }
     .crt-h4 { font-size: 14px; }
@@ -67,7 +75,7 @@
 
   /* Responsive typography - desktop+ */
   @media (min-width: 820px) {
-    .crt-h1 { font-size: 32px; }
+    .crt-h1 { font-size: 28px; }
     .crt-h2 { font-size: 22px; }
     .crt-h3 { font-size: 17px; }
     .crt-h4 { font-size: 15px; }
@@ -196,21 +204,41 @@
     }
   }
 
-  /* Primary button - Amber (main CTAs) */
+  /* Primary button - Golden (main CTAs - BEGIN, SIMULATE, etc) */
   .crt-button-primary {
-    border: 1px solid rgb(var(--phosphor-amber-rgb) / 0.8);
-    background: rgb(var(--crt-panel-strong-rgb) / 0.7);
+    border: 1px solid rgb(var(--phosphor-amber-rgb));
+    background: linear-gradient(
+      180deg,
+      rgb(var(--phosphor-amber-rgb) / 0.25) 0%,
+      rgb(var(--phosphor-amber-rgb) / 0.15) 100%
+    );
     color: rgb(var(--phosphor-amber-rgb));
+    box-shadow:
+      0 0 12px rgb(var(--phosphor-amber-rgb) / 0.2),
+      inset 0 1px 0 rgb(var(--phosphor-amber-rgb) / 0.2);
+    text-shadow: 0 0 8px rgb(var(--phosphor-amber-rgb) / 0.5);
   }
 
   .crt-button-primary:hover:not(:disabled) {
     border-color: rgb(var(--phosphor-amber-rgb));
-    box-shadow: 0 0 16px rgb(var(--phosphor-amber-rgb) / 0.4);
+    background: linear-gradient(
+      180deg,
+      rgb(var(--phosphor-amber-rgb) / 0.35) 0%,
+      rgb(var(--phosphor-amber-rgb) / 0.2) 100%
+    );
+    box-shadow:
+      0 0 20px rgb(var(--phosphor-amber-rgb) / 0.4),
+      inset 0 1px 0 rgb(var(--phosphor-amber-rgb) / 0.3);
     transform: scale(1.02);
   }
 
   .crt-button-primary:active:not(:disabled) {
     transform: scale(0.98);
+    background: linear-gradient(
+      180deg,
+      rgb(var(--phosphor-amber-rgb) / 0.4) 0%,
+      rgb(var(--phosphor-amber-rgb) / 0.25) 100%
+    );
   }
 
   /* Secondary button - Green (secondary actions) */
@@ -584,4 +612,28 @@
     color: rgb(var(--phosphor-amber-rgb));
     font-weight: normal;
   }
+}
+
+/* =============================================================================
+   BUTTON COLOR OVERRIDES (outside layer to override resets)
+   ============================================================================= */
+
+/* Primary button - must be outside @layer to override color:inherit reset */
+.crt-button-primary {
+  color: rgb(var(--phosphor-amber-rgb));
+}
+
+/* Secondary/default button */
+.crt-button-secondary,
+.crt-button {
+  color: rgb(var(--phosphor-green-rgb));
+}
+
+/* Ghost button */
+.crt-button-ghost {
+  color: rgb(var(--phosphor-green-rgb) / 0.7);
+}
+
+.crt-button-ghost:hover:not(:disabled) {
+  color: rgb(var(--phosphor-green-rgb));
 }

@@ -1,27 +1,14 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Shuffle } from 'lucide-react';
 import { AUDIENCES } from '../../data/audiences';
-import { PERSONAS } from '../../data/personas';
+import { PERSONAS, type Persona } from '../../data/personas';
 import { useConfigStore } from '../../stores/config';
 import { useViewport } from '../../hooks/useViewport';
+import { findMatchingAudiences } from '../../ml/audienceMatch';
 import styles from '../../styles/config-panel.module.css';
 
 const MAX_TWEET_LENGTH = 280;
 type AudienceId = (typeof AUDIENCES)[number]['id'];
-type PersonaId = (typeof PERSONAS)[number]['id'];
-
-const PERSONA_AUDIENCE_DEFAULTS: Partial<Record<PersonaId, AudienceId[]>> = {
-  'ai-researcher': ['tech', 'founders', 'news'],
-  'software-engineer': ['tech', 'creators', 'students'],
-  'tech-founder': ['founders', 'investors', 'tech'],
-  'venture-capitalist': ['investors', 'founders', 'news'],
-  'data-scientist': ['tech', 'news', 'students'],
-  'cybersecurity-pro': ['tech', 'news', 'founders'],
-  'indie-hacker': ['creators', 'tech', 'founders'],
-  'product-manager': ['tech', 'creators', 'founders'],
-  'content-creator': ['creators', 'casual', 'news'],
-  'tech-reporter': ['news', 'tech', 'casual']
-};
 
 const buildAudienceMix = (selectedIds: AudienceId[]) => {
   const selectedCount = selectedIds.length;
@@ -170,12 +157,17 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
     setAudienceMix(buildAudienceMix(nextSelected));
   };
 
-  const applyPersonaDefaults = (personaId: PersonaId) => {
-    const defaults =
-      PERSONA_AUDIENCE_DEFAULTS[personaId] ??
-      (AUDIENCES.map((audience) => audience.id) as AudienceId[]);
-    setAudienceMix(buildAudienceMix(defaults));
-  };
+  const applyPersonaDefaults = useCallback(async (persona: Persona) => {
+    try {
+      const matchedAudiences = await findMatchingAudiences(persona, 3);
+      setAudienceMix(buildAudienceMix(matchedAudiences));
+    } catch (error) {
+      console.error('Failed to compute semantic audience match:', error);
+      // Fallback to first 3 audiences
+      const fallback = AUDIENCES.slice(0, 3).map((a) => a.id);
+      setAudienceMix(buildAudienceMix(fallback));
+    }
+  }, [setAudienceMix]);
 
   return (
     <div className={styles.panel} data-testid="config-panel" data-surface="bare">
@@ -215,7 +207,7 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
                           setPersonaId(persona.id);
                           setPersonaTouched(true);
                           if (!audienceTouched) {
-                            applyPersonaDefaults(persona.id);
+                            applyPersonaDefaults(persona);
                           }
                           // Auto-advance to audience on mobile
                           advanceStep();
@@ -271,7 +263,7 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
                     setPersonaId(persona.id);
                     setPersonaTouched(true);
                     if (!audienceTouched) {
-                      applyPersonaDefaults(persona.id);
+                      applyPersonaDefaults(persona);
                     }
                   }}
                 >
@@ -297,7 +289,7 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
           {!isMobile && (
             <div className={styles.stepActions}>
               <button
-                className={styles.stepButton}
+                className="crt-button-secondary"
                 onClick={() => {
                   if (!personaTouched && !audienceTouched) {
                     showDefaultsToast();
@@ -397,14 +389,14 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
           {!isMobile && (
             <div className={styles.stepActions}>
               <button
-                className={styles.stepButtonGhost}
+                className="crt-button-ghost"
                 onClick={() => goBackStep()}
                 type="button"
               >
                 Back to Persona
               </button>
               <button
-                className={styles.stepButton}
+                className="crt-button-secondary"
                 onClick={() => {
                   if (!audienceTouched && !personaTouched) {
                     showDefaultsToast();
@@ -426,12 +418,12 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
           {!isMobile && (
             <div className={styles.sampleRow}>
               <button
-                className={styles.shuffleButton}
+                className="crt-button-secondary"
                 data-testid="sample-shuffle"
                 onClick={shuffleSampleTweet}
                 type="button"
               >
-                <Shuffle className={styles.shuffleIcon} aria-hidden="true" size={18} />
+                <Shuffle aria-hidden="true" size={18} />
                 Shuffle Draft
               </button>
             </div>
@@ -449,16 +441,16 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
           {isMobile ? (
             <div className={styles.mobileButtonRow}>
               <button
-                className={styles.shuffleButtonMobile}
+                className="crt-button-secondary"
                 data-testid="sample-shuffle"
                 onClick={shuffleSampleTweet}
                 type="button"
               >
-                <Shuffle className={styles.shuffleIcon} aria-hidden="true" size={16} />
+                <Shuffle aria-hidden="true" size={16} />
                 Shuffle
               </button>
               <button
-                className={styles.beginButtonOrange}
+                className="crt-button-primary"
                 data-testid="begin-simulation"
                 onClick={() => onBeginSimulation?.()}
                 type="button"
@@ -469,14 +461,14 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
           ) : (
             <div className={styles.stepActions}>
               <button
-                className={styles.stepButtonGhost}
+                className="crt-button-ghost"
                 onClick={() => goBackStep()}
                 type="button"
               >
                 Back to Audience
               </button>
               <button
-                className={styles.beginButton}
+                className="crt-button-primary"
                 data-testid="begin-simulation"
                 onClick={() => onBeginSimulation?.()}
                 type="button"

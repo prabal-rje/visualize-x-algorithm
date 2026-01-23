@@ -99,6 +99,16 @@
   text-align: center;
 }
 
+/* Safari: Press Start 2P + text-shadow blur = unreadable blobs */
+:global(.safari) .glitchTitle {
+  text-shadow: none;
+}
+
+:global(.safari) .glitchTitle::before,
+:global(.safari) .glitchTitle::after {
+  text-shadow: none;
+}
+
 .glitchTitle::before,
 .glitchTitle::after {
   content: attr(data-text);
@@ -172,8 +182,8 @@
 /* Subtitle */
 .subtitle {
   font-family: 'VT323', monospace;
-  font-size: clamp(0.875rem, 2.5vw, 1.125rem);
-  color: rgb(var(--phosphor-green-rgb) / 0.7);
+  font-size: clamp(1rem, 3vw, 1.35rem);
+  color: rgb(var(--phosphor-green-rgb) / 0.8);
   letter-spacing: 0.1em;
   animation: pulseGlow 2s ease-in-out infinite;
 }
@@ -207,17 +217,22 @@
 
 .statValue {
   font-family: 'Press Start 2P', monospace;
-  font-size: clamp(1rem, 3vw, 1.5rem);
+  font-size: clamp(1.25rem, 4vw, 2rem);
   color: rgb(var(--phosphor-amber-rgb));
   text-shadow: 0 0 8px rgb(var(--phosphor-amber-rgb) / 0.5);
 }
 
 .statLabel {
   font-family: 'VT323', monospace;
-  font-size: 0.75rem;
-  color: rgb(var(--phosphor-green-rgb) / 0.6);
+  font-size: 1.25rem;
+  color: rgb(var(--phosphor-amber-rgb) / 0.8);
   letter-spacing: 0.15em;
   text-transform: uppercase;
+}
+
+/* Safari: disable text-shadow glow on stat values */
+:global(.safari) .statValue {
+  text-shadow: none;
 }
 
 /* Tier row - on its own line */
@@ -226,15 +241,27 @@
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
 
 .tierLabel {
   font-family: 'VT323', monospace;
-  font-size: 0.75rem;
-  color: rgb(var(--phosphor-green-rgb) / 0.6);
+  font-size: 1.25rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
+}
+
+/* Tier label color matches tier badge color */
+.tierLabel[data-tier='above'] {
+  color: rgba(255, 196, 40, 0.8);
+}
+
+.tierLabel[data-tier='mid'] {
+  color: rgba(140, 230, 255, 0.8);
+}
+
+.tierLabel[data-tier='below'] {
+  color: rgba(255, 140, 140, 0.8);
 }
 
 /* Tier badge - colorful capsule */
@@ -276,6 +303,23 @@
   50% {
     filter: brightness(1.2);
   }
+}
+
+/* Safari: disable glow effects for tier badge */
+:global(.safari) .tierBadge {
+  box-shadow: none;
+}
+
+:global(.safari) .tierBadge[data-tier='above'] {
+  box-shadow: none;
+}
+
+:global(.safari) .tierBadge[data-tier='mid'] {
+  box-shadow: none;
+}
+
+:global(.safari) .tierBadge[data-tier='below'] {
+  box-shadow: none;
 }
 
 /* Try Again button */

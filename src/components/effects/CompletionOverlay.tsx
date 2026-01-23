@@ -134,6 +134,7 @@ export default function CompletionOverlay({ onTryAgain }: CompletionOverlayProps
           Your tweet has completed its journey through the algorithm
         </p>
 
+        {/* Row 1: Reach, Likes, Reposts */}
         <div className={styles.statsRow}>
           <div className={styles.statItem}>
             <span className={styles.statValue}>{impressions.toLocaleString()}</span>
@@ -147,16 +148,18 @@ export default function CompletionOverlay({ onTryAgain }: CompletionOverlayProps
             <span className={styles.statValue}>{reposts.toLocaleString()}</span>
             <span className={styles.statLabel}>Reposts</span>
           </div>
-          <div className={styles.statItem}>
-            <span className={styles.statValue}>{alignmentLabel}</span>
-            <span className={styles.statLabel}>Alignment</span>
-          </div>
         </div>
 
-        {/* Tier on its own row with colorful badge */}
+        {/* Row 2: Alignment */}
+        <div className={styles.statItem}>
+          <span className={styles.statValue}>{alignmentLabel}</span>
+          <span className={styles.statLabel}>Alignment</span>
+        </div>
+
+        {/* Row 3: Performance Tier (badge first, label below) */}
         <div className={styles.tierRow}>
-          <span className={styles.tierLabel}>Performance Tier</span>
           <span className={styles.tierBadge} data-tier={performanceKey}>{performanceTier}</span>
+          <span className={styles.tierLabel} data-tier={performanceKey}>Performance Tier</span>
         </div>
 
         <button

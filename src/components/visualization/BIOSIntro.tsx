@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react';
 import { ATTRIBUTION } from '../../data/attribution';
 
 const INTRO_LINES = [
-  '> YOUR TWEET. REAL MATH.',
-  '',
+  '> YOUR TWEET. REAL MATH <',
   'Type anything. Pick your persona.',
   'Watch YOUR words get tokenized, embedded, and scored—live.',
   '',
-  '!POWERED BY REAL ML MODELS!',
+  '> POWERED BY REAL ML MODELS <',
   'Every number changes based on what YOU write.'
 ];
 
@@ -39,8 +38,8 @@ export default function BIOSIntro({ onStart }: BIOSIntroProps) {
       data-system="bios"
     >
       <header className="text-center">
-        <h1 className="crt-h1">THE ANATOMY OF VIRALITY</h1>
-        <p className="crt-caption mt-1">
+        <h1 className="crt-h2 text-crt-amber text-glow-amber">THE ANATOMY OF VIRALITY</h1>
+        <p className="crt-h4 mt-2 text-crt-amber">
           (c) 2026{' '}
           <a
             href={ATTRIBUTION.links.twitter}
@@ -56,7 +55,7 @@ export default function BIOSIntro({ onStart }: BIOSIntroProps) {
       <div className="crt-divider-glow" />
 
       {/* Intro text with typewriter effect */}
-      <div className="flex min-h-[120px] flex-col gap-1.5 sm:min-h-[150px]">
+      <div className="flex min-h-[120px] flex-col gap-1.5 text-center sm:min-h-[150px]">
         {INTRO_LINES.slice(0, visibleLines).map((line, index) => (
           <div
             key={index}
@@ -65,9 +64,7 @@ export default function BIOSIntro({ onStart }: BIOSIntroProps) {
                 ? 'h-3'
                 : line.startsWith('>')
                   ? 'crt-h3 text-crt-cyan text-glow-cyan'
-                  : line.startsWith('!')
-                    ? 'crt-body font-bold text-red-500 animate-pulse'
-                    : 'crt-body'
+                  : 'crt-body'
             }
           >
             {line}
@@ -95,9 +92,6 @@ export default function BIOSIntro({ onStart }: BIOSIntroProps) {
         )}
       </div>
 
-      <p className="crt-caption text-center opacity-60">
-        Press ENTER or click the button above to begin
-      </p>
     </section>
   );
 }

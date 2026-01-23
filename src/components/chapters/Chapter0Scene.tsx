@@ -25,14 +25,14 @@ export default function Chapter0Scene({ currentStep, isActive, onStepForward, on
       data-active={isActive}
     >
       <div className={styles.header}>
-        <span className={styles.chapterNumber}>CHAPTER 0</span>
-        <h2 className={styles.title}>MISSION PREP</h2>
-        <div className={styles.stepLabel}>
+        <span className="crt-body text-crt-ink/70 tracking-[0.2em]">CHAPTER 0</span>
+        <h2 className="crt-h2">MISSION PREP</h2>
+        <div className="crt-badge">
           {STEP_LABELS[currentStep] || STEP_LABELS[0]}
         </div>
       </div>
 
-      <div className={styles.narration}>
+      <div className="crt-body text-center opacity-90 min-h-[48px] px-6">
         <TypewriterText
           text={STEP_NARRATION[currentStep] || STEP_NARRATION[0]}
           started={isActive}

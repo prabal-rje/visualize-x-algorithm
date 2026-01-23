@@ -42,6 +42,17 @@ function App() {
   const { isMobile, prefersReducedMotion, prefersHighContrast } = useViewport();
   const isModelReady = mlStatus === 'ready';
 
+  // Detect Safari and add class for CSS targeting (Safari renders text-shadow differently)
+  useEffect(() => {
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    if (isSafari) {
+      document.documentElement.classList.add('safari');
+    }
+    return () => {
+      document.documentElement.classList.remove('safari');
+    };
+  }, []);
+
   // Initialize embedder on mount (downloads and caches Nomic model)
   useEffect(() => {
     // Skip if already initialized or currently loading
@@ -275,9 +286,9 @@ function App() {
                 dispatch={dispatch}
               />
             </section>
-            <main className="relative grid min-h-0 items-stretch gap-shell grid-cols-1">
+            <main className="relative grid min-h-0 items-stretch grid-cols-1">
               <section
-                className="relative min-h-0 h-full overflow-x-hidden overflow-y-auto rounded-panel border border-transparent bg-crt-void/90 p-panel text-crt-ink shadow-[inset_0_0_40px_rgba(0,20,0,0.35)]"
+                className="relative min-h-0 h-full overflow-x-hidden overflow-y-auto bg-crt-void p-panel text-crt-ink"
                 data-testid="chapter-canvas"
                 data-proportion="fixed"
                 data-viewport-fit="true"

@@ -25,6 +25,15 @@
   text-shadow: inherit;
 }
 
+/* Safari: disable ALL inherited text-shadow to prevent blur bleeding on pixel fonts */
+:global(.safari) .crtContent {
+  text-shadow: none;
+}
+
+:global(.safari) .crtContent * {
+  text-shadow: none;
+}
+
 .crtAfterglow {
   position: absolute;
   inset: 0;

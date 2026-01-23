@@ -176,7 +176,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
     <div className={`flex gap-2 ${className}`}>
       <button
         type="button"
-        className="crt-button !h-10 !w-10 !min-w-0 shrink-0 text-lg sm:!h-11 sm:!w-11 sm:text-xl"
+        className="crt-button !h-12 !w-12 !min-w-0 shrink-0 text-2xl"
         onClick={handleStartOver}
         aria-label="Start over"
       >
@@ -184,7 +184,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       </button>
       <button
         type="button"
-        className="crt-button !h-10 !w-10 !min-w-0 shrink-0 text-lg sm:!h-11 sm:!w-11 sm:text-xl"
+        className="crt-button !h-12 !w-12 !min-w-0 shrink-0 text-2xl"
         onClick={handleStepBack}
         disabled={atStart}
         aria-label="Step back"
@@ -193,15 +193,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       </button>
       <button
         type="button"
-        className="crt-button !h-10 !w-10 !min-w-0 shrink-0 text-lg sm:!h-11 sm:!w-11 sm:text-xl"
-        onClick={handlePlayPause}
-        aria-label={isPlaying ? 'Pause' : 'Play'}
-      >
-        {isPlaying ? '⏸' : '▶'}
-      </button>
-      <button
-        type="button"
-        className="crt-button !h-10 !w-10 !min-w-0 shrink-0 text-lg sm:!h-11 sm:!w-11 sm:text-xl"
+        className="crt-button !h-12 !w-12 !min-w-0 shrink-0 text-2xl"
         onClick={handleStepForward}
         disabled={atEnd}
         aria-label="Step forward"
@@ -213,7 +205,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
 
   return (
     <div
-      className="grid gap-3 border-t border-crt-line/35 bg-crt-void/70 p-panel max-sm:border-t-0 max-sm:px-3"
+      className="grid gap-3 bg-crt-void/70 p-panel max-sm:px-3"
       data-testid="timeline"
       data-system="timeline"
     >
@@ -319,10 +311,10 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
                 data-visited={isVisited}
                 onClick={() => handleChapterClick(index)}
               >
-                <span className="text-[10px] tracking-[0.15em] text-crt-amber max-xs:text-[9px] max-xs:tracking-[0.08em]">
+                <span className="text-xs tracking-[0.15em] text-crt-amber max-xs:text-[9px] max-xs:tracking-[0.08em]">
                   CH.{chapter.number}
                 </span>
-                <span className="max-w-[110px] overflow-hidden text-ellipsis whitespace-nowrap text-[11px] uppercase tracking-[0.08em] text-crt-ink max-sm:max-w-[90px] max-xs:max-w-[70px] max-xs:text-[9px] max-xs:tracking-[0.04em]">
+                <span className="max-w-[110px] overflow-hidden text-ellipsis whitespace-nowrap text-sm uppercase tracking-[0.08em] text-crt-ink max-sm:max-w-[90px] max-xs:max-w-[70px] max-xs:text-[9px] max-xs:tracking-[0.04em]">
                   {expertMode ? chapter.labelTechnical : chapter.labelSimple}
                 </span>
               </button>
@@ -332,14 +324,6 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       </div>
 
       {/* Progress Indicator */}
-      <div className="flex items-baseline justify-between gap-3 uppercase max-xs:gap-2">
-        <span className="text-[10px] tracking-[0.16em] text-crt-ink/80 max-xs:text-[9px] max-xs:tracking-[0.1em]">
-          Simulation Progress
-        </span>
-        <span className="text-[10px] tracking-[0.14em] text-crt-amber/90 max-xs:text-[9px]">
-          {progress}%
-        </span>
-      </div>
       <div
         className="relative h-5 overflow-hidden rounded-[2px] border border-crt-line/30 bg-crt-panel-strong/60 max-xs:h-4"
         data-testid="progress-indicator"
@@ -349,29 +333,12 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
         aria-valuemin={0}
         aria-valuemax={100}
         aria-label="Simulation progress"
-        style={
-          {
-            cursor: 'pointer',
-            '--tick-count': CHAPTERS.length
-          } as React.CSSProperties
-        }
+        style={{ cursor: 'pointer' }}
       >
         <div
           className="absolute inset-y-0 left-0 bg-gradient-to-r from-crt-ink/30 to-crt-ink/50 transition-[width] duration-300"
           style={{ width: `${progress}%` }}
         />
-        <div className="pointer-events-none absolute inset-0 grid grid-cols-[repeat(var(--tick-count),1fr)]" aria-hidden="true">
-          {CHAPTERS.map((chapter) => (
-            <span
-              key={chapter.id}
-              className="w-px justify-self-start bg-crt-line/20 shadow-[0_0_6px_rgba(51,255,51,0.2)] last:justify-self-end"
-              data-testid="progress-tick"
-            />
-          ))}
-        </div>
-        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] tracking-[0.1em] text-crt-ink drop-shadow-[0_0_4px_rgba(0,0,0,0.8)] max-xs:text-[9px]">
-          {progress}%
-        </span>
       </div>
 
     </div>

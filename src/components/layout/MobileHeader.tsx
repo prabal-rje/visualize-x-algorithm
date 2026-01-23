@@ -67,7 +67,6 @@ export default function MobileHeader({ position, status, dispatch }: MobileHeade
   // Disable step forward only when actually complete, not when at last position
   const atEnd = isComplete;
   const progress = calculateProgress(position);
-  const isPlaying = status === 'running';
 
   const handleStepBack = useCallback(() => {
     if (!atStart) {
@@ -87,59 +86,51 @@ export default function MobileHeader({ position, status, dispatch }: MobileHeade
     dispatch({ type: 'RESET' });
   }, [dispatch, resetSimulation]);
 
-  const handlePlayPause = useCallback(() => {
-    if (isPlaying) {
-      dispatch({ type: 'PAUSE' });
-    } else {
-      dispatch({ type: 'RESUME' });
-    }
-  }, [dispatch, isPlaying]);
-
   return (
     <header
       className="sticky top-0 z-20 grid gap-0 bg-[rgba(8,12,8,0.98)]"
       data-testid="mobile-header"
     >
       {/* 1. Author links */}
-      <nav className="flex items-center justify-center gap-4 py-2 text-[10px]" aria-label="Social links">
+      <nav className="flex items-center justify-center gap-4 py-2 crt-caption" aria-label="Social links">
         <a
-          className="inline-flex items-center gap-1 text-crt-amber"
+          className="inline-flex items-center gap-1.5 text-crt-amber"
           href={ATTRIBUTION.links.github}
           rel="noreferrer"
           target="_blank"
         >
-          <Github size={11} />
+          <Github size={14} />
           <span>GitHub</span>
         </a>
         <a
-          className="inline-flex items-center gap-1 text-crt-amber"
+          className="inline-flex items-center gap-1.5 text-crt-amber"
           href={ATTRIBUTION.links.twitter}
           rel="noreferrer"
           target="_blank"
         >
-          <Twitter size={11} />
+          <Twitter size={14} />
           <span>@prabal_</span>
         </a>
         <a className="text-crt-amber" href={ATTRIBUTION.links.linkedin} rel="noreferrer" target="_blank">
-          <Linkedin size={11} />
+          <Linkedin size={14} />
         </a>
         <a className="text-crt-amber" href={ATTRIBUTION.links.home} rel="noreferrer" target="_blank">
-          <Home size={11} />
+          <Home size={14} />
         </a>
       </nav>
 
       {/* 2. Navigation buttons - full width grid */}
-      <div className="grid grid-cols-4 border-y border-crt-line/40">
+      <div className="grid grid-cols-3 border-y border-crt-line/40">
         <button
           type="button"
-          className="flex h-10 appearance-none items-center justify-center border-0 bg-transparent text-lg text-crt-ink shadow-none outline-none disabled:opacity-40"
+          className="flex h-12 appearance-none items-center justify-center border-0 bg-transparent text-2xl text-crt-ink shadow-none outline-none disabled:opacity-40"
           onClick={handleStartOver}
         >
           ↺
         </button>
         <button
           type="button"
-          className="flex h-10 appearance-none items-center justify-center border-0 border-l border-l-crt-line/40 bg-transparent text-lg text-crt-ink shadow-none outline-none disabled:opacity-40"
+          className="flex h-12 appearance-none items-center justify-center border-0 border-l border-l-crt-line/40 bg-transparent text-2xl text-crt-ink shadow-none outline-none disabled:opacity-40"
           onClick={handleStepBack}
           disabled={atStart}
         >
@@ -147,14 +138,7 @@ export default function MobileHeader({ position, status, dispatch }: MobileHeade
         </button>
         <button
           type="button"
-          className="flex h-10 appearance-none items-center justify-center border-0 border-l border-l-crt-line/40 bg-transparent text-lg text-crt-ink shadow-none outline-none disabled:opacity-40"
-          onClick={handlePlayPause}
-        >
-          {isPlaying ? '⏸' : '▶'}
-        </button>
-        <button
-          type="button"
-          className="flex h-10 appearance-none items-center justify-center border-0 border-l border-l-crt-line/40 bg-transparent text-lg text-crt-ink shadow-none outline-none disabled:opacity-40"
+          className="flex h-12 appearance-none items-center justify-center border-0 border-l border-l-crt-line/40 bg-transparent text-2xl text-crt-ink shadow-none outline-none disabled:opacity-40"
           onClick={handleStepForward}
           disabled={atEnd}
         >
@@ -181,16 +165,16 @@ export default function MobileHeader({ position, status, dispatch }: MobileHeade
       {currentFunction && (
         currentFunction.githubUrl ? (
           <a
-            className="flex items-center justify-center gap-1 border-b border-crt-line/30 py-1.5 text-[10px] text-crt-cyan"
+            className="flex items-center justify-center gap-1.5 py-2 crt-caption text-crt-cyan"
             href={currentFunction.githubUrl}
             rel="noreferrer"
             target="_blank"
           >
             <span className="font-mono truncate">{currentFunction.name}</span>
-            <ExternalLink size={9} />
+            <ExternalLink size={12} />
           </a>
         ) : (
-          <span className="flex items-center justify-center gap-1 border-b border-crt-line/30 py-1.5 text-[10px] text-crt-ink/60">
+          <span className="flex items-center justify-center gap-1.5 py-2 crt-caption text-crt-ink/60">
             <span className="font-mono truncate">{currentFunction.name}</span>
           </span>
         )

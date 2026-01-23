@@ -31,7 +31,8 @@
   font-family: var(--font-mono);
   font-size: 26px;
   color: var(--phosphor-green);
-  text-shadow: 0 0 20px var(--phosphor-green);
+  /* Safari-compatible glow */
+  text-shadow: 0 0 var(--title-glow, 6px) var(--phosphor-green);
   margin: 0;
   letter-spacing: 0.14em;
 }
@@ -259,10 +260,12 @@
 @keyframes title-glow {
   0%,
   100% {
-    text-shadow: 0 0 20px var(--phosphor-green);
+    text-shadow: 0 0 var(--title-glow, 6px) var(--phosphor-green);
   }
   50% {
-    text-shadow: 0 0 30px var(--phosphor-green), 0 0 40px var(--phosphor-green);
+    text-shadow:
+      0 0 var(--title-glow-strong, 10px) var(--phosphor-green),
+      0 0 var(--title-glow-intense, 14px) rgba(51, 255, 51, 0.5);
   }
 }
 

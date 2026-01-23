@@ -57,8 +57,8 @@ export default function BIOSLoading() {
       data-system="bios"
     >
       <header className="text-center">
-        <h1 className="crt-h1">X-ALGORITHM VISUALIZER v1.0</h1>
-        <p className="crt-caption mt-1">
+        <h1 className="crt-h2 text-crt-amber text-glow-amber">X-ALGORITHM VISUALIZER v1.0</h1>
+        <p className="crt-h4 mt-2 text-crt-amber">
           (c) 2026{' '}
           <a
             href={ATTRIBUTION.links.twitter}
@@ -68,7 +68,6 @@ export default function BIOSLoading() {
           >
             @prabal_
           </a>
-          <span className="sr-only">(c) 2026 @prabal_</span>
         </p>
       </header>
 

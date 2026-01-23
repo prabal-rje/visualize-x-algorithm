@@ -29,8 +29,8 @@ export const BREAKPOINTS = {
   '2XL': 1600,
 } as const;
 
-/** Mobile breakpoint for useViewport hook */
-export const MOBILE_BREAKPOINT = BREAKPOINTS.LG; // 900px
+/** Mobile breakpoint for useViewport hook - treat tablets as mobile */
+export const MOBILE_BREAKPOINT = BREAKPOINTS.XL; // 1200px - tablets get mobile experience
 
 /** Device type helpers */
 export const isPhone = (width: number) => width < BREAKPOINTS.SM;

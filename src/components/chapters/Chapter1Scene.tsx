@@ -64,13 +64,13 @@ export default function Chapter1Scene({
     >
       {/* Chapter Header */}
       <div className={styles.header}>
-        <span className={styles.chapterNumber}>CHAPTER 1</span>
-        <h2 className={styles.title}>THE REQUEST</h2>
-        <div className={styles.stepLabel}>{STEP_LABELS[currentStep] || STEP_LABELS[0]}</div>
+        <span className="crt-body text-crt-ink/70 tracking-[0.2em]">CHAPTER 1</span>
+        <h2 className="crt-h2">THE REQUEST</h2>
+        <div className="crt-badge">{STEP_LABELS[currentStep] || STEP_LABELS[0]}</div>
       </div>
 
       {/* Narration */}
-      <div className={styles.narration}>
+      <div className="crt-body text-center opacity-90 min-h-[48px] px-6">
         <TypewriterText
           text={STEP_NARRATION[currentStep] || STEP_NARRATION[0]}
           started={isActive}
@@ -152,7 +152,7 @@ export default function Chapter1Scene({
         <div className="mt-6 flex justify-center">
           <button
             type="button"
-            className="crt-button px-8 py-3 text-sm tracking-widest"
+            className="crt-button-secondary"
             onClick={onContinue}
           >
             CONTINUE

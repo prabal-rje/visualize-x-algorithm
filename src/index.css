@@ -37,8 +37,12 @@
   --phosphor-magenta: #ff00ff;
   --phosphor-white: #ffffff;
   --phosphor-persistence: 800ms;
-  --phosphor-glow: 6px;
-  --phosphor-glow-strong: 12px;
+  --phosphor-glow: 4px;
+  --phosphor-glow-strong: 8px;
+  /* Title glow - reduced for Safari compatibility */
+  --title-glow: 6px;
+  --title-glow-strong: 10px;
+  --title-glow-intense: 14px;
   --crt-black: #0a0a0a;
   --crt-dark: #121212;
   --crt-glow: rgba(51, 255, 51, 0.1);
@@ -141,4 +145,11 @@ h3,
 h4 {
   font-family: 'Press Start 2P', 'VT323', monospace;
   letter-spacing: 0.08em;
+}
+
+/* Safari: Press Start 2P + text-shadow blur = unreadable blobs.
+   Disable text-shadow for headings using this font on Safari. */
+.safari .crt-h1,
+.safari .crt-h2 {
+  text-shadow: none !important;
 }

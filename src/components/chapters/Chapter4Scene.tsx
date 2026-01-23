@@ -131,12 +131,12 @@ export default function Chapter4Scene({ currentStep, isActive, onContinue }: Cha
       data-active={isActive}
     >
       <div className={styles.header}>
-        <span className={styles.chapterNumber}>CHAPTER 4</span>
-        <h2 className={styles.title}>THE SCORING</h2>
-        <div className={styles.stepLabel}>{label}</div>
+        <span className="crt-body text-crt-ink/70 tracking-[0.2em]">CHAPTER 4</span>
+        <h2 className="crt-h2">THE SCORING</h2>
+        <div className="crt-badge">{label}</div>
       </div>
 
-      <div className={styles.narration}>
+      <div className="crt-body text-center opacity-90 min-h-[48px] px-6">
         <TypewriterText
           text={narration}
           started={isActive}
@@ -382,7 +382,7 @@ export default function Chapter4Scene({ currentStep, isActive, onContinue }: Cha
         <div className="mt-6 flex justify-center">
           <button
             type="button"
-            className="crt-button px-8 py-3 text-sm tracking-widest"
+            className="crt-button-secondary"
             onClick={onContinue}
           >
             CONTINUE

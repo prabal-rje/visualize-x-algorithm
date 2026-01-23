@@ -205,13 +205,13 @@ export default function Chapter2Scene({
     >
       {/* Chapter Header */}
       <div className={styles.header}>
-        <span className={styles.chapterNumber}>CHAPTER 2</span>
-        <h2 className={styles.title}>THE GATHERING</h2>
-        <div className={styles.stepLabel}>{STEP_LABELS[currentStep] || STEP_LABELS[0]}</div>
+        <span className="crt-body text-crt-ink/70 tracking-[0.2em]">CHAPTER 2</span>
+        <h2 className="crt-h2">THE GATHERING</h2>
+        <div className="crt-badge">{STEP_LABELS[currentStep] || STEP_LABELS[0]}</div>
       </div>
 
       {/* Narration */}
-      <div className={styles.narration}>
+      <div className="crt-body text-center opacity-90 min-h-[48px] px-6">
         <TypewriterText
           text={narration}
           started={isActive}
@@ -228,9 +228,6 @@ export default function Chapter2Scene({
           {/* Step 0: Tokenization */}
           {currentStep === 0 && (
             <div className={styles.mobileStep}>
-              <div className={styles.mobileStepHeader}>
-                <span className={styles.mobileMeta}>Tokens: {tokenCount}</span>
-              </div>
               <TokenDisplay
                 tokens={tokens}
                 maxVisible={12}
@@ -376,7 +373,7 @@ export default function Chapter2Scene({
         <div className="mt-6 flex justify-center">
           <button
             type="button"
-            className="crt-button px-8 py-3 text-sm tracking-widest"
+            className="crt-button-secondary"
             onClick={onContinue}
           >
             CONTINUE

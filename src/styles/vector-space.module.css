@@ -237,8 +237,8 @@
   cursor: pointer;
 }
 
-/* Mobile: remove outer boundary, just show the graph */
-@media (max-width: 600px) {
+/* Mobile/Tablet: remove outer boundary, just show the graph - match MOBILE_BREAKPOINT (1200px) */
+@media (max-width: 1199px) {
   .container {
     padding: 8px;
     border: none;
@@ -255,8 +255,10 @@
   }
 
   .space {
-    width: 100%;
-    height: 280px;
+    width: 60vw;
+    aspect-ratio: 1;
+    height: auto;
+    margin: 0 auto;
     border: 1px solid rgba(51, 255, 51, 0.2);
   }
 

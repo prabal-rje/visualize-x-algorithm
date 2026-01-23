@@ -134,24 +134,8 @@
   color: rgba(255, 176, 0, 0.4);
 }
 
-@media (max-width: 900px) {
-  .layout {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .arrowColumn {
-    transform: rotate(90deg);
-    padding: 8px 0;
-  }
-
-  .finalEmbedding {
-    justify-content: center;
-  }
-}
-
-/* Mobile: horizontal token+matrix pairs */
-@media (max-width: 600px) {
+/* Mobile/Tablet: stacked layout - match MOBILE_BREAKPOINT (1200px) */
+@media (max-width: 1199px) {
   .layout {
     display: flex;
     flex-direction: column;

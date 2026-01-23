@@ -267,15 +267,43 @@ export const CHAPTERS: Chapter[] = [
       },
       {
         id: 'ch4-c',
+        labelSimple: 'Weights',
+        labelTechnical: 'Platform Weights',
+        functions: [
+          {
+            id: 'ch4-c-1',
+            name: 'WeightedScorer::load_weights()',
+            file: 'home-mixer/scorers/weighted_scorer.rs',
+            summary: 'Loading platform-defined action weights',
+            githubUrl: `${GITHUB_BASE}/home-mixer/scorers/weighted_scorer.rs`
+          }
+        ]
+      },
+      {
+        id: 'ch4-d',
         labelSimple: 'Score',
         labelTechnical: 'Final Score',
         functions: [
           {
-            id: 'ch4-c-1',
+            id: 'ch4-d-1',
             name: 'WeightedScorer::combine()',
             file: 'home-mixer/scorers/weighted_scorer.rs',
             summary: 'Combining odds into final ranking score',
             githubUrl: `${GITHUB_BASE}/home-mixer/scorers/weighted_scorer.rs`
+          }
+        ]
+      },
+      {
+        id: 'ch4-e',
+        labelSimple: 'Rank',
+        labelTechnical: 'Where You Rank',
+        functions: [
+          {
+            id: 'ch4-e-1',
+            name: 'CandidateRanker::rank()',
+            file: 'home-mixer/rankers/candidate_ranker.rs',
+            summary: 'Ranking all candidates by score',
+            githubUrl: `${GITHUB_BASE}/home-mixer/rankers/candidate_ranker.rs`
           }
         ]
       }

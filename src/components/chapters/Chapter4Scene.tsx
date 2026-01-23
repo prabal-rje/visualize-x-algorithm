@@ -11,10 +11,18 @@ import TypewriterText from '../visualization/TypewriterText';
 const STEP_NARRATION = [
   'The ranker reads your recent activity to understand your interests...',
   'Based on your tweet and audience, it predicts how likely each action is...',
-  'Those probabilities combine into a single score that determines your rank...'
+  'Each action type has a weight—values X chose to prioritize certain behaviors...',
+  'Those probabilities multiply by weights to produce your final ranking score...',
+  'Every candidate gets scored the same way. The highest scores win the spots on your timeline...'
 ];
 
-const STEP_LABELS = ['4A: Your History', '4B: Engagement Odds', '4C: Final Score'];
+const STEP_LABELS = [
+  '4A: Your History',
+  '4B: Engagement Odds',
+  '4C: Platform Weights',
+  '4D: Final Score',
+  '4E: Where You Rank'
+];
 
 // Simulated engagement history - what the user has interacted with recently
 const ENGAGEMENT_HISTORY = [
@@ -209,8 +217,54 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
           </div>
         )}
 
-        {/* Step 2: Final Score */}
+        {/* Step 2: Platform Weights */}
         {currentStep === 2 && (
+          <div className={styles.panel} data-testid="weights-panel">
+            <div className={styles.panelHeader}>Platform Weights</div>
+            <div className={styles.panelSubtext}>
+              X assigns multipliers to each action type
+            </div>
+
+            <div className={styles.weightsExplainer}>
+              <div className={styles.weightsText}>
+                Not all engagement is equal. X prioritizes actions that drive platform goals—spreading content, sparking conversation, signaling high intent.
+              </div>
+              <div className={styles.weightsList}>
+                <div className={styles.weightItem}>
+                  <span className={styles.weightAction}>Repost</span>
+                  <span className={styles.weightValue}>2.0×</span>
+                  <span className={styles.weightReason}>spreads content virally</span>
+                </div>
+                <div className={styles.weightItem}>
+                  <span className={styles.weightAction}>Reply</span>
+                  <span className={styles.weightValue}>1.5×</span>
+                  <span className={styles.weightReason}>drives conversation</span>
+                </div>
+                <div className={styles.weightItem}>
+                  <span className={styles.weightAction}>Bookmark</span>
+                  <span className={styles.weightValue}>1.2×</span>
+                  <span className={styles.weightReason}>high intent signal</span>
+                </div>
+                <div className={styles.weightItem}>
+                  <span className={styles.weightAction}>Like</span>
+                  <span className={styles.weightValue}>1.0×</span>
+                  <span className={styles.weightReason}>baseline engagement</span>
+                </div>
+                <div className={styles.weightItem}>
+                  <span className={styles.weightAction}>Click</span>
+                  <span className={styles.weightValue}>0.5×</span>
+                  <span className={styles.weightReason}>passive interest</span>
+                </div>
+              </div>
+              <div className={styles.weightsDisclaimer}>
+                Actual weights are learned by the Grok transformer and not publicly disclosed. Values shown are illustrative.
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Step 3: Final Score Calculation */}
+        {currentStep === 3 && (
           <div className={styles.panel} data-testid="score-panel">
             <div className={styles.panelHeader}>Final Score</div>
             <div className={styles.panelSubtext}>
@@ -248,9 +302,23 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
                 <span className={styles.finalScoreValue}>{finalScore.toFixed(2)}</span>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Step 4: Where You Rank */}
+        {currentStep === 4 && (
+          <div className={styles.panel} data-testid="rank-panel">
+            <div className={styles.panelHeader}>Where You Rank</div>
+            <div className={styles.panelSubtext}>
+              Comparing your score against other candidates in the feed
+            </div>
+
+            <div className={styles.yourScoreReminder}>
+              <span className={styles.reminderLabel}>Your score:</span>
+              <span className={styles.reminderValue}>{finalScore.toFixed(2)}</span>
+            </div>
 
             <div className={styles.rankingSection}>
-              <div className={styles.rankingHeader}>Where You Rank</div>
               <div className={styles.rankingNote}>
                 {isMobile ? 'Tap to preview each tweet' : 'Hover to preview each tweet'}
               </div>
@@ -292,6 +360,10 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
                   </div>
                 </div>
               )}
+            </div>
+
+            <div className={styles.rankingExplainer}>
+              Higher scores appear earlier in the timeline. Your position depends on how your tweet&apos;s predicted engagement compares to others competing for the same slot.
             </div>
           </div>
         )}

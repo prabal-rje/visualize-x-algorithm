@@ -213,6 +213,74 @@
   gap: 16px;
 }
 
+/* Weights Explainer */
+.weightsExplainer {
+  padding: 12px;
+  background: rgba(0, 20, 0, 0.4);
+  border: 1px solid rgba(51, 255, 51, 0.2);
+  border-left: 3px solid rgba(255, 176, 0, 0.6);
+}
+
+.weightsTitle {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 176, 0, 0.9);
+  margin-bottom: 6px;
+}
+
+.weightsText {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.5;
+  color: rgba(51, 255, 51, 0.8);
+  margin-bottom: 10px;
+}
+
+.weightsList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.weightItem {
+  display: grid;
+  grid-template-columns: 70px 40px 1fr;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  align-items: center;
+}
+
+.weightAction {
+  color: var(--phosphor-green);
+  text-transform: capitalize;
+}
+
+.weightValue {
+  color: rgba(255, 176, 0, 0.95);
+  font-weight: bold;
+  text-align: right;
+}
+
+.weightReason {
+  color: rgba(51, 255, 51, 0.5);
+  font-style: italic;
+}
+
+.weightsDisclaimer {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: rgba(51, 255, 51, 0.4);
+  font-style: italic;
+  padding-top: 10px;
+  border-top: 1px solid rgba(51, 255, 51, 0.15);
+  margin-top: 10px;
+  line-height: 1.4;
+}
+
 .formulaSection {
   display: flex;
   flex-direction: column;
@@ -285,12 +353,48 @@
   text-shadow: 0 0 15px rgba(255, 176, 0, 0.6);
 }
 
+/* Your Score Reminder (for step 4D) */
+.yourScoreReminder {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: rgba(255, 176, 0, 0.08);
+  border: 1px solid rgba(255, 176, 0, 0.3);
+  margin-bottom: 12px;
+}
+
+.reminderLabel {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: rgba(255, 176, 0, 0.7);
+}
+
+.reminderValue {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: bold;
+  color: rgba(255, 176, 0, 1);
+  text-shadow: 0 0 10px rgba(255, 176, 0, 0.5);
+}
+
+/* Ranking Explainer */
+.rankingExplainer {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.5;
+  color: rgba(51, 255, 51, 0.6);
+  padding: 10px;
+  background: rgba(0, 20, 0, 0.3);
+  border-left: 2px solid rgba(51, 255, 51, 0.3);
+  margin-top: 12px;
+}
+
 /* Ranking Section */
 .rankingSection {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-top: 8px;
 }
 
 .rankingHeader {

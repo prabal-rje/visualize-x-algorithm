@@ -46,7 +46,9 @@ const STEP_NARRATION = [
 ];
 
 const MOBILE_STEP_NARRATION = [
-  'Tokenize, embed, and pool the tweet into a retrieval signal...',
+  'Split your tweet into sub-token pieces so the model can digest each fragment...',
+  'Each token becomes a dense vector that captures its semantic meaning...',
+  'Pool token vectors into a single 128-dimensional tweet embedding...',
   'Candidates get placed one by one based on cosine proximity...',
   'Similar vectors drift closer to your tweet in embedding space...',
   'Thunder brings followers. Phoenix pulls in strangers the AI expects you\'ll like...'
@@ -138,7 +140,10 @@ export default function Chapter2Scene({
   const [isLoading, setIsLoading] = useState(true);
   const maxTokens = 12;
   const tokenCount = tokenizeSubTokens(tweetText || 'Hello world').length;
-  const encodingStage = Math.min(currentStep, 2);
+  // Steps 0, 1, 2 are encoding stages (tokenize, embed, pool)
+  // Steps 3, 4, 5 are placement, similarity, merge
+  const isEncodingStep = currentStep <= 2;
+  const encodingStage = isEncodingStep ? currentStep : 2;
 
   // Generate tweet pool once on mount (embeddings pre-computed)
   useEffect(() => {
@@ -239,10 +244,10 @@ export default function Chapter2Scene({
       {/* Step Content */}
       {isMobile ? (
         <div className={styles.mobileContent}>
-          {currentStep === 0 && (
+          {isEncodingStep && (
             <div className={styles.mobileStep}>
               <div className={styles.mobileStepHeader}>
-                <div className={styles.stepLabel}>{STEP_LABELS[0]}</div>
+                <div className={styles.stepLabel}>{STEP_LABELS[currentStep]}</div>
                 <span className={styles.mobileMeta}>Tokens: {tokenCount}</span>
               </div>
               {isLoading ? (
@@ -288,9 +293,9 @@ export default function Chapter2Scene({
             </div>
           )}
 
-          {currentStep === 1 && (
+          {currentStep === 3 && (
             <div className={styles.mobileStep} data-testid="placement-stage">
-              <div className={styles.stepLabel}>{STEP_LABELS[1]}</div>
+              <div className={styles.stepLabel}>{STEP_LABELS[3]}</div>
               {isLoading ? (
                 <div className={styles.loading}>Computing similarities...</div>
               ) : (
@@ -317,9 +322,9 @@ export default function Chapter2Scene({
             </div>
           )}
 
-          {currentStep === 2 && (
+          {currentStep === 4 && (
             <div className={styles.mobileStep}>
-              <div className={styles.stepLabel}>{STEP_LABELS[2]}</div>
+              <div className={styles.stepLabel}>{STEP_LABELS[4]}</div>
               {isLoading ? (
                 <div className={styles.loading}>Computing similarities...</div>
               ) : (
@@ -350,9 +355,9 @@ export default function Chapter2Scene({
             </div>
           )}
 
-          {currentStep === 3 && (
+          {currentStep === 5 && (
             <div className={styles.mobileStep}>
-              <div className={styles.stepLabel}>{STEP_LABELS[3]}</div>
+              <div className={styles.stepLabel}>{STEP_LABELS[5]}</div>
               <div className={styles.mobileStreamGrid}>
                 <div className={styles.mobileStreamColumn}>
                   <div className={styles.mobileStreamTitle}>THUNDER</div>
@@ -376,9 +381,9 @@ export default function Chapter2Scene({
         </div>
       ) : (
         <div className={styles.content}>
-          {currentStep === 0 && (
+          {isEncodingStep && (
             <div className={styles.step}>
-              <div className={styles.stepLabel}>{STEP_LABELS[0]}</div>
+              <div className={styles.stepLabel}>{STEP_LABELS[currentStep]}</div>
               {isLoading ? (
                 <div className={styles.loading}>Computing embedding...</div>
               ) : (
@@ -425,9 +430,9 @@ export default function Chapter2Scene({
             </div>
           )}
 
-          {currentStep === 1 && (
+          {currentStep === 3 && (
             <div className={styles.step} data-testid="placement-stage">
-              <div className={styles.stepLabel}>{STEP_LABELS[1]}</div>
+              <div className={styles.stepLabel}>{STEP_LABELS[3]}</div>
               {isLoading ? (
                 <div className={styles.loading}>Computing similarities...</div>
               ) : (
@@ -448,9 +453,9 @@ export default function Chapter2Scene({
             </div>
           )}
 
-          {currentStep === 2 && (
+          {currentStep === 4 && (
             <div className={styles.step}>
-              <div className={styles.stepLabel}>{STEP_LABELS[2]}</div>
+              <div className={styles.stepLabel}>{STEP_LABELS[4]}</div>
               {isLoading ? (
                 <div className={styles.loading}>Computing similarities...</div>
               ) : (
@@ -501,9 +506,9 @@ export default function Chapter2Scene({
             </div>
           )}
 
-          {currentStep === 3 && (
+          {currentStep === 5 && (
             <div className={styles.step}>
-              <div className={styles.stepLabel}>{STEP_LABELS[3]}</div>
+              <div className={styles.stepLabel}>{STEP_LABELS[5]}</div>
               <CandidateStreams
                 thunderPosts={THUNDER_POSTS}
                 phoenixPosts={PHOENIX_POSTS}

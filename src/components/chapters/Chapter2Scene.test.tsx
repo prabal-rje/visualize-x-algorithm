@@ -59,7 +59,7 @@ describe('Chapter2Scene', () => {
       expect(screen.getByTestId('embedding-heatmap')).toBeInTheDocument();
     });
     expect(
-      within(screen.getByTestId('embedding-heatmap')).getByText(/TOKEN EMBEDDINGS/i)
+      within(screen.getByTestId('embedding-heatmap')).getByText(/TWEET EMBEDDING/i)
     ).toBeInTheDocument();
   });
 

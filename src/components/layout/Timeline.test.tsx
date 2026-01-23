@@ -313,7 +313,7 @@ describe('Timeline', () => {
       expect(screen.getByText('client/mission_loadout.ts')).toBeInTheDocument();
     });
 
-    it('shows user tower function for chapter 2 encoding step', () => {
+    it('shows tokenize function for chapter 2 encoding step', () => {
       render(
         <Timeline
           position={{ chapterIndex: 2, subChapterIndex: 0, functionIndex: 0 }}
@@ -322,7 +322,7 @@ describe('Timeline', () => {
         />
       );
       expect(
-        screen.getAllByText(/TwoTowerModel\.user_tower\(\)/).length
+        screen.getAllByText(/TwoTowerModel\.tokenize\(\)/).length
       ).toBeGreaterThan(0);
     });
 

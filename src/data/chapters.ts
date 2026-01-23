@@ -203,92 +203,29 @@ export const CHAPTERS: Chapter[] = [
     subChapters: [
       {
         id: 'ch3-a',
-        labelSimple: 'Dedup',
-        labelTechnical: 'Deduplication Filters',
+        labelSimple: 'Quality',
+        labelTechnical: 'Quality Gates',
         functions: [
           {
             id: 'ch3-a-1',
-            name: 'DropDuplicatesFilter::filter()',
-            file: 'home-mixer/filters/dedup.rs',
-            summary: 'Removing duplicate tweets',
-            githubUrl: `${GITHUB_BASE}/home-mixer/filters/dedup.rs`
-          },
-          {
-            id: 'ch3-a-2',
-            name: 'RepostDeduplicationFilter::filter()',
-            file: 'home-mixer/filters/dedup.rs',
-            summary: 'Removing duplicate reposts',
-            githubUrl: `${GITHUB_BASE}/home-mixer/filters/dedup.rs`
+            name: 'QualityFilterCascade::run()',
+            file: 'home-mixer/filters/quality.rs',
+            summary: 'Removing duplicates and blocked content',
+            githubUrl: `${GITHUB_BASE}/home-mixer/filters/quality.rs`
           }
         ]
       },
       {
         id: 'ch3-b',
-        labelSimple: 'Social',
-        labelTechnical: 'Social Graph Filter',
+        labelSimple: 'Freshness',
+        labelTechnical: 'Freshness Gates',
         functions: [
           {
             id: 'ch3-b-1',
-            name: 'AuthorSocialgraphFilter::filter()',
-            file: 'home-mixer/filters/socialgraph.rs',
-            summary: 'Filtering by blocks and mutes',
-            githubUrl: `${GITHUB_BASE}/home-mixer/filters/socialgraph.rs`
-          },
-          {
-            id: 'ch3-b-2',
-            name: 'SelfpostFilter::filter()',
-            file: 'home-mixer/filters/socialgraph.rs',
-            summary: 'Removing your own posts',
-            githubUrl: `${GITHUB_BASE}/home-mixer/filters/socialgraph.rs`
-          }
-        ]
-      },
-      {
-        id: 'ch3-c',
-        labelSimple: 'Recency',
-        labelTechnical: 'Recency & History',
-        functions: [
-          {
-            id: 'ch3-c-1',
-            name: 'AgeFilter::filter()',
-            file: 'home-mixer/filters/history.rs',
-            summary: 'Removing stale posts',
-            githubUrl: `${GITHUB_BASE}/home-mixer/filters/history.rs`
-          },
-          {
-            id: 'ch3-c-2',
-            name: 'PreviouslySeenPostsFilter::filter()',
-            file: 'home-mixer/filters/history.rs',
-            summary: 'Removing already-seen posts',
-            githubUrl: `${GITHUB_BASE}/home-mixer/filters/history.rs`
-          },
-          {
-            id: 'ch3-c-3',
-            name: 'PreviouslyServedPostsFilter::filter()',
-            file: 'home-mixer/filters/history.rs',
-            summary: 'Removing recently served posts',
-            githubUrl: `${GITHUB_BASE}/home-mixer/filters/history.rs`
-          }
-        ]
-      },
-      {
-        id: 'ch3-d',
-        labelSimple: 'Content',
-        labelTechnical: 'Content Filters',
-        functions: [
-          {
-            id: 'ch3-d-1',
-            name: 'MutedKeywordFilter::filter()',
-            file: 'home-mixer/filters/content.rs',
-            summary: 'Filtering muted keywords',
-            githubUrl: `${GITHUB_BASE}/home-mixer/filters/content.rs`
-          },
-          {
-            id: 'ch3-d-2',
-            name: 'IneligibleSubscriptionFilter::filter()',
-            file: 'home-mixer/filters/content.rs',
-            summary: 'Removing ineligible subscription content',
-            githubUrl: `${GITHUB_BASE}/home-mixer/filters/content.rs`
+            name: 'FreshnessFilterCascade::run()',
+            file: 'home-mixer/filters/freshness.rs',
+            summary: 'Removing stale and already-seen content',
+            githubUrl: `${GITHUB_BASE}/home-mixer/filters/freshness.rs`
           }
         ]
       }

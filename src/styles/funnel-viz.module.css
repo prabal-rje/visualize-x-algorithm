@@ -1,0 +1,232 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+}
+
+/* Count boxes (start/end) */
+.countBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 24px;
+  background: rgba(0, 20, 0, 0.8);
+  border: 1px solid rgba(51, 255, 51, 0.3);
+  min-width: 120px;
+}
+
+.countBox[data-position='start'] {
+  border-color: rgba(51, 255, 51, 0.5);
+}
+
+.countBox[data-position='end'] {
+  border-color: rgba(255, 176, 0, 0.3);
+  opacity: 0.5;
+  transition: all 0.5s ease;
+}
+
+.countBox[data-position='end'][data-complete='true'] {
+  opacity: 1;
+  border-color: rgba(255, 176, 0, 0.8);
+  box-shadow: 0 0 20px rgba(255, 176, 0, 0.3);
+}
+
+.countValue {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--phosphor-green);
+  text-shadow: 0 0 10px var(--phosphor-green);
+}
+
+.countBox[data-position='end'] .countValue {
+  color: var(--crt-amber);
+  text-shadow: 0 0 10px var(--crt-amber);
+}
+
+.countLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: rgba(51, 255, 51, 0.6);
+  margin-top: 4px;
+}
+
+.countBox[data-position='end'] .countLabel {
+  color: rgba(255, 176, 0, 0.6);
+}
+
+/* Pipeline container */
+.pipeline {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  max-width: 300px;
+}
+
+/* Individual gates */
+.gate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+}
+
+.gate[data-reached='true'] {
+  opacity: 1;
+}
+
+.gate[data-current='true'] .gateBar {
+  animation: gate-pulse 0.5s ease-out;
+}
+
+.gateBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 8px 16px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 60, 60, 0.15) 0%,
+    rgba(255, 60, 60, 0.3) 50%,
+    rgba(255, 60, 60, 0.15) 100%
+  );
+  border: 1px solid rgba(255, 60, 60, 0.4);
+  border-radius: 2px;
+}
+
+.gate[data-reached='true'] .gateBar {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 60, 60, 0.2) 0%,
+    rgba(255, 60, 60, 0.4) 50%,
+    rgba(255, 60, 60, 0.2) 100%
+  );
+  border-color: rgba(255, 60, 60, 0.6);
+  box-shadow: 0 0 8px rgba(255, 60, 60, 0.2);
+}
+
+.gateLabel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  color: rgba(255, 100, 100, 0.9);
+}
+
+.gateRemoved {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: bold;
+  color: rgba(255, 80, 80, 1);
+  text-shadow: 0 0 6px rgba(255, 80, 80, 0.5);
+}
+
+.gateCount {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: rgba(51, 255, 51, 0.7);
+  margin-top: 2px;
+  animation: count-fade-in 0.3s ease-out;
+}
+
+@keyframes gate-pulse {
+  0% {
+    transform: scaleX(1);
+    box-shadow: 0 0 8px rgba(255, 60, 60, 0.2);
+  }
+  50% {
+    transform: scaleX(1.02);
+    box-shadow: 0 0 20px rgba(255, 60, 60, 0.5);
+  }
+  100% {
+    transform: scaleX(1);
+    box-shadow: 0 0 8px rgba(255, 60, 60, 0.2);
+  }
+}
+
+@keyframes count-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Inactive state */
+.container[data-active='false'] .gate {
+  opacity: 0.4;
+}
+
+.container[data-active='false'] .countBox {
+  opacity: 0.5;
+}
+
+/* Desktop: keep vertical layout, just scale up slightly */
+@media (min-width: 768px) {
+  .container {
+    padding: 24px;
+    gap: 12px;
+  }
+
+  .pipeline {
+    max-width: 400px;
+  }
+
+  .countBox {
+    padding: 16px 32px;
+    min-width: 160px;
+  }
+
+  .countValue {
+    font-size: 36px;
+  }
+
+  .gateBar {
+    padding: 10px 20px;
+  }
+
+  .gateLabel {
+    font-size: 12px;
+  }
+
+  .gateRemoved {
+    font-size: 15px;
+  }
+}
+
+/* Large desktop */
+@media (min-width: 1024px) {
+  .pipeline {
+    max-width: 450px;
+  }
+
+  .countBox {
+    padding: 20px 40px;
+    min-width: 180px;
+  }
+
+  .countValue {
+    font-size: 40px;
+  }
+
+  .gateBar {
+    padding: 12px 24px;
+  }
+
+  .gateLabel {
+    font-size: 13px;
+  }
+
+  .gateRemoved {
+    font-size: 16px;
+  }
+}

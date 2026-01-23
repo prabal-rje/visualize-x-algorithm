@@ -16,11 +16,11 @@ describe('data fixtures', () => {
     expect(CHAPTERS[0]?.labelSimple).toMatch(/Loadout|Prep/i);
   });
 
-  it('expands chapters 3-5 into more granular sub-steps', () => {
+  it('has correct subChapter counts for chapters 3-5', () => {
     const ch3 = CHAPTERS.find((chapter) => chapter.id === 'ch3');
     const ch4 = CHAPTERS.find((chapter) => chapter.id === 'ch4');
     const ch5 = CHAPTERS.find((chapter) => chapter.id === 'ch5');
-    expect(ch3?.subChapters.length).toBeGreaterThanOrEqual(4);
+    expect(ch3?.subChapters.length).toBe(2); // Quality Gates, Freshness Gates
     expect(ch4?.subChapters.length).toBeGreaterThanOrEqual(4);
     expect(ch5?.subChapters.length).toBeGreaterThanOrEqual(4);
   });

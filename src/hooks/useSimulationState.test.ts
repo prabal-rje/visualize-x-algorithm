@@ -100,16 +100,16 @@ describe('useSimulationState', () => {
 
     describe('STEP_FORWARD action', () => {
       it('advances function index within same subchapter', () => {
-        // ch4 has subchapter with 2 functions
+        // ch1-b (subChapterIndex 1) has 2 functions
         const state: SimulationState = {
           status: 'running',
-          position: { chapterIndex: 3, subChapterIndex: 1, functionIndex: 0 },
+          position: { chapterIndex: 1, subChapterIndex: 1, functionIndex: 0 },
           startedAt: Date.now()
         };
         const result = simulationReducer(state, { type: 'STEP_FORWARD' });
         expect(result.position.functionIndex).toBe(1);
         expect(result.position.subChapterIndex).toBe(1);
-        expect(result.position.chapterIndex).toBe(3);
+        expect(result.position.chapterIndex).toBe(1);
       });
 
       it('advances to next subchapter when at end of functions', () => {

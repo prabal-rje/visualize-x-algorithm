@@ -1,73 +1,116 @@
-# React + TypeScript + Vite
+# Visualize X Algorithm
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive, CRT-styled visualization of the X "For You" feed algorithm, authored by **Prabal** and **vibe-coded using Gemini, Claude, and Codex**. This project turns the real pipeline into a tactile, cinematic walkthrough so you can see how posts move from retrieval to ranking to final delivery.
 
-Currently, two official plugins are available:
+> **Algorithm reference:** All algorithm details here are derived exclusively from the upstream reference in the [xai-org/x-algorithm README](https://github.com/xai-org/x-algorithm/blob/main/README.md). This README focuses on the visualization itself.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Table of Contents
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- [Overview](#overview)
+- [What This App Shows](#what-this-app-shows)
+- [Algorithm Reference](#algorithm-reference)
+- [Tech Stack](#tech-stack)
+- [Local Development](#local-development)
+- [Deployment](#deployment)
+- [Project Structure](#project-structure)
+- [Credits](#credits)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Overview
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+**Visualize X Algorithm** (titled **"The Anatomy of Virality"** in the UI) is a research-grade visualization that makes the X feed pipeline legible. It emphasizes clarity and feel: a BIOS-style intro, CRT panels, and animated instrumentation that lets you watch posts move through retrieval, scoring, filtering, and selection.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+You can type your own text, pick a persona, and watch tokenization, embeddings, and scoring react in real time. The goal is not to recreate production systems, but to give you a faithful, inspectable model of the flow described by XAI.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## What This App Shows
+
+- A BIOS-style boot sequence and guided simulation flow.
+- Live tokenization, embedding, and attention visualizations as you type.
+- In-network vs out-of-network candidate streams.
+- Filter gates for eligibility, safety, and deduplication.
+- Multi-action scoring, weighted aggregation, and diversity corrections.
+- Top-K selection and final feed assembly.
+
+---
+
+## Algorithm Reference
+
+This project visualizes the high-level flow described in the XAI reference. For full architecture and implementation details, read the upstream [xai-org/x-algorithm README](https://github.com/xai-org/x-algorithm/blob/main/README.md).
+
+At a glance:
+
+1. **Query hydration** (user history + features)
+2. **Candidate sourcing** (Thunder for in-network, Phoenix retrieval for out-of-network)
+3. **Candidate hydration** (post metadata, author info, media)
+4. **Filtering** (eligibility, safety, dedupe)
+5. **Scoring** (multi-action predictions, weighted scoring, author diversity)
+6. **Selection + post-selection filtering**
+
+---
+
+## Tech Stack
+
+- **Frontend:** React + TypeScript + Vite
+- **Animation:** GSAP
+- **State:** Zustand
+- **ML Runtime (in-browser):** `@xenova/transformers`
+- **UI:** Tailwind CSS + custom CRT styling
+- **Audio:** Tone.js
+- **Testing:** Vitest + Testing Library
+
+---
+
+## Local Development
+
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Other useful commands:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build
+npm run test
+npm run lint
+npm run preview
 ```
+
+---
+
+## Deployment
+
+This project includes deployment-specific configuration in **`package.json`** and **`netlify.toml`**.
+
+- **GitHub Pages:** `package.json` sets `homepage` and uses a `predeploy` script with `--base=/x-algorithm/` so assets resolve under the repo subpath. `npm run deploy` publishes via `gh-pages`.
+- **Netlify:** `netlify.toml` builds with `npm run build -- --base=/`, publishes `dist`, pins `NODE_VERSION=20`, and adds a SPA redirect to `/index.html`.
+
+If you change deployment targets or base paths, update both the `homepage` value and the `--base` flag so Vite emits correct asset URLs.
+
+---
+
+## Project Structure
+
+```
+src/
+  components/          # UI components and visualization primitives
+  data/                # Chapter data, constants, and configuration
+  hooks/               # Timeline and animation hooks
+  lib/                 # Utilities, ML helpers, and shared logic
+  styles/              # Tailwind layers and CRT-specific styling
+```
+
+---
+
+## Credits
+
+- **Author:** Prabal
+- **Vibe-coded using:** Gemini + Claude + Codex
+- **Algorithm reference:** [xai-org/x-algorithm](https://github.com/xai-org/x-algorithm)
+
+If you build on this, please preserve attribution and keep the algorithm reference intact.

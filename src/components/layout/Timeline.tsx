@@ -20,21 +20,6 @@ function isAtStart(position: SimulationPosition): boolean {
   );
 }
 
-// Check if we are at the very end
-function isAtEnd(position: SimulationPosition): boolean {
-  const lastChapterIndex = CHAPTERS.length - 1;
-  const lastChapter = CHAPTERS[lastChapterIndex];
-  const lastSubChapterIndex = lastChapter.subChapters.length - 1;
-  const lastSubChapter = lastChapter.subChapters[lastSubChapterIndex];
-  const lastFunctionIndex = lastSubChapter.functions.length - 1;
-
-  return (
-    position.chapterIndex === lastChapterIndex &&
-    position.subChapterIndex === lastSubChapterIndex &&
-    position.functionIndex === lastFunctionIndex
-  );
-}
-
 // Calculate total step count
 function getTotalSteps(): number {
   let total = 0;
@@ -112,7 +97,6 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
   const currentSubChapter = currentChapter?.subChapters[position.subChapterIndex];
   const functionStack = currentSubChapter?.functions ?? [];
   const atStart = isAtStart(position);
-  const atLastPosition = isAtEnd(position);
   const isComplete = status === 'complete';
   // Disable step forward only when actually complete, not when at last position
   // (clicking at last position triggers completion)

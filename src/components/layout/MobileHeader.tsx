@@ -19,20 +19,6 @@ function isAtStart(position: SimulationPosition): boolean {
   );
 }
 
-function isAtEnd(position: SimulationPosition): boolean {
-  const lastChapterIndex = CHAPTERS.length - 1;
-  const lastChapter = CHAPTERS[lastChapterIndex];
-  const lastSubChapterIndex = lastChapter.subChapters.length - 1;
-  const lastSubChapter = lastChapter.subChapters[lastSubChapterIndex];
-  const lastFunctionIndex = lastSubChapter.functions.length - 1;
-
-  return (
-    position.chapterIndex === lastChapterIndex &&
-    position.subChapterIndex === lastSubChapterIndex &&
-    position.functionIndex === lastFunctionIndex
-  );
-}
-
 function getTotalSteps(): number {
   let total = 0;
   for (const chapter of CHAPTERS) {

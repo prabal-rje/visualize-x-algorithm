@@ -33,9 +33,16 @@ export function areAudienceEmbeddingsReady(): boolean {
 }
 
 /**
- * Compute reach distribution based on semantic similarity between
- * the tweet and each audience's interests, weighted by the user's
- * selected audience mix.
+ * Compute reach distribution using semantic similarity as a MULTIPLICATIVE
+ * filter on the user's selected audience mix.
+ *
+ * The key insight: semantic similarity determines the PROBABILITY that
+ * each audience type from the selected pool actually sees the tweet.
+ * A tech tweet should deliver mostly to tech audiences, even if the user
+ * selected a broad mix.
+ *
+ * Formula: reach[i] = selectedWeight[i] * similarity[i]^exponent
+ * Then normalize to sum to 100%.
  *
  * @param tweetText - The tweet content
  * @param selectedMix - The user's selected audience mix (from Chapter 0B)
@@ -53,8 +60,8 @@ export async function computeSemanticReach(
   // Get tweet embedding
   const tweetEmbedding = await getEmbedding(tweetText);
 
-  // Compute similarity with each audience
-  const similarities: { id: AudienceId; similarity: number; selectedWeight: number }[] = [];
+  // Compute raw similarities
+  const rawSimilarities: { id: AudienceId; similarity: number; selectedWeight: number }[] = [];
 
   for (const audience of AUDIENCES) {
     const audienceEmbedding = audienceEmbeddingsCache.get(audience.id);
@@ -63,38 +70,43 @@ export async function computeSemanticReach(
     const similarity = cosine(tweetEmbedding, audienceEmbedding);
     const selectedWeight = selectedMix[audience.id] ?? 0;
 
-    similarities.push({
+    rawSimilarities.push({
       id: audience.id,
-      similarity: Math.max(0, similarity), // Clamp negative similarities
+      similarity: Math.max(0.01, similarity), // Floor at 0.01 to avoid zeros
       selectedWeight
     });
   }
 
-  // Combine semantic similarity with user selection:
-  // - Base reach: 40% from semantic similarity
-  // - User selection: 60% from selected mix
-  // This ensures user selection matters but content still influences reach
-  const SEMANTIC_WEIGHT = 0.4;
-  const SELECTION_WEIGHT = 0.6;
+  // Compute min/max for normalization to [0.1, 1.0] range
+  // This spreads out the similarities to create more dramatic differences
+  const similarities = rawSimilarities.map((s) => s.similarity);
+  const minSim = Math.min(...similarities);
+  const maxSim = Math.max(...similarities);
+  const simRange = maxSim - minSim || 1;
 
-  // Normalize similarities to sum to 100
-  const totalSimilarity = similarities.reduce((sum, s) => sum + s.similarity, 0) || 1;
-  const normalizedSimilarities = similarities.map((s) => ({
+  // Normalize similarities to [0.1, 1.0] range to amplify differences
+  const normalizedData = rawSimilarities.map((s) => ({
     ...s,
-    normalizedSim: (s.similarity / totalSimilarity) * 100
+    // Map to [0.1, 1.0] - low similarity gets 0.1, high gets 1.0
+    normalizedSim: 0.1 + 0.9 * ((s.similarity - minSim) / simRange)
   }));
 
-  // Combine weights
-  const combinedScores = normalizedSimilarities.map((s) => ({
+  // MULTIPLICATIVE filtering: selected weight * similarity^exponent
+  // Exponent > 1 amplifies differences (high similarity gets much more)
+  const SIMILARITY_EXPONENT = 2.5;
+
+  const weightedScores = normalizedData.map((s) => ({
     id: s.id,
-    score: s.normalizedSim * SEMANTIC_WEIGHT + s.selectedWeight * SELECTION_WEIGHT
+    // Multiply selection by similarity raised to power
+    // This means high similarity audiences get disproportionately more
+    score: s.selectedWeight * Math.pow(s.normalizedSim, SIMILARITY_EXPONENT)
   }));
 
   // Normalize to sum to 100%
-  const totalScore = combinedScores.reduce((sum, s) => sum + s.score, 0) || 1;
+  const totalScore = weightedScores.reduce((sum, s) => sum + s.score, 0) || 1;
 
   const result = {} as AudienceMix;
-  for (const { id, score } of combinedScores) {
+  for (const { id, score } of weightedScores) {
     result[id] = (score / totalScore) * 100;
   }
 

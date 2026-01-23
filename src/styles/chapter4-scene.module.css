@@ -213,72 +213,63 @@
   gap: 16px;
 }
 
-/* Weights Explainer */
-.weightsExplainer {
-  padding: 12px;
-  background: rgba(0, 20, 0, 0.4);
-  border: 1px solid rgba(51, 255, 51, 0.2);
-  border-left: 3px solid rgba(255, 176, 0, 0.6);
-}
-
-.weightsTitle {
+/* Weights Panel */
+.weightsIntro {
   font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(255, 176, 0, 0.9);
-  margin-bottom: 6px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--phosphor-green);
+  margin-bottom: 16px;
 }
 
-.weightsText {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  line-height: 1.5;
-  color: rgba(51, 255, 51, 0.8);
-  margin-bottom: 10px;
-}
-
-.weightsList {
+.weightsTable {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-}
-
-.weightItem {
-  display: grid;
-  grid-template-columns: 70px 40px 1fr;
   gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  align-items: center;
+  margin-bottom: 16px;
 }
 
-.weightAction {
+.weightsTableRow {
+  display: grid;
+  grid-template-columns: 90px 50px 1fr;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(0, 20, 0, 0.4);
+  border: 1px solid rgba(51, 255, 51, 0.15);
+}
+
+.weightsTableAction {
   color: var(--phosphor-green);
   text-transform: capitalize;
-}
-
-.weightValue {
-  color: rgba(255, 176, 0, 0.95);
   font-weight: bold;
-  text-align: right;
 }
 
-.weightReason {
-  color: rgba(51, 255, 51, 0.5);
+.weightsTableValue {
+  color: rgba(255, 176, 0, 1);
+  font-weight: bold;
+  font-size: 15px;
+  text-align: right;
+  text-shadow: 0 0 8px rgba(255, 176, 0, 0.5);
+}
+
+.weightsTableReason {
+  color: rgba(51, 255, 51, 0.6);
   font-style: italic;
+  font-size: 12px;
 }
 
 .weightsDisclaimer {
   font-family: var(--font-mono);
-  font-size: 9px;
-  color: rgba(51, 255, 51, 0.4);
+  font-size: 10px;
+  color: rgba(51, 255, 51, 0.5);
   font-style: italic;
-  padding-top: 10px;
-  border-top: 1px solid rgba(51, 255, 51, 0.15);
-  margin-top: 10px;
-  line-height: 1.4;
+  line-height: 1.5;
+  padding: 10px;
+  background: rgba(0, 20, 0, 0.3);
+  border-left: 2px solid rgba(51, 255, 51, 0.3);
 }
 
 .formulaSection {

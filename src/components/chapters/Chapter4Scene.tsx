@@ -212,7 +212,7 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
             </div>
 
             <div className={styles.oddsNote}>
-              Each probability is computed using embedding similarity between your tweet and category prototypes, then adjusted by audience engagement patterns.
+              X&apos;s Grok transformer predicts these probabilities by analyzing your tweet content, your past engagement patterns, and how similar users have engaged with similar content.
             </div>
           </div>
         )}
@@ -222,43 +222,43 @@ export default function Chapter4Scene({ currentStep, isActive }: Chapter4ScenePr
           <div className={styles.panel} data-testid="weights-panel">
             <div className={styles.panelHeader}>Platform Weights</div>
             <div className={styles.panelSubtext}>
-              X assigns multipliers to each action type
+              Not all engagement is equal
             </div>
 
-            <div className={styles.weightsExplainer}>
-              <div className={styles.weightsText}>
-                Not all engagement is equal. X prioritizes actions that drive platform goals—spreading content, sparking conversation, signaling high intent.
+            <div className={styles.weightsIntro}>
+              X prioritizes actions that drive platform goals—spreading content, sparking conversation, signaling high intent. Each action type gets a multiplier.
+            </div>
+
+            <div className={styles.weightsTable}>
+              <div className={styles.weightsTableRow}>
+                <span className={styles.weightsTableAction}>Repost</span>
+                <span className={styles.weightsTableValue}>2.0×</span>
+                <span className={styles.weightsTableReason}>spreads content virally</span>
               </div>
-              <div className={styles.weightsList}>
-                <div className={styles.weightItem}>
-                  <span className={styles.weightAction}>Repost</span>
-                  <span className={styles.weightValue}>2.0×</span>
-                  <span className={styles.weightReason}>spreads content virally</span>
-                </div>
-                <div className={styles.weightItem}>
-                  <span className={styles.weightAction}>Reply</span>
-                  <span className={styles.weightValue}>1.5×</span>
-                  <span className={styles.weightReason}>drives conversation</span>
-                </div>
-                <div className={styles.weightItem}>
-                  <span className={styles.weightAction}>Bookmark</span>
-                  <span className={styles.weightValue}>1.2×</span>
-                  <span className={styles.weightReason}>high intent signal</span>
-                </div>
-                <div className={styles.weightItem}>
-                  <span className={styles.weightAction}>Like</span>
-                  <span className={styles.weightValue}>1.0×</span>
-                  <span className={styles.weightReason}>baseline engagement</span>
-                </div>
-                <div className={styles.weightItem}>
-                  <span className={styles.weightAction}>Click</span>
-                  <span className={styles.weightValue}>0.5×</span>
-                  <span className={styles.weightReason}>passive interest</span>
-                </div>
+              <div className={styles.weightsTableRow}>
+                <span className={styles.weightsTableAction}>Reply</span>
+                <span className={styles.weightsTableValue}>1.5×</span>
+                <span className={styles.weightsTableReason}>drives conversation</span>
               </div>
-              <div className={styles.weightsDisclaimer}>
-                Actual weights are learned by the Grok transformer and not publicly disclosed. Values shown are illustrative.
+              <div className={styles.weightsTableRow}>
+                <span className={styles.weightsTableAction}>Bookmark</span>
+                <span className={styles.weightsTableValue}>1.2×</span>
+                <span className={styles.weightsTableReason}>high intent signal</span>
               </div>
+              <div className={styles.weightsTableRow}>
+                <span className={styles.weightsTableAction}>Like</span>
+                <span className={styles.weightsTableValue}>1.0×</span>
+                <span className={styles.weightsTableReason}>baseline engagement</span>
+              </div>
+              <div className={styles.weightsTableRow}>
+                <span className={styles.weightsTableAction}>Click</span>
+                <span className={styles.weightsTableValue}>0.5×</span>
+                <span className={styles.weightsTableReason}>passive interest</span>
+              </div>
+            </div>
+
+            <div className={styles.weightsDisclaimer}>
+              Actual weights are learned by the Grok transformer and not publicly disclosed. Values shown are illustrative.
             </div>
           </div>
         )}

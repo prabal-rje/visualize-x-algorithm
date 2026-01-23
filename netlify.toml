@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build -- --base=/"
+  command = "npm run build -- --base=/x-algorithm/"
   publish = "dist"
 
 [build.environment]

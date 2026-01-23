@@ -113,10 +113,11 @@ describe('Timeline', () => {
       expect(screen.getAllByTestId('function-stack-track')).toHaveLength(1);
     });
 
-    it('links the function file to x-algorithm', () => {
+    it('links the function file to x-algorithm for real algorithm chapters', () => {
+      // Use chapter 1 which has a real GitHub URL (not simulation-only like chapter 0)
       render(
         <Timeline
-          position={defaultPosition}
+          position={{ chapterIndex: 1, subChapterIndex: 0, functionIndex: 0 }}
           status="running"
           dispatch={mockDispatch}
         />
@@ -126,6 +127,19 @@ describe('Timeline', () => {
         'href',
         expect.stringContaining('https://github.com/xai-org/x-algorithm/blob/main/')
       );
+    });
+
+    it('does not link simulation-only functions to GitHub', () => {
+      // Chapter 0 is simulation-only, no GitHub URL
+      render(
+        <Timeline
+          position={defaultPosition}
+          status="running"
+          dispatch={mockDispatch}
+        />
+      );
+      const element = screen.getByTestId('function-file-link');
+      expect(element).not.toHaveAttribute('href');
     });
   });
 
@@ -298,7 +312,7 @@ describe('Timeline', () => {
       );
       // First function of loadout chapter
       expect(
-        screen.getAllByText(/MissionLoadout::select_persona/).length
+        screen.getAllByText(/selectPersona\(\)/).length
       ).toBeGreaterThan(0);
     });
 
@@ -310,10 +324,10 @@ describe('Timeline', () => {
           dispatch={mockDispatch}
         />
       );
-      expect(screen.getByText('client/mission_loadout.ts')).toBeInTheDocument();
+      expect(screen.getByText('simulation/config.ts')).toBeInTheDocument();
     });
 
-    it('shows tokenize function for chapter 2 encoding step', () => {
+    it('shows hash function for chapter 2 encoding step', () => {
       render(
         <Timeline
           position={{ chapterIndex: 2, subChapterIndex: 0, functionIndex: 0 }}
@@ -322,7 +336,7 @@ describe('Timeline', () => {
         />
       );
       expect(
-        screen.getAllByText(/TwoTowerModel\.tokenize\(\)/).length
+        screen.getAllByText(/block_user_reduce\(\)/).length
       ).toBeGreaterThan(0);
     });
 

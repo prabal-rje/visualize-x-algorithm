@@ -36,11 +36,27 @@
   margin-bottom: 8px;
 }
 
-.userId {
+.userIdContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: auto;
+  margin-bottom: 8px;
+}
+
+.userIdLabel {
   font-size: 6px;
   color: var(--phosphor-green);
-  text-align: center;
-  word-break: break-all;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+}
+
+.userIdValue {
+  font-size: 7px;
+  color: var(--phosphor-green);
+  font-family: var(--font-mono);
+  text-shadow: 0 0 4px var(--phosphor-green);
 }
 
 /* Request Line */

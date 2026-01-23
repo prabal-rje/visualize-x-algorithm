@@ -41,29 +41,44 @@ export default function FunctionPanel({ info }: FunctionPanelProps) {
       {showDetails && (
         <div className={styles.details}>
           <p className={styles.functionName}>{info.name}</p>
-          <a
-            href={info.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.fileLink}
-          >
-            <span
-              className={styles.fileIcon}
-              data-testid="function-file-icon"
-              aria-hidden="true"
+          {info.githubUrl ? (
+            <a
+              href={info.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.fileLink}
             >
-              {'</>'}
+              <span
+                className={styles.fileIcon}
+                data-testid="function-file-icon"
+                aria-hidden="true"
+              >
+                {'</>'}
+              </span>
+              <span className={styles.fileText}>{info.file}</span>
+            </a>
+          ) : (
+            <span className={styles.fileLink}>
+              <span
+                className={styles.fileIcon}
+                data-testid="function-file-icon"
+                aria-hidden="true"
+              >
+                {'</>'}
+              </span>
+              <span className={styles.fileText}>{info.file}</span>
             </span>
-            <span className={styles.fileText}>{info.file}</span>
-          </a>
-          <a
-            href={info.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.sourceLink}
-          >
-            View source
-          </a>
+          )}
+          {info.githubUrl && (
+            <a
+              href={info.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.sourceLink}
+            >
+              View source
+            </a>
+          )}
         </div>
       )}
     </div>

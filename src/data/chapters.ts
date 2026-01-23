@@ -37,10 +37,10 @@ export const CHAPTERS: Chapter[] = [
         functions: [
           {
             id: 'ch0-a-1',
-            name: 'MissionLoadout::select_persona()',
-            file: 'client/mission_loadout.ts',
+            name: 'selectPersona()',
+            file: 'simulation/config.ts',
             summary: 'Selecting persona archetype and voice',
-            githubUrl: `${GITHUB_BASE}/client/mission_loadout.ts`
+            githubUrl: '' // Simulation-only, not in X codebase
           }
         ]
       },
@@ -51,10 +51,10 @@ export const CHAPTERS: Chapter[] = [
         functions: [
           {
             id: 'ch0-b-1',
-            name: 'MissionLoadout::set_audience_mix()',
-            file: 'client/mission_loadout.ts',
+            name: 'setAudienceMix()',
+            file: 'simulation/config.ts',
             summary: 'Balancing audience types for delivery',
-            githubUrl: `${GITHUB_BASE}/client/mission_loadout.ts`
+            githubUrl: '' // Simulation-only, not in X codebase
           }
         ]
       },
@@ -65,10 +65,10 @@ export const CHAPTERS: Chapter[] = [
         functions: [
           {
             id: 'ch0-c-1',
-            name: 'MissionLoadout::draft_tweet()',
-            file: 'client/mission_loadout.ts',
+            name: 'draftTweet()',
+            file: 'simulation/config.ts',
             summary: 'Drafting the tweet for simulation',
-            githubUrl: `${GITHUB_BASE}/client/mission_loadout.ts`
+            githubUrl: '' // Simulation-only, not in X codebase
           }
         ]
       }
@@ -103,15 +103,8 @@ export const CHAPTERS: Chapter[] = [
             id: 'ch1-b-1',
             name: 'UserActionSeqQueryHydrator::hydrate()',
             file: 'home-mixer/query_hydrators/user_action_seq_query_hydrator.rs',
-            summary: 'Fetching user engagement history',
+            summary: 'Fetching engagement history and user features',
             githubUrl: `${GITHUB_BASE}/home-mixer/query_hydrators/user_action_seq_query_hydrator.rs`
-          },
-          {
-            id: 'ch1-b-2',
-            name: 'UserFeaturesQueryHydrator::hydrate()',
-            file: 'home-mixer/query_hydrators/user_features_query_hydrator.rs',
-            summary: 'Fetching user profile features',
-            githubUrl: `${GITHUB_BASE}/home-mixer/query_hydrators/user_features_query_hydrator.rs`
           }
         ]
       }
@@ -126,41 +119,41 @@ export const CHAPTERS: Chapter[] = [
       {
         id: 'ch2-a',
         labelSimple: 'Tokenize',
-        labelTechnical: 'Tokenize Tweet',
+        labelTechnical: 'Feature Hashing',
         functions: [
           {
             id: 'ch2-a-1',
-            name: 'TwoTowerModel.tokenize()',
-            file: 'phoenix/recsys_retrieval_model.py',
-            summary: 'Splitting the tweet into sub-token pieces',
-            githubUrl: `${GITHUB_BASE}/phoenix/recsys_retrieval_model.py`
+            name: 'block_user_reduce()',
+            file: 'phoenix/recsys_model.py',
+            summary: 'Converting user features to hash embeddings',
+            githubUrl: `${GITHUB_BASE}/phoenix/recsys_model.py`
           }
         ]
       },
       {
         id: 'ch2-b',
         labelSimple: 'Embeddings',
-        labelTechnical: 'Token Embeddings',
+        labelTechnical: 'Hash Embeddings',
         functions: [
           {
             id: 'ch2-b-1',
-            name: 'TwoTowerModel.embed_tokens()',
-            file: 'phoenix/recsys_retrieval_model.py',
-            summary: 'Embedding each token into latent vectors',
-            githubUrl: `${GITHUB_BASE}/phoenix/recsys_retrieval_model.py`
+            name: 'block_history_reduce()',
+            file: 'phoenix/recsys_model.py',
+            summary: 'Combining post and author hash embeddings',
+            githubUrl: `${GITHUB_BASE}/phoenix/recsys_model.py`
           }
         ]
       },
       {
         id: 'ch2-c',
         labelSimple: 'Pooling',
-        labelTechnical: 'Token Pooling',
+        labelTechnical: 'Mean Pooling',
         functions: [
           {
             id: 'ch2-c-1',
-            name: 'TwoTowerModel.pool_tokens()',
+            name: 'build_user_representation()',
             file: 'phoenix/recsys_retrieval_model.py',
-            summary: 'Pooling token vectors into a single embedding',
+            summary: 'Pooling embeddings into user representation',
             githubUrl: `${GITHUB_BASE}/phoenix/recsys_retrieval_model.py`
           }
         ]
@@ -168,14 +161,14 @@ export const CHAPTERS: Chapter[] = [
       {
         id: 'ch2-d',
         labelSimple: 'Similarity',
-        labelTechnical: 'Similarity Map',
+        labelTechnical: 'Dot Product',
         functions: [
           {
             id: 'ch2-d-1',
-            name: 'approximate_nearest_neighbors()',
-            file: 'phoenix/ann/approximate_nearest_neighbors.py',
-            summary: 'Placing candidates around the user embedding',
-            githubUrl: `${GITHUB_BASE}/phoenix/ann/approximate_nearest_neighbors.py`
+            name: 'PhoenixRetrievalModel.__call__()',
+            file: 'phoenix/recsys_retrieval_model.py',
+            summary: 'Computing dot product similarity scores',
+            githubUrl: `${GITHUB_BASE}/phoenix/recsys_retrieval_model.py`
           }
         ]
       },
@@ -186,10 +179,10 @@ export const CHAPTERS: Chapter[] = [
         functions: [
           {
             id: 'ch2-e-1',
-            name: 'PhoenixCandidatePipeline::run()',
-            file: 'home-mixer/pipeline/phoenix_candidate_pipeline.rs',
+            name: 'CandidatePipeline::fetch_candidates()',
+            file: 'candidate-pipeline/candidate_pipeline.rs',
             summary: 'Merging Thunder and Phoenix candidates',
-            githubUrl: `${GITHUB_BASE}/home-mixer/pipeline/phoenix_candidate_pipeline.rs`
+            githubUrl: `${GITHUB_BASE}/candidate-pipeline/candidate_pipeline.rs`
           }
         ]
       }
@@ -208,10 +201,10 @@ export const CHAPTERS: Chapter[] = [
         functions: [
           {
             id: 'ch3-a-1',
-            name: 'QualityFilterCascade::run()',
-            file: 'home-mixer/filters/quality.rs',
+            name: 'DropDuplicatesFilter::filter()',
+            file: 'home-mixer/filters/drop_duplicates_filter.rs',
             summary: 'Removing duplicates and blocked content',
-            githubUrl: `${GITHUB_BASE}/home-mixer/filters/quality.rs`
+            githubUrl: `${GITHUB_BASE}/home-mixer/filters/drop_duplicates_filter.rs`
           }
         ]
       },
@@ -222,10 +215,10 @@ export const CHAPTERS: Chapter[] = [
         functions: [
           {
             id: 'ch3-b-1',
-            name: 'FreshnessFilterCascade::run()',
-            file: 'home-mixer/filters/freshness.rs',
+            name: 'AgeFilter::filter()',
+            file: 'home-mixer/filters/age_filter.rs',
             summary: 'Removing stale and already-seen content',
-            githubUrl: `${GITHUB_BASE}/home-mixer/filters/freshness.rs`
+            githubUrl: `${GITHUB_BASE}/home-mixer/filters/age_filter.rs`
           }
         ]
       }
@@ -244,9 +237,9 @@ export const CHAPTERS: Chapter[] = [
         functions: [
           {
             id: 'ch4-a-1',
-            name: 'PhoenixRanker.encode_context()',
+            name: 'PhoenixModel.__call__()',
             file: 'phoenix/recsys_model.py',
-            summary: 'Reading your recent engagement history',
+            summary: 'Encoding your recent engagement history',
             githubUrl: `${GITHUB_BASE}/phoenix/recsys_model.py`
           }
         ]
@@ -258,7 +251,7 @@ export const CHAPTERS: Chapter[] = [
         functions: [
           {
             id: 'ch4-b-1',
-            name: 'PhoenixScorer::predict()',
+            name: 'PhoenixScorer::score()',
             file: 'home-mixer/scorers/phoenix_scorer.rs',
             summary: 'Predicting engagement probabilities',
             githubUrl: `${GITHUB_BASE}/home-mixer/scorers/phoenix_scorer.rs`
@@ -272,9 +265,9 @@ export const CHAPTERS: Chapter[] = [
         functions: [
           {
             id: 'ch4-c-1',
-            name: 'WeightedScorer::load_weights()',
+            name: 'WeightedScorer::compute_weighted_score()',
             file: 'home-mixer/scorers/weighted_scorer.rs',
-            summary: 'Loading platform-defined action weights',
+            summary: 'Applying platform-defined action weights',
             githubUrl: `${GITHUB_BASE}/home-mixer/scorers/weighted_scorer.rs`
           }
         ]
@@ -286,7 +279,7 @@ export const CHAPTERS: Chapter[] = [
         functions: [
           {
             id: 'ch4-d-1',
-            name: 'WeightedScorer::combine()',
+            name: 'WeightedScorer::score()',
             file: 'home-mixer/scorers/weighted_scorer.rs',
             summary: 'Combining odds into final ranking score',
             githubUrl: `${GITHUB_BASE}/home-mixer/scorers/weighted_scorer.rs`
@@ -296,14 +289,14 @@ export const CHAPTERS: Chapter[] = [
       {
         id: 'ch4-e',
         labelSimple: 'Rank',
-        labelTechnical: 'Where You Rank',
+        labelTechnical: 'Diversity Rank',
         functions: [
           {
             id: 'ch4-e-1',
-            name: 'CandidateRanker::rank()',
-            file: 'home-mixer/rankers/candidate_ranker.rs',
-            summary: 'Ranking all candidates by score',
-            githubUrl: `${GITHUB_BASE}/home-mixer/rankers/candidate_ranker.rs`
+            name: 'AuthorDiversityScorer::score()',
+            file: 'home-mixer/scorers/author_diversity_scorer.rs',
+            summary: 'Applying author diversity penalties',
+            githubUrl: `${GITHUB_BASE}/home-mixer/scorers/author_diversity_scorer.rs`
           }
         ]
       }
@@ -336,10 +329,10 @@ export const CHAPTERS: Chapter[] = [
         functions: [
           {
             id: 'ch5-b-1',
-            name: 'AudienceReachForecaster::estimate()',
-            file: 'home-mixer/pipelines/reach_forecaster.rs',
+            name: 'simulateReach()',
+            file: 'simulation/reach_forecaster.ts',
             summary: 'Estimating reach from embeddings + audience mix',
-            githubUrl: `${GITHUB_BASE}/home-mixer/pipelines/reach_forecaster.rs`
+            githubUrl: '' // Simulation-only, not in X codebase
           }
         ]
       },
@@ -350,10 +343,10 @@ export const CHAPTERS: Chapter[] = [
         functions: [
           {
             id: 'ch5-c-1',
-            name: 'EngagementBurstSimulator::run()',
-            file: 'home-mixer/pipelines/engagement_burst_simulator.rs',
+            name: 'simulateEngagement()',
+            file: 'simulation/engagement_simulator.ts',
             summary: 'Simulating early reactions from the audience',
-            githubUrl: `${GITHUB_BASE}/home-mixer/pipelines/engagement_burst_simulator.rs`
+            githubUrl: '' // Simulation-only, not in X codebase
           }
         ]
       },
@@ -364,9 +357,9 @@ export const CHAPTERS: Chapter[] = [
         functions: [
           {
             id: 'ch5-d-1',
-            name: 'format_response()',
+            name: 'get_scored_posts()',
             file: 'home-mixer/server.rs',
-            summary: 'Serializing final timeline payload',
+            summary: 'Returning ranked timeline to client',
             githubUrl: `${GITHUB_BASE}/home-mixer/server.rs`
           }
         ]

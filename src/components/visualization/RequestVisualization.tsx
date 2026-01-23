@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import styles from '../../styles/request-visualization.module.css';
 
 type RequestVisualizationProps = {
@@ -7,10 +8,26 @@ type RequestVisualizationProps = {
   userId?: string;
 };
 
+// Generate random 8-bit binary string
+function randomBinary(): string {
+  return Array.from({ length: 8 }, () => Math.random() > 0.5 ? '1' : '0').join('');
+}
+
 export default function RequestVisualization({
   isActive,
   userId
 }: RequestVisualizationProps) {
+  const [binarySequence, setBinarySequence] = useState(randomBinary());
+
+  // Animate binary sequence when active
+  useEffect(() => {
+    if (!isActive) return;
+    const interval = setInterval(() => {
+      setBinarySequence(randomBinary());
+    }, 150); // Change every 150ms
+    return () => clearInterval(interval);
+  }, [isActive]);
+
   return (
     <div
       className={styles.container}
@@ -21,7 +38,12 @@ export default function RequestVisualization({
       <div className={styles.phone} data-testid="request-phone">
         <div className={styles.phoneScreen}>
           <div className={styles.phoneNotch} />
-          {userId && <span className={styles.userId}>USER_ID: {userId}</span>}
+          {userId && (
+            <div className={styles.userIdContainer}>
+              <span className={styles.userIdLabel}>USER_ID</span>
+              <span className={styles.userIdValue}>{userId}</span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -43,7 +65,7 @@ export default function RequestVisualization({
         {/* Animated Packet */}
         {isActive && (
           <div className={styles.packet} data-testid="request-packet">
-            <span className={styles.packetBinary}>01010011</span>
+            <span className={styles.packetBinary}>{binarySequence}</span>
           </div>
         )}
       </div>

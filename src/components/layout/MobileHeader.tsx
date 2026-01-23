@@ -70,7 +70,7 @@ function calculateProgress(position: SimulationPosition): number {
 
 export default function MobileHeader({ position, status, dispatch }: MobileHeaderProps) {
   const resetSimulation = useConfigStore((state) => state.resetSimulation);
-  const sourceBaseUrl = 'https://github.com/xai-org/x-algorithm/blob/main/';
+  // Use githubUrl from chapter data (empty for simulation-only functions)
   const currentFunction = getFunctionAtPosition(
     position.chapterIndex,
     position.subChapterIndex,
@@ -190,15 +190,21 @@ export default function MobileHeader({ position, status, dispatch }: MobileHeade
 
       {/* 4. Function name + link */}
       {currentFunction && (
-        <a
-          className="flex items-center justify-center gap-1 border-b border-crt-line/30 py-1.5 text-[10px] text-crt-cyan"
-          href={`${sourceBaseUrl}${currentFunction.file}`}
-          rel="noreferrer"
-          target="_blank"
-        >
-          <span className="font-mono truncate">{currentFunction.name}</span>
-          <ExternalLink size={9} />
-        </a>
+        currentFunction.githubUrl ? (
+          <a
+            className="flex items-center justify-center gap-1 border-b border-crt-line/30 py-1.5 text-[10px] text-crt-cyan"
+            href={currentFunction.githubUrl}
+            rel="noreferrer"
+            target="_blank"
+          >
+            <span className="font-mono truncate">{currentFunction.name}</span>
+            <ExternalLink size={9} />
+          </a>
+        ) : (
+          <span className="flex items-center justify-center gap-1 border-b border-crt-line/30 py-1.5 text-[10px] text-crt-ink/60">
+            <span className="font-mono truncate">{currentFunction.name}</span>
+          </span>
+        )
       )}
     </header>
   );

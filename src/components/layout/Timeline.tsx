@@ -102,7 +102,7 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
   const expertMode = useConfigStore((state) => state.expertMode);
   const resetSimulation = useConfigStore((state) => state.resetSimulation);
   const { isMobile } = useViewport();
-  const sourceBaseUrl = 'https://github.com/xai-org/x-algorithm/blob/main/';
+  // Use githubUrl from chapter data (empty for simulation-only functions)
   const currentFunction = getFunctionAtPosition(
     position.chapterIndex,
     position.subChapterIndex,
@@ -231,16 +231,25 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
       {isMobile ? (
         <div className="flex flex-col gap-3">
           {currentFunction && (
-            <a
-              className="inline-flex items-center justify-center gap-2 text-xs text-crt-ink transition hover:text-crt-amber"
-              href={`${sourceBaseUrl}${currentFunction.file}`}
-              rel="noreferrer"
-              target="_blank"
-              data-testid="function-file-link"
-            >
-              <span className="font-mono">{currentFunction.name}</span>
-              <ExternalLink size={12} aria-hidden="true" />
-            </a>
+            currentFunction.githubUrl ? (
+              <a
+                className="inline-flex items-center justify-center gap-2 text-xs text-crt-ink transition hover:text-crt-amber"
+                href={currentFunction.githubUrl}
+                rel="noreferrer"
+                target="_blank"
+                data-testid="function-file-link"
+              >
+                <span className="font-mono">{currentFunction.name}</span>
+                <ExternalLink size={12} aria-hidden="true" />
+              </a>
+            ) : (
+              <span
+                className="inline-flex items-center justify-center gap-2 text-xs text-crt-ink/60"
+                data-testid="function-file-link"
+              >
+                <span className="font-mono">{currentFunction.name}</span>
+              </span>
+            )
           )}
           <NavButtons className="justify-center" />
         </div>
@@ -263,16 +272,26 @@ export default function Timeline({ position, status, dispatch }: TimelineProps) 
                       {position.functionIndex + 1} of {functionStack.length}
                     </span>
                   )}
-                  <a
-                    className="ml-auto shrink-0 inline-flex items-center gap-1.5 text-xs text-crt-amber/70 transition hover:text-crt-amber"
-                    href={`${sourceBaseUrl}${currentFunction.file}`}
-                    rel="noreferrer"
-                    target="_blank"
-                    data-testid="function-file-link"
-                  >
-                    <FileCode size={14} aria-hidden="true" />
-                    <span>{currentFunction.file}</span>
-                  </a>
+                  {currentFunction.githubUrl ? (
+                    <a
+                      className="ml-auto shrink-0 inline-flex items-center gap-1.5 text-xs text-crt-amber/70 transition hover:text-crt-amber"
+                      href={currentFunction.githubUrl}
+                      rel="noreferrer"
+                      target="_blank"
+                      data-testid="function-file-link"
+                    >
+                      <FileCode size={14} aria-hidden="true" />
+                      <span>{currentFunction.file}</span>
+                    </a>
+                  ) : (
+                    <span
+                      className="ml-auto shrink-0 inline-flex items-center gap-1.5 text-xs text-crt-ink/50"
+                      data-testid="function-file-link"
+                    >
+                      <FileCode size={14} aria-hidden="true" />
+                      <span>{currentFunction.file}</span>
+                    </span>
+                  )}
                 </div>
                 <div className="mt-1 truncate text-xs text-crt-ink/60">
                   {currentFunction.summary}

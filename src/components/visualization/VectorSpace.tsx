@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { X } from 'lucide-react';
 import { useViewport } from '../../hooks/useViewport';
 import styles from '../../styles/vector-space.module.css';
 import VectorSpaceHover from './VectorSpaceHover';
@@ -188,31 +187,20 @@ export default function VectorSpace({
         ) : null}
       </div>
 
-      {/* Mobile modal dialog */}
+      {/* Mobile modal - click anywhere to dismiss */}
       {showModal && mobileSelected && (
         <div
           className={styles.mobileModal}
           data-testid="vector-space-modal"
           onClick={() => setMobileSelected(null)}
+          role="dialog"
+          aria-label="Tweet details - tap anywhere to close"
         >
-          <div
-            className={styles.mobileModalContent}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              type="button"
-              className={styles.mobileModalClose}
-              onClick={() => setMobileSelected(null)}
-              aria-label="Close"
-            >
-              <X size={18} />
-            </button>
-            <VectorSpaceHover
-              tweet={mobileSelected.text}
-              similarity={mobileSelected.similarity}
-              label={mobileSelected.label === userPoint.label ? 'YOUR TWEET' : mobileSelected.label}
-            />
-          </div>
+          <VectorSpaceHover
+            tweet={mobileSelected.text}
+            similarity={mobileSelected.similarity}
+            label={mobileSelected.label === userPoint.label ? 'YOUR TWEET' : mobileSelected.label}
+          />
         </div>
       )}
     </div>

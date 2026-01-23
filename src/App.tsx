@@ -5,6 +5,7 @@ import type { CRTConfig } from './components/effects/crtConfig';
 import CRTOverlay from './components/effects/CRTOverlay';
 import ScreenFlicker from './components/effects/ScreenFlicker';
 import Marquee from './components/layout/Marquee';
+import MobileHeader from './components/layout/MobileHeader';
 import Timeline from './components/layout/Timeline';
 import BIOSLoading from './components/visualization/BIOSLoading';
 import ChapterSkeleton from './components/visualization/ChapterSkeleton';
@@ -164,35 +165,62 @@ function App() {
     >
       <div
         data-testid="app-shell"
-        className="ds-shell relative min-h-screen grid-rows-[auto_auto_1fr] bg-crt-void bg-crt-veil max-sm:px-0"
+        className={`relative bg-crt-void bg-crt-veil ${
+          isMobile
+            ? 'flex h-screen w-full flex-col'
+            : 'ds-shell min-h-screen grid-rows-[auto_auto_1fr] max-sm:px-0'
+        }`}
         data-mobile={isMobile}
         data-reduced-motion={prefersReducedMotion}
         data-high-contrast={prefersHighContrast}
         data-system="shell"
       >
         <ScreenFlicker />
-        <Marquee />
-        <section className="relative z-[1]">
-          <Timeline
-            position={simulationState.position}
-            status={simulationState.status}
-            dispatch={dispatch}
-          />
-        </section>
-        <main
-          className="relative grid min-h-0 items-stretch gap-shell grid-cols-1"
-        >
-          <section
-            className="relative min-h-0 h-full overflow-x-hidden overflow-y-auto rounded-panel border border-transparent bg-crt-void/90 p-panel max-sm:px-0 text-crt-ink shadow-[inset_0_0_40px_rgba(0,20,0,0.35)]"
-            data-testid="chapter-canvas"
-            data-proportion="fixed"
-            data-viewport-fit="true"
-            data-fill-height="true"
-            data-compact={isCompactChapter}
-          >
-            {renderChapterScene()}
-          </section>
-        </main>
+
+        {isMobile ? (
+          <>
+            {/* Mobile: Sticky header + scrollable content */}
+            <MobileHeader
+              position={simulationState.position}
+              status={simulationState.status}
+              dispatch={dispatch}
+            />
+            <main className="flex-1 overflow-y-auto">
+              <section
+                className="min-h-full bg-crt-void px-2 text-crt-ink"
+                data-testid="chapter-canvas"
+                data-compact={isCompactChapter}
+              >
+                {renderChapterScene()}
+              </section>
+            </main>
+          </>
+        ) : (
+          <>
+            {/* Desktop: Original layout */}
+            <Marquee />
+            <section className="relative z-[1]">
+              <Timeline
+                position={simulationState.position}
+                status={simulationState.status}
+                dispatch={dispatch}
+              />
+            </section>
+            <main className="relative grid min-h-0 items-stretch gap-shell grid-cols-1">
+              <section
+                className="relative min-h-0 h-full overflow-x-hidden overflow-y-auto rounded-panel border border-transparent bg-crt-void/90 p-panel text-crt-ink shadow-[inset_0_0_40px_rgba(0,20,0,0.35)]"
+                data-testid="chapter-canvas"
+                data-proportion="fixed"
+                data-viewport-fit="true"
+                data-fill-height="true"
+                data-compact={isCompactChapter}
+              >
+                {renderChapterScene()}
+              </section>
+            </main>
+          </>
+        )}
+
         <CRTControls config={crtConfig} onChange={setCrtConfig} />
       </div>
     </CRTOverlay>

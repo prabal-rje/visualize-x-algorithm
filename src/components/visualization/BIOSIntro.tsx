@@ -2,15 +2,13 @@ import { useEffect, useState } from 'react';
 import { ATTRIBUTION } from '../../data/attribution';
 
 const INTRO_LINES = [
-  '> SYSTEM READY',
+  '> YOUR TWEET. REAL MATH.',
   '',
-  'Ever wondered how X decides what shows up in your feed?',
+  'Type anything. Pick your persona.',
+  'Watch YOUR words get tokenized, embedded, and scored—live.',
   '',
-  'Write a tweet. Choose a persona. Watch the algorithm filter,',
-  'score, and rank your content against millions of posts.',
-  '',
-  'Every number is computed by real ML models.',
-  'No fake animations. Just the algorithm, laid bare.'
+  '!POWERED BY REAL ML MODELS!',
+  'Every number changes based on what YOU write.'
 ];
 
 type BIOSIntroProps = {
@@ -60,7 +58,7 @@ export default function BIOSIntro({ onStart }: BIOSIntroProps) {
       <div className="h-px w-full bg-gradient-to-r from-crt-ink/50 via-crt-ink/30 to-crt-ink/50" />
 
       {/* Intro text with typewriter effect */}
-      <div className="flex min-h-[140px] flex-col gap-1 text-xs sm:min-h-[180px] sm:text-sm">
+      <div className="flex min-h-[110px] flex-col gap-1 text-xs sm:min-h-[140px] sm:text-sm">
         {INTRO_LINES.slice(0, visibleLines).map((line, index) => (
           <div
             key={index}
@@ -69,7 +67,9 @@ export default function BIOSIntro({ onStart }: BIOSIntroProps) {
                 ? 'h-3'
                 : line.startsWith('>')
                   ? 'font-bold text-crt-cyan text-glow-cyan'
-                  : 'text-crt-ink/90'
+                  : line.startsWith('!')
+                    ? 'font-bold text-red-500 animate-pulse'
+                    : 'text-crt-ink/90'
             }
           >
             {line}

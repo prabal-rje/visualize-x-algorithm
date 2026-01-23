@@ -125,7 +125,7 @@ export const CHAPTERS: Chapter[] = [
             id: 'ch2-a-1',
             name: 'block_user_reduce()',
             file: 'phoenix/recsys_model.py',
-            summary: 'Converting user features to hash embeddings',
+            summary: 'Converting YOUR tweet into hash embeddings',
             githubUrl: `${GITHUB_BASE}/phoenix/recsys_model.py`
           }
         ]
@@ -139,7 +139,7 @@ export const CHAPTERS: Chapter[] = [
             id: 'ch2-b-1',
             name: 'block_history_reduce()',
             file: 'phoenix/recsys_model.py',
-            summary: 'Combining post and author hash embeddings',
+            summary: 'Building embedding vector for YOUR tweet',
             githubUrl: `${GITHUB_BASE}/phoenix/recsys_model.py`
           }
         ]
@@ -153,7 +153,7 @@ export const CHAPTERS: Chapter[] = [
             id: 'ch2-c-1',
             name: 'build_user_representation()',
             file: 'phoenix/recsys_retrieval_model.py',
-            summary: 'Pooling embeddings into user representation',
+            summary: 'Pooling YOUR tweet vectors for matching',
             githubUrl: `${GITHUB_BASE}/phoenix/recsys_retrieval_model.py`
           }
         ]
@@ -167,7 +167,7 @@ export const CHAPTERS: Chapter[] = [
             id: 'ch2-d-1',
             name: 'PhoenixRetrievalModel.__call__()',
             file: 'phoenix/recsys_retrieval_model.py',
-            summary: 'Computing dot product similarity scores',
+            summary: 'Scoring YOUR content against audience interests',
             githubUrl: `${GITHUB_BASE}/phoenix/recsys_retrieval_model.py`
           }
         ]
@@ -253,7 +253,7 @@ export const CHAPTERS: Chapter[] = [
             id: 'ch4-b-1',
             name: 'PhoenixScorer::score()',
             file: 'home-mixer/scorers/phoenix_scorer.rs',
-            summary: 'Predicting engagement probabilities',
+            summary: 'Predicting who will engage with YOUR tweet',
             githubUrl: `${GITHUB_BASE}/home-mixer/scorers/phoenix_scorer.rs`
           }
         ]
@@ -267,7 +267,7 @@ export const CHAPTERS: Chapter[] = [
             id: 'ch4-c-1',
             name: 'WeightedScorer::compute_weighted_score()',
             file: 'home-mixer/scorers/weighted_scorer.rs',
-            summary: 'Applying platform-defined action weights',
+            summary: 'Weighting YOUR tweet engagement potential',
             githubUrl: `${GITHUB_BASE}/home-mixer/scorers/weighted_scorer.rs`
           }
         ]
@@ -281,7 +281,7 @@ export const CHAPTERS: Chapter[] = [
             id: 'ch4-d-1',
             name: 'WeightedScorer::score()',
             file: 'home-mixer/scorers/weighted_scorer.rs',
-            summary: 'Combining odds into final ranking score',
+            summary: 'Computing YOUR tweet final ranking score',
             githubUrl: `${GITHUB_BASE}/home-mixer/scorers/weighted_scorer.rs`
           }
         ]
@@ -295,7 +295,7 @@ export const CHAPTERS: Chapter[] = [
             id: 'ch4-e-1',
             name: 'AuthorDiversityScorer::score()',
             file: 'home-mixer/scorers/author_diversity_scorer.rs',
-            summary: 'Applying author diversity penalties',
+            summary: 'Ranking YOUR tweet against other authors',
             githubUrl: `${GITHUB_BASE}/home-mixer/scorers/author_diversity_scorer.rs`
           }
         ]
@@ -317,7 +317,7 @@ export const CHAPTERS: Chapter[] = [
             id: 'ch5-a-1',
             name: 'TopKScoreSelector::select()',
             file: 'home-mixer/selectors/top_k_score_selector.rs',
-            summary: 'Selecting top scored tweets',
+            summary: 'Did YOUR tweet make the cut?',
             githubUrl: `${GITHUB_BASE}/home-mixer/selectors/top_k_score_selector.rs`
           }
         ]
@@ -331,7 +331,7 @@ export const CHAPTERS: Chapter[] = [
             id: 'ch5-b-1',
             name: 'simulateReach()',
             file: 'simulation/reach_forecaster.ts',
-            summary: 'Estimating reach from embeddings + audience mix',
+            summary: 'Estimating YOUR tweet reach across audiences',
             githubUrl: '' // Simulation-only, not in X codebase
           }
         ]
@@ -345,7 +345,7 @@ export const CHAPTERS: Chapter[] = [
             id: 'ch5-c-1',
             name: 'simulateEngagement()',
             file: 'simulation/engagement_simulator.ts',
-            summary: 'Simulating early reactions from the audience',
+            summary: 'Simulating reactions to YOUR tweet',
             githubUrl: '' // Simulation-only, not in X codebase
           }
         ]

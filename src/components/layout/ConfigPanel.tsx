@@ -73,12 +73,13 @@ type ConfigPanelProps = {
   currentStep?: number;
   onStepForward?: () => void;
   onStepBack?: () => void;
+  onBeginSimulation?: () => void;
 };
 
 const STEP_NAMES = ['persona', 'audience', 'tweet'] as const;
 type StepName = (typeof STEP_NAMES)[number];
 
-export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack }: ConfigPanelProps) {
+export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack, onBeginSimulation }: ConfigPanelProps) {
   const personaId = useConfigStore((state) => state.personaId);
   const setPersonaId = useConfigStore((state) => state.setPersonaId);
   const tweetText = useConfigStore((state) => state.tweetText);
@@ -86,7 +87,6 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
   const shuffleSampleTweet = useConfigStore((state) => state.shuffleSampleTweet);
   const audienceMix = useConfigStore((state) => state.audienceMix);
   const setAudienceMix = useConfigStore((state) => state.setAudienceMix);
-  const beginSimulation = useConfigStore((state) => state.beginSimulation);
   const { isMobile } = useViewport();
 
   // Derive step name from currentStep prop (controlled by simulation state)
@@ -140,12 +140,12 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
       const tag = target?.tagName?.toLowerCase();
       if (tag === 'textarea' || tag === 'input') return;
       if (step === 'tweet') {
-        beginSimulation();
+        onBeginSimulation?.();
       }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [beginSimulation, step]);
+  }, [onBeginSimulation, step]);
 
   useEffect(() => {
     return () => {
@@ -460,7 +460,7 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
               <button
                 className={styles.beginButtonOrange}
                 data-testid="begin-simulation"
-                onClick={beginSimulation}
+                onClick={() => onBeginSimulation?.()}
                 type="button"
               >
                 BEGIN
@@ -478,7 +478,7 @@ export default function ConfigPanel({ currentStep = 0, onStepForward, onStepBack
               <button
                 className={styles.beginButton}
                 data-testid="begin-simulation"
-                onClick={beginSimulation}
+                onClick={() => onBeginSimulation?.()}
                 type="button"
               >
                 BEGIN SIMULATION

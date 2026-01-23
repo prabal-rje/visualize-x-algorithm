@@ -7,6 +7,7 @@ type Chapter0SceneProps = {
   isActive: boolean;
   onStepForward?: () => void;
   onStepBack?: () => void;
+  onBeginSimulation?: () => void;
 };
 
 const STEP_LABELS = ['0A: Persona', '0B: Audience', '0C: Tweet Draft'];
@@ -16,7 +17,7 @@ const STEP_NARRATION = [
   'Write the tweet you are about to test against the feed.'
 ];
 
-export default function Chapter0Scene({ currentStep, isActive, onStepForward, onStepBack }: Chapter0SceneProps) {
+export default function Chapter0Scene({ currentStep, isActive, onStepForward, onStepBack, onBeginSimulation }: Chapter0SceneProps) {
   return (
     <div
       className={styles.container}
@@ -47,6 +48,7 @@ export default function Chapter0Scene({ currentStep, isActive, onStepForward, on
           currentStep={currentStep}
           onStepForward={onStepForward}
           onStepBack={onStepBack}
+          onBeginSimulation={onBeginSimulation}
         />
       </div>
     </div>

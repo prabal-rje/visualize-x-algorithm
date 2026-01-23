@@ -121,10 +121,11 @@ describe('ConfigPanel', () => {
     expect(screen.getAllByTestId('persona-icon').length).toBeGreaterThan(0);
   });
 
-  it('starts simulation on begin button', () => {
-    render(<ConfigPanel currentStep={2} />);
+  it('calls onBeginSimulation when begin button is clicked', () => {
+    const onBeginSimulation = vi.fn();
+    render(<ConfigPanel currentStep={2} onBeginSimulation={onBeginSimulation} />);
     fireEvent.click(screen.getByTestId('begin-simulation'));
-    expect(useConfigStore.getState().simulationStarted).toBe(true);
+    expect(onBeginSimulation).toHaveBeenCalledTimes(1);
   });
 
   it('does not render expert mode toggle', () => {

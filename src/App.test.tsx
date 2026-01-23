@@ -130,22 +130,14 @@ describe('App', () => {
     expect(screen.queryByTestId('function-panel')).not.toBeInTheDocument();
   });
 
-  it('does not render MissionReport when simulation started with rpgStats', async () => {
+  it('shows chapter 0 with config panel when model ready and simulation not started', async () => {
     useMLStore.getState().setReady(); // Skip BIOS loading
-    useConfigStore.setState({
-      simulationStarted: true,
-      rpgStats: {
-        reach: 1234,
-        resonance: 0.85,
-        momentum: 42,
-        percentile: 75
-      }
-    });
     render(<App />);
+    // Should show chapter 0 (Mission Prep) with config panel
+    expect(await screen.findByTestId('chapter-0-scene')).toBeInTheDocument();
+    expect(screen.getByTestId('config-panel')).toBeInTheDocument();
+    // MissionReport is not used in App, should never appear
     expect(screen.queryByTestId('mission-report')).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /mission report/i })).not.toBeInTheDocument();
-    expect(await screen.findByTestId('chapter-1-scene')).toBeInTheDocument();
-    expect(screen.queryByTestId('config-panel')).not.toBeInTheDocument();
   });
 
   it('shows BIOSLoading when ML status is loading', () => {

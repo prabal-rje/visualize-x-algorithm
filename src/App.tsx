@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useState } from 'react';
 import CRTControls from './components/effects/CRTControls';
 import { DEFAULT_CRT_CONFIG } from './components/effects/crtConfig';
 import type { CRTConfig } from './components/effects/crtConfig';
@@ -29,6 +29,7 @@ function App() {
   const [crtConfig, setCrtConfig] = useState<CRTConfig>(DEFAULT_CRT_CONFIG);
   const [simulationState, dispatch] = useSimulationState();
   const simulationStarted = useConfigStore((state) => state.simulationStarted);
+  const beginSimulation = useConfigStore((state) => state.beginSimulation);
   const mlStatus = useMLStore((state) => state.status);
   const setLoading = useMLStore((state) => state.setLoading);
   const setProgress = useMLStore((state) => state.setProgress);
@@ -72,14 +73,12 @@ function App() {
     };
   }, [simulationStarted, mlStatus]);
 
-  useEffect(() => {
-    if (simulationStarted) {
-      dispatch({ type: 'START' });
-      dispatch({ type: 'JUMP_TO_CHAPTER', chapterIndex: 1 });
-    } else {
-      dispatch({ type: 'RESET' });
-    }
-  }, [dispatch, simulationStarted]);
+  // Direct callback for BEGIN button - no effect indirection
+  const handleBeginSimulation = useCallback(() => {
+    beginSimulation(); // Compute simulation results
+    dispatch({ type: 'START' });
+    dispatch({ type: 'JUMP_TO_CHAPTER', chapterIndex: 1 });
+  }, [beginSimulation, dispatch]);
 
   const { position } = simulationState;
   const isCompactChapter = position.chapterIndex >= 3;
@@ -96,6 +95,7 @@ function App() {
               isActive={true}
               onStepForward={() => dispatch({ type: 'STEP_FORWARD' })}
               onStepBack={() => dispatch({ type: 'STEP_BACK' })}
+              onBeginSimulation={handleBeginSimulation}
             />
           </ChapterWrapper>
         )}

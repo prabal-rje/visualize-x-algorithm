@@ -64,7 +64,9 @@ describe('BIOSLoading', () => {
 
   it('shows copyright notice', () => {
     render(<BIOSLoading />);
-    expect(screen.getByText(/\(c\) 2026 @prabal_/)).toBeInTheDocument();
+    // Text is split across elements: "(c) 2026" and "@prabal_" in a link
+    expect(screen.getByText(/\(c\) 2026/)).toBeInTheDocument();
+    expect(screen.getByText('@prabal_')).toBeInTheDocument();
   });
 
   it('shows tip about real ML models', () => {
@@ -84,12 +86,12 @@ describe('BIOSLoading', () => {
     expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '75');
   });
 
-  it('displays unicode progress bar characters', () => {
+  it('displays progress percentage inside progress bar', () => {
     useMLStore.setState({ progress: 0.5 });
     render(<BIOSLoading />);
 
-    // Should have filled blocks (█) and empty blocks (░)
+    // Should display percentage text inside the progress bar
     const progressbar = screen.getByRole('progressbar');
-    expect(progressbar.textContent).toMatch(/[█░]/);
+    expect(progressbar.textContent).toMatch(/50%/);
   });
 });

@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import styles from '../../styles/topk-selector.module.css';
+import { playFilterPass, playFilterFail } from '../../audio/engine';
 
 export type Candidate = {
   id: string;
@@ -72,6 +73,19 @@ export default function TopKSelector({
       clearTimeout(timer3);
     };
   }, [isActive, candidates]);
+
+  // Play pass/fail sound when result phase is reached
+  const prevPhaseRef = useRef(phase);
+  useEffect(() => {
+    if (phase === 'result' && prevPhaseRef.current !== 'result') {
+      if (userPassed) {
+        void playFilterPass();
+      } else {
+        void playFilterFail();
+      }
+    }
+    prevPhaseRef.current = phase;
+  }, [phase, userPassed]);
 
   // Determine row state based on phase
   const getRowState = (candidate: Candidate) => {

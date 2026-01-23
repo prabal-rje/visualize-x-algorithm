@@ -1,4 +1,4 @@
-import { Suspense, lazy, useCallback, useEffect, useState } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react';
 import CompletionOverlay from './components/effects/CompletionOverlay';
 import CRTControls from './components/effects/CRTControls';
 import { DEFAULT_CRT_CONFIG } from './components/effects/crtConfig';
@@ -16,7 +16,7 @@ import { useSimulationState } from './hooks/useSimulationState';
 import { useViewport } from './hooks/useViewport';
 import { initializeEmbedder, isInitialized } from './ml/embeddings';
 import { initAudienceEmbeddings } from './ml/reach';
-import { setAmbientDrone } from './audio/engine';
+import { setAmbientDrone, playChapterTransition } from './audio/engine';
 import { useConfigStore } from './stores/config';
 import { useMLStore } from './stores/ml';
 
@@ -87,6 +87,16 @@ function App() {
       void setAmbientDrone(false);
     };
   }, [simulationStarted, mlStatus]);
+
+  // Play sound on chapter transitions
+  const prevChapterRef = useRef(simulationState.position.chapterIndex);
+  useEffect(() => {
+    const currentChapter = simulationState.position.chapterIndex;
+    if (simulationStarted && currentChapter !== prevChapterRef.current) {
+      void playChapterTransition();
+    }
+    prevChapterRef.current = currentChapter;
+  }, [simulationState.position.chapterIndex, simulationStarted]);
 
   // Direct callback for BEGIN button - no effect indirection
   const handleBeginSimulation = useCallback(() => {

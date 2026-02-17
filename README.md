@@ -1,6 +1,8 @@
 # Visualize X Algorithm
 
-An interactive, CRT-styled visualization of the X "For You" feed algorithm, authored by **Prabal** and **vibe-coded using Gemini, Claude, and Codex**. This project turns the real pipeline into a tactile, cinematic walkthrough so you can see how posts move from retrieval to ranking to final delivery.
+Try it [here](https://prabal.ca/x-algorithm)!
+
+This is an interactive, CRT-styled visualization of the X "For You" feed algorithm, authored by **Prabal** and **vibe-coded using Gemini, Claude, and Codex**. This project turns the real pipeline into a tactile, cinematic walkthrough so you can see how posts move from retrieval to ranking to final delivery.
 
 > **Algorithm reference:** All algorithm details here are derived exclusively from the upstream reference in the [xai-org/x-algorithm README](https://github.com/xai-org/x-algorithm/blob/main/README.md). This README focuses on the visualization itself.
 
